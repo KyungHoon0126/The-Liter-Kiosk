@@ -93,6 +93,12 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="Controls\AdminControl\.gitKeep" />
+    <None Include="Controls\HomeControl\.gitKeep" />
+    <None Include="Controls\OrderControl\.gitKeep" />
+    <None Include="Controls\PayControl\.gitKeep" />
+    <None Include="Controls\PlaceControl\.gitKeep" />
+    <None Include="Controls\TopTileControl\.gitKeep" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -156,8 +162,6 @@
     <Resource Include="Assets\Images\Yogurs\PlainYogurs.jpg" />
     <Resource Include="Assets\Images\Yogurs\StrawberryYogurs.jpg" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="NewFolder1\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
