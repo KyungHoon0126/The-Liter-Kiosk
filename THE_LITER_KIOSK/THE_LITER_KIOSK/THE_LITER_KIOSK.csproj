@@ -105,5 +105,8 @@
   <ItemGroup>
     <Resource Include="Assets\SplashScreen\SplashScreenImg.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Content Include="Assets\Video\TheLiterVideo.mp4" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
