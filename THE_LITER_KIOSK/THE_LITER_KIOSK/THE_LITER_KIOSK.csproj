@@ -93,7 +93,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="Assets\.gitkeep" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -106,7 +105,39 @@
     <Resource Include="Assets\SplashScreen\SplashScreenImg.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Assets\COFFEE\Americano.jpg" />
+    <Resource Include="Assets\COFFEE\Cafelatte.jpg" />
+    <Resource Include="Assets\COFFEE\CafeMocha.jpg" />
+    <Resource Include="Assets\COFFEE\Cappuccino.jpg" />
+    <Resource Include="Assets\COFFEE\CaramelMacchiato.jpg" />
+    <Resource Include="Assets\COFFEE\ColdBrew.jpg" />
+    <Resource Include="Assets\COFFEE\ColdBrewLatte.jpg" />
+    <Resource Include="Assets\COFFEE\CondensedMilkLatte.jpg" />
+    <Resource Include="Assets\COFFEE\HazelnutLatte.jpg" />
+    <Resource Include="Assets\COFFEE\TiramisuLatte.jpg" />
+    <Resource Include="Assets\COFFEE\vanillaLatte.jpg" />
+    <Resource Include="Assets\LATTE\DeepChocoLatte.jpg" />
+    <Resource Include="Assets\LATTE\GreenteaLatte.jpg" />
+    <Resource Include="Assets\LATTE\MilkTea.jpg" />
+    <Resource Include="Assets\LATTE\MintChocoLatte.jpg" />
+    <Resource Include="Assets\LATTE\PurplesweetpotatoLatte.jpg" />
+    <Resource Include="Assets\THELITERSPECIAL\Bananalatte.jpg" />
+    <Resource Include="Assets\THELITERSPECIAL\C1Soda.jpg" />
+    <Resource Include="Assets\THELITERSPECIAL\ChamMelon.jpg" />
+    <Resource Include="Assets\THELITERSPECIAL\Grainlatte.jpg" />
+    <Resource Include="Assets\THELITERSPECIAL\PeachSoongsoong.jpg" />
+    <Resource Include="Assets\THELITERSPECIAL\PineappleSoda.jpg" />
+    <Resource Include="Assets\THELITERSPECIAL\ShiningSuger.jpg" />
+    <Resource Include="Assets\THELITERSPECIAL\StrawberrySoksok.jpg" />
+    <Resource Include="Assets\THELITERSPECIAL\sugarlatte.jpg" />
+    <Resource Include="Assets\THELITERSPECIAL\sugarmilktea.jpg" />
     <Content Include="Assets\Video\TheLiterVideo.mp4" />
+    <Resource Include="Assets\YOGURS\BlueberryYogurs.jpg" />
+    <Resource Include="Assets\YOGURS\CitronYogurs.jpg" />
+    <Resource Include="Assets\YOGURS\MangoYogurs.jpg" />
+    <Resource Include="Assets\YOGURS\PeachYogurs.jpg" />
+    <Resource Include="Assets\YOGURS\PlainYogurs.jpg" />
+    <Resource Include="Assets\YOGURS\StrawberryYogurs.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
