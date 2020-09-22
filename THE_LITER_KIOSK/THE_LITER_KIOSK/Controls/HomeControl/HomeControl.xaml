@@ -1,0 +1,35 @@
+﻿<UserControl x:Class="THE_LITER_KIOSK.Controls.HomeControl.HomeControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:THE_LITER_KIOSK.Controls.HomeControl"
+             xmlns:control="clr-namespace:THE_LITER_KIOSK.Controls.HomeControl"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <Grid Background="White">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="6*"/>
+            <RowDefinition Height="4*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <MediaElement LoadedBehavior="Manual"
+                          Source="Assets/Video/TheLiterVideo.mp4"
+                          ScrubbingEnabled="True"
+                          Margin="5"
+                          x:Name="media"
+                          />
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <TextBlock HorizontalAlignment="Center"  Margin="212,10,203,0" TextWrapping="Wrap" VerticalAlignment="Top" Height="106" Width="385" FontSize="46"><Run FontSize="36" Text="국내최초 전 메뉴 1L"/><LineBreak/><Run FontWeight="Bold" Text="커피전문점 "/><Run Foreground="#FFC72626" FontWeight="Bold" Text="더리터"/><LineBreak/><Run/></TextBlock>
+            <Grid>
+                <Button Width="140px" Height="40" Margin="330,130,330,10" BorderThickness="0" x:Name="OrderButton" Click="OrderButton_Click">
+                    <TextBlock FontSize="16px">주문하기</TextBlock>
+                </Button>
+            </Grid>
+        </Grid>
+    </Grid>
+</UserControl>
