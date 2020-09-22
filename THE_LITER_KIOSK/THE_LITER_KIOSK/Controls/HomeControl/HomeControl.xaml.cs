@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,10 +29,17 @@ namespace THE_LITER_KIOSK.Controls.HomeControl
 
         private void MedaiElementVideoPlayer()
         {
+            Console.WriteLine(media.Position);
+            media.Stop();
+            media.Position = TimeSpan.FromSeconds(0);
             media.Play();
         }
 
-
        
+
+        private void OrderButton_Click(object sender, RoutedEventArgs e)
+        {
+            Console.WriteLine("OrderButton");
+        }
     }
 }
