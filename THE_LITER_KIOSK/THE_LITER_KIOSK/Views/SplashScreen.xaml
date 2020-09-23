@@ -12,7 +12,7 @@
         Title="SplashScreen" Height="450" Width="800">
     
     <Grid>
-        <Image Source="/Assets/Images/SplashScreen/SplashScreenImg.png"
+        <Image Source="/Assets/SplashScreen/SplashScreenImg.png"
                Width="400"/>
     </Grid>
 </Window>

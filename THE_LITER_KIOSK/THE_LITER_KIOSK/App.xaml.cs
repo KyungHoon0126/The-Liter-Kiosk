@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using TheLiter.Core.Order;
 
 namespace THE_LITER_KIOSK
 {
@@ -13,5 +14,6 @@ namespace THE_LITER_KIOSK
     /// </summary>
     public partial class App : Application
     {
+        public static OrderData orderData = new OrderData();
     }
 }

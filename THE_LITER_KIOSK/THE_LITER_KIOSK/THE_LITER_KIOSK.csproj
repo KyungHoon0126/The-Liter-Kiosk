@@ -35,8 +35,14 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Prism, Version=7.2.0.1422, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
+      <HintPath>..\packages\Prism.Core.7.2.0.1422\lib\net45\Prism.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.ValueTuple, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ValueTuple.4.5.0\lib\net47\System.ValueTuple.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -58,10 +64,17 @@
     <Compile Include="Controls\HomeControl\HomeControl.xaml.cs">
       <DependentUpon>HomeControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\OrderControl\OrderControl.xaml.cs">
+      <DependentUpon>OrderControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\HomeControl\HomeControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\OrderControl\OrderControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -101,11 +114,10 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="Controls\AdminControl\.gitKeep" />
-    <None Include="Controls\HomeControl\.gitKeep" />
-    <None Include="Controls\OrderControl\.gitKeep" />
     <None Include="Controls\PayControl\.gitKeep" />
     <None Include="Controls\PlaceControl\.gitKeep" />
     <None Include="Controls\TopTileControl\.gitKeep" />
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -115,7 +127,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Assets\Menus\SplashScreen\SplashScreenImg.png" />
+    <Resource Include="Assets\SplashScreen\SplashScreenImg.png" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Assets\Menus\Coffee\Americano.jpg" />
@@ -172,6 +184,11 @@
     <Resource Include="Assets\Menus\Yogurs\PlainYogurs.jpg" />
     <Resource Include="Assets\Menus\Yogurs\StrawberryYogurs.jpg" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\TheLiter.Core.Order\TheLiter.Core.Order.csproj">
+      <Project>{1EBD103B-9FBB-4D72-8823-A0F82D30AF20}</Project>
+      <Name>TheLiter.Core.Order</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

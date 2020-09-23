@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TheLiter.Core.Order
+namespace THE_LITER_KIOSK.Common
 {
-    public class Class1
+    public class ComDef
     {
+        public static string Path = "/Assets/Menus"; 
     }
 }

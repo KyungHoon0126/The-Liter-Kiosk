@@ -38,6 +38,8 @@ namespace THE_LITER_KIOSK
             dispatcherTimer.Start();
             #endregion
 
+            InitData();
+            
             CtrlHome.btnOrder.Click += BtnOrder_Click;
             CtrlHome.Visibility = Visibility.Visible;
         }
@@ -47,15 +49,24 @@ namespace THE_LITER_KIOSK
             tbClock.Text = DateTime.Now.ToString("tt H시 mm분 ss초 dddd");
         }
 
+        private void InitData()
+        {
+            App.orderData.orderViewModel.LoadData();
+        }
+
         private void BtnOrder_Click(object sender, RoutedEventArgs e)
         {
             CtrlHome.Visibility = Visibility.Collapsed;
+            
             gdMain.Visibility = Visibility.Visible;
+            CtrlOrder.Visibility = Visibility.Visible;
         }
 
         private void btnHome_Click(object sender, RoutedEventArgs e)
         {
             gdMain.Visibility = Visibility.Collapsed;
+            CtrlOrder.Visibility = Visibility.Collapsed;
+
             CtrlHome.Visibility = Visibility.Visible;
         }
     }
