@@ -24,18 +24,7 @@ namespace THE_LITER_KIOSK.Controls.HomeControl
         public HomeControl()
         {
             InitializeComponent();
-            MedaiElementVideoPlayer();
         }
-
-        private void MedaiElementVideoPlayer()
-        {
-            Console.WriteLine(media.Position);
-            media.Stop();
-            media.Position = TimeSpan.FromSeconds(0);
-            media.Play();
-        }
-
-       
 
         private void OrderButton_Click(object sender, RoutedEventArgs e)
         {
