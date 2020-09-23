@@ -26,11 +26,6 @@ namespace THE_LITER_KIOSK.Controls.HomeControl
             InitializeComponent();
         }
 
-        private void OrderButton_Click(object sender, RoutedEventArgs e)
-        {
-            Console.WriteLine("OrderButton");
-        }
-
         // TODO : 이벤트 안먹음.
         private void UserControl_KeyDown(object sender, KeyEventArgs e)
         {

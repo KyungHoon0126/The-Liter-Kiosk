@@ -59,8 +59,7 @@
             </Grid>
 
             <Grid Grid.Row="1">
-                <Button x:Name="OrderButton" 
-                        Click="OrderButton_Click"
+                <Button x:Name="btnOrder" 
                         Width="140px" Height="40"  
                         BorderThickness="0"
                         VerticalAlignment="Top"
