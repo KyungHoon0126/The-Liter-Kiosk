@@ -30,5 +30,15 @@ namespace THE_LITER_KIOSK.Controls.HomeControl
         {
             Console.WriteLine("OrderButton");
         }
+
+        // TODO : 이벤트 안먹음.
+        private void UserControl_KeyDown(object sender, KeyEventArgs e)
+        {
+            if(e.Key == Key.Enter)
+            {
+                MessageBox.Show("통계 화면은 준비중 입니다.");
+                Debug.WriteLine("asdfadsfds");
+            }
+        }
     }
 }

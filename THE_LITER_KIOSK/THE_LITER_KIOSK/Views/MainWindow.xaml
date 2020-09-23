@@ -8,9 +8,51 @@
         WindowState="Maximized" 
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
-        Title="THE LITER KIOSK" Height="450" Width="800"> 
-    
+        Title="THE LITER KIOSK" Height="450" Width="800">
+
     <Grid>
-        <control:HomeControl Visibility="Visible"/>
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="9*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0" Background="#e0e0e0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="4*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0">
+                    
+                </Grid>
+
+                <Grid Grid.Column="1">
+                    
+                </Grid>
+
+                <Grid Grid.Column="2">
+                    <Button x:Name="btnHome" 
+                            Height="50" Width="50"
+                            Background="Transparent"
+                            BorderBrush="Transparent"
+                            FocusVisualStyle="{x:Null}">
+                        <Button.Content>
+                            <Image Source="/Assets/Icons/HomeIcon.png"/>
+                        </Button.Content>
+                    </Button>
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Row="1">
+
+            </Grid>
+        </Grid>
+
+        
+        <Grid>
+            <control:HomeControl Visibility="Collapsed"/>
+        </Grid>
     </Grid>
 </Window>
