@@ -6,6 +6,18 @@
              xmlns:local="clr-namespace:THE_LITER_KIOSK.Controls.OrderControl"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <Style x:Key="btnCommonStyle" TargetType="{x:Type Button}">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="FontWeight" Value="Light"/>
+            <Setter Property="FontStyle" Value="Italic"/>
+            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+            <Setter Property="Height" Value="50"/>
+            <Setter Property="Width" Value="200"/>
+        </Style>
+    </UserControl.Resources>
     
     <Grid Background="White">
         <Grid.ColumnDefinitions>
@@ -21,8 +33,11 @@
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0" Margin="5">
-                <ListView x:Name="lvCategory"
+                <ListView x:Name="lvCategory" Height="75"
                           ItemsSource="{Binding CategoryItems}"
+                          HorizontalAlignment="Center"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          ScrollViewer.VerticalScrollBarVisibility="Hidden"
                           SelectionChanged="lvCategory_SelectionChanged">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -30,14 +45,26 @@
                         </ItemsPanelTemplate>
                     </ListView.ItemsPanel>
 
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                            <Setter Property="Margin" Value="5"/>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <Border CornerRadius="5">
-                                <TextBlock Text="{Binding CategoryName}" 
-                                           HorizontalAlignment="Center"
-                                           Background="AliceBlue"
-                                           TextAlignment="Center" 
-                                           Height="50" Width="100"/>
+                                <Grid>
+                                    <Border CornerRadius="5" 
+                                            BorderThickness="20" 
+                                            BorderBrush="#e0e0e0">
+                                        <TextBlock Text="{Binding CategoryName}" 
+                                                   Background="#e0e0e0"
+                                                   FontSize="15">
+                                        </TextBlock>
+                                    </Border>
+                                </Grid>
                             </Border>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -55,13 +82,29 @@
                             <UniformGrid Columns="3"/>
                         </ItemsPanelTemplate>
                     </ListView.ItemsPanel>
+
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                            <Setter Property="Margin" Value="5"/>
+                            <Setter Property="MaxHeight" Value="410"/> <!--메뉴가 적은 경우 최대 높이를 지정.-->
+                        </Style>
+                    </ListView.ItemContainerStyle>
                     
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <StackPanel>
-                                <Image Source="{Binding ImageUrl}" Height="100" Width="130"/>
-                                <TextBlock Text="{Binding Name}" HorizontalAlignment="Center"/>
-                                <TextBlock Text="{Binding Price}" HorizontalAlignment="Center"/>
+                                <StackPanel.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="HorizontalAlignment" Value="Center"/>
+                                        <Setter Property="FontSize" Value="20"/>
+                                    </Style>
+                                </StackPanel.Resources>
+                                <Image Source="{Binding ImageUrl}"/>
+                                <TextBlock Text="{Binding Name}" 
+                                           FontWeight="SemiBold"/>
+                                <TextBlock Text="{Binding Price, StringFormat={}{0}원}"
+                                           FontWeight="Light"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -69,6 +112,14 @@
             </Grid>
 
             <Grid Grid.Row="2" Margin="5">
+                <Grid.Resources>
+                    <Style TargetType="Button">
+                        <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                        <Setter Property="Height" Value="50"/>
+                        <Setter Property="Width" Value="180"/>
+                    </Style>
+                </Grid.Resources>
+                
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="3*"/>
                     <ColumnDefinition Width="3*"/>
@@ -77,9 +128,13 @@
 
                 <Grid Grid.Column="0">
                     <Button x:Name="btnPrevious"
-                            Content="&lt; 이전"
-                            Height="50" Width="200"
-                            FocusVisualStyle="{x:Null}"/>
+                            Content="&lt; 이전">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="20"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
                 </Grid>
 
                 <Grid Grid.Column="1">
@@ -88,15 +143,80 @@
 
                 <Grid Grid.Column="2">
                     <Button x:Name="btnNext"
-                            Content="다음 &gt;"
-                            Height="50" Width="200"
-                            FocusVisualStyle="{x:Null}"/>
+                            Content="다음 &gt;">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="20"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
                 </Grid>
             </Grid>
         </Grid>
 
-        <Grid Grid.Column="1">
-            
+        <Grid Grid.Column="1" Margin="0,0,50,0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="7*"/>
+                <RowDefinition Height="3*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="9*"/>
+                    <RowDefinition Height="1*"/>
+                </Grid.RowDefinitions>
+
+                <Grid Grid.Row="0" Background="LightGray">
+                    <ListView>
+
+                    </ListView>
+                </Grid>
+
+                <Grid Grid.Row="1">
+                    <Button x:Name="btnClearOrderList"
+                            Margin="0,10,0,0"
+                            Content="모두삭제"
+                            HorizontalAlignment="Right"
+                            Background="#404040"
+                            Style="{DynamicResource btnCommonStyle}">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <StackPanel Orientation="Horizontal" 
+                            VerticalAlignment="Bottom"
+                            HorizontalAlignment="Right"
+                            Margin="0,0,0,30">
+                    <Button x:Name="btnCancelOrder"
+                            Margin="5"
+                            Content="주문취소"
+                            Background="#008575"
+                            Style="{DynamicResource btnCommonStyle}">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                    <Button x:Name="btnOrder"
+                            Margin="5"
+                            Content="주문하기"
+                            Background="#008575"
+                            Style="{DynamicResource btnCommonStyle}">
+                        <Button.Resources>
+                            <Style TargetType="Border">
+                                <Setter Property="CornerRadius" Value="5"/>
+                            </Style>
+                        </Button.Resources>
+                    </Button>
+                </StackPanel>
+            </Grid>
         </Grid>
     </Grid>
 </UserControl>
