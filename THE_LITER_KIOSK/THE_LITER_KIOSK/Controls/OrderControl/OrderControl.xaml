@@ -24,7 +24,7 @@
             <ColumnDefinition Width="5*"/>
             <ColumnDefinition Width="5*"/>
         </Grid.ColumnDefinitions>
-
+        
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
@@ -33,9 +33,10 @@
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0" Margin="5">
-                <ListView x:Name="lvCategory" Height="75"
+                <ListView x:Name="lvCategory" Height="75" 
                           ItemsSource="{Binding CategoryItems}"
                           HorizontalAlignment="Center"
+                          BorderBrush="Transparent"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled"
                           ScrollViewer.VerticalScrollBarVisibility="Hidden"
                           SelectionChanged="lvCategory_SelectionChanged">
@@ -71,15 +72,16 @@
                 </ListView>
             </Grid>
 
+            <!--ItemsSource="{Binding MenuItems}"-->
             <Grid Grid.Row="1" Margin="5">
                 <ListView x:Name="lvMenuList"
-                          ItemsSource="{Binding MenuItems}"
+                          ItemsSource="{Binding}"
                           HorizontalAlignment="Center"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
                             <!--<WrapPanel/>-->
-                            <UniformGrid Columns="3"/>
+                            <UniformGrid Columns="3" Rows="4"/>
                         </ItemsPanelTemplate>
                     </ListView.ItemsPanel>
 
@@ -117,6 +119,7 @@
                         <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
                         <Setter Property="Height" Value="50"/>
                         <Setter Property="Width" Value="180"/>
+                        <Setter Property="Background" Value="#e0e0e0"/>
                     </Style>
                 </Grid.Resources>
                 
@@ -127,8 +130,9 @@
                 </Grid.ColumnDefinitions>
 
                 <Grid Grid.Column="0">
-                    <Button x:Name="btnPrevious"
-                            Content="&lt; 이전">
+                    <Button x:Name="btnPreviousMenu"
+                            Content="&lt; 이전"
+                            Click="btnPreviousMenu_Click">
                         <Button.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="20"/>
@@ -142,8 +146,9 @@
                 </Grid>
 
                 <Grid Grid.Column="2">
-                    <Button x:Name="btnNext"
-                            Content="다음 &gt;">
+                    <Button x:Name="btnNextMenu"
+                            Content="다음 &gt;"
+                            Click="btnNextMenu_Click">
                         <Button.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="20"/>
@@ -166,9 +171,28 @@
                     <RowDefinition Height="1*"/>
                 </Grid.RowDefinitions>
 
-                <Grid Grid.Row="0" Background="LightGray">
-                    <ListView>
-
+                <Grid Grid.Row="0">
+                    <ListView x:Name="lvOrderList" Margin="5">
+                        <ListView.View>
+                            <GridView>
+                                <GridView.ColumnHeaderContainerStyle>
+                                    <Style TargetType="{x:Type GridViewColumnHeader}">
+                                        <Setter Property="Background" Value="#e0e0e0"/>
+                                    </Style>
+                                </GridView.ColumnHeaderContainerStyle>  
+                                <GridViewColumn Header="메뉴"/>
+                                <GridViewColumn Header="수량">
+                                    <GridViewColumn.CellTemplate>
+                                        <DataTemplate>
+                                            <Grid>
+                                                
+                                            </Grid>
+                                        </DataTemplate>
+                                    </GridViewColumn.CellTemplate>
+                                </GridViewColumn>
+                                <GridViewColumn Header="가격"/>
+                            </GridView>
+                        </ListView.View>
                     </ListView>
                 </Grid>
 

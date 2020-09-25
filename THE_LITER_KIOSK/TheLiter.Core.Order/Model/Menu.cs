@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace TheLiter.Core.Order.Model
 {
-    public class Menu : BindableBase
+    public class Menu : BindableBase, ICloneable
     {
         private string _name;
         public string Name
@@ -49,6 +49,29 @@ namespace TheLiter.Core.Order.Model
             }
         }
 
+        private int _idx;
+        public int Idx
+        {
+            get => _idx;
+            set
+            {
+                SetProperty(ref _idx, value);
+            }
+        }
+
         public ECategory MenuCategory { get; set; }
+
+        public object Clone()
+        {
+            return new Menu()
+            {
+                Name = this.Name,
+                ImageUrl = this.ImageUrl,
+                MenuCategory = this.MenuCategory,
+                Price = this.Price,
+                Idx = this.Idx,
+                Count = this.Count
+            };
+        }
     }
 }

@@ -64,9 +64,30 @@ namespace THE_LITER_KIOSK
 
         private void btnHome_Click(object sender, RoutedEventArgs e)
         {
+            if (CtrlOrder.lvOrderList.Items.Count > 0)
+            {
+                MessageBoxResult result = MessageBox.Show("주문을 취소하시겠습니까?", "Order", MessageBoxButton.YesNoCancel);
+                switch (result)
+                {
+                    case MessageBoxResult.Yes:
+                        MoveOrderToHome();
+                        break;
+                    case MessageBoxResult.No:
+                        return;
+                    case MessageBoxResult.Cancel:
+                        return;
+                }
+            }
+            else
+            {
+                MoveOrderToHome();
+            }
+        }
+
+        private void MoveOrderToHome()
+        {
             gdMain.Visibility = Visibility.Collapsed;
             CtrlOrder.Visibility = Visibility.Collapsed;
-
             CtrlHome.Visibility = Visibility.Visible;
         }
     }

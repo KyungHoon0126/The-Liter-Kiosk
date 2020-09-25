@@ -26,7 +26,9 @@
                 </Grid.ColumnDefinitions>
 
                 <Grid Grid.Column="0">
-                    
+                    <Image Source="/Assets/Logo/TheLiterLogo.png"
+                           HorizontalAlignment="Left"
+                           Margin="10"/>
                 </Grid>
 
                 <Grid Grid.Column="1">
