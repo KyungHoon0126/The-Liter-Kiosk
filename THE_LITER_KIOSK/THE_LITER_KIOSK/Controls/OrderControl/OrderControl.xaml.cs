@@ -16,6 +16,8 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
     /// </summary>
     public partial class OrderControl : UserControl, INotifyPropertyChanged
     {
+        int result = 0;
+
         public event PropertyChangedEventHandler PropertyChanged;
         public void NotifyPropertyChanged(string propertyName)
         {
@@ -80,15 +82,15 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
 
         private void SetMenuPage()
         {
-            //if (lvMenuList.Items.Count > 0)
-            //{
-            //    lvMenuList.ItemsSource = null;
-            //    lvMenuList.ClearValue(ItemsControl.ItemsSourceProperty);
-            //}
+            if (lvMenuList.Items.Count > 0)
+            {
+                lvMenuList.ItemsSource = null;
+                lvMenuList.ClearValue(ItemsControl.ItemsSourceProperty);
+            }
 
             int itemCnt = Menus.Count;
             totalPage = (itemCnt / itemPerPage);
-            if (itemCnt % itemPerPage != 0)
+            if (itemCnt % itemPerPage != 0) 
             {
                 totalPage += 1;
             }
@@ -110,7 +112,7 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
             else
             {
                 e.Accepted = false;
-                Debug.WriteLine((e.Item as TheLiter.Core.Order.Model.Menu).Name + e.Accepted);
+                Debug.WriteLine((e.Item as TheLiter.Core.Order.Model.Menu).Name + " " + e.Accepted);
             }    
         }
 
@@ -148,6 +150,91 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
                 currentPageIdx++;
                 CollectionViewSource.View.Refresh();
             }
+        }
+
+        private void btnAddMenu_Click(object sender, RoutedEventArgs e)
+        {
+            TheLiter.Core.Order.Model.Menu selectedFood = ((ListViewItem)lvMenuList.ContainerFromElement(sender as Button)).Content as TheLiter.Core.Order.Model.Menu;
+            IncreseMenuCount(selectedFood);
+        }
+
+        private void btnSubMenu_Click(object sender, RoutedEventArgs e)
+        {
+            TheLiter.Core.Order.Model.Menu selectedFood = ((ListViewItem)lvMenuList.ContainerFromElement(sender as Button)).Content as TheLiter.Core.Order.Model.Menu;
+
+            if (IsNeedToRemove(selectedFood))
+            {
+
+                return;
+            }
+        }
+
+        private void btnDel_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private bool IsNeedToRemove(TheLiter.Core.Order.Model.Menu selectedMenu)
+        {
+            if (selectedMenu.Count == 1)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private void IncreseMenuCount(TheLiter.Core.Order.Model.Menu selectedMenu)
+        {
+            selectedMenu.Count++;
+            SetTextBlockTotal(selectedMenu, '+');
+        }
+
+        private void SetTextBlockTotal(TheLiter.Core.Order.Model.Menu selectedFood, char sign)
+        {
+            switch (sign)
+            {
+                case '+':
+                    tbTotal.Text = Convert.ToString(result += selectedFood.Price);
+                    break;
+                case '-':
+                    tbTotal.Text = Convert.ToString(result -= selectedFood.Price);
+                    break;
+            }
+        }
+
+        private void lvMenuList_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            TheLiter.Core.Order.Model.Menu selectedMenu = (TheLiter.Core.Order.Model.Menu)lvMenuList.SelectedItem;
+            if (selectedMenu == null)
+            {
+                return;
+            }
+
+            IsOverlap(selectedMenu);
+            IncreseMenuCount(selectedMenu);
+            AddOrderedFoodItems(selectedMenu);
+        }
+
+        private void IsOverlap(TheLiter.Core.Order.Model.Menu selectedFood)
+        {
+            foreach (TheLiter.Core.Order.Model.Menu lvMenuList in lvOrderList.Items)
+            {
+                if (selectedFood.Name.Equals(lvMenuList.Name))
+                {
+                    MessageBox.Show("아래 수량을 조정해주세요.");
+                    return;
+                }
+            }
+        }
+
+        private void AddOrderedFoodItems(TheLiter.Core.Order.Model.Menu selectedFood)
+        {
+            App.orderData.orderViewModel.OrderedMenuItems.Add(selectedFood);
+        }
+
+        private void btnCancelOrder_Click(object sender, RoutedEventArgs e)
+        {
+
         }
     }
 }

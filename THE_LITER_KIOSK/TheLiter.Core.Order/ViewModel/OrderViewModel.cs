@@ -32,6 +32,20 @@ namespace TheLiter.Core.Order.ViewModel
                 SetProperty(ref _menuItems, value);
             }
         }
+
+        private ObservableCollection<Menu> _orderedMenuItems = new ObservableCollection<Menu>();
+        public ObservableCollection<Menu> OrderedMenuItems
+        {
+            get
+            {
+                return _orderedMenuItems;
+            }
+            set
+            {
+                _orderedMenuItems = value;
+                SetProperty(ref _orderedMenuItems, value);
+            }
+        }
         #endregion
 
         public OrderViewModel()

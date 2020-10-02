@@ -77,6 +77,7 @@
                 <ListView x:Name="lvMenuList"
                           ItemsSource="{Binding}"
                           HorizontalAlignment="Center"
+                          SelectionChanged="lvMenuList_SelectionChanged"
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
@@ -159,6 +160,8 @@
             </Grid>
         </Grid>
 
+        
+        
         <Grid Grid.Column="1" Margin="0,0,50,0">
             <Grid.RowDefinitions>
                 <RowDefinition Height="7*"/>
@@ -172,28 +175,78 @@
                 </Grid.RowDefinitions>
 
                 <Grid Grid.Row="0">
-                    <ListView x:Name="lvOrderList" Margin="5">
-                        <ListView.View>
-                            <GridView>
-                                <GridView.ColumnHeaderContainerStyle>
-                                    <Style TargetType="{x:Type GridViewColumnHeader}">
-                                        <Setter Property="Background" Value="#e0e0e0"/>
-                                    </Style>
-                                </GridView.ColumnHeaderContainerStyle>  
-                                <GridViewColumn Header="메뉴"/>
-                                <GridViewColumn Header="수량">
-                                    <GridViewColumn.CellTemplate>
-                                        <DataTemplate>
-                                            <Grid>
-                                                
-                                            </Grid>
-                                        </DataTemplate>
-                                    </GridViewColumn.CellTemplate>
-                                </GridViewColumn>
-                                <GridViewColumn Header="가격"/>
-                            </GridView>
-                        </ListView.View>
-                    </ListView>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="8*"/>
+                        <RowDefinition Height="2*"/>
+                    </Grid.RowDefinitions>
+
+                    <Grid Grid.Row="0">
+                        <ListView x:Name="lvOrderList" Margin="5"
+                                  ItemsSource="{Binding OrderedMenuItems}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridView.ColumnHeaderContainerStyle>
+                                        <Style TargetType="{x:Type GridViewColumnHeader}">
+                                            <Setter Property="Background" Value="#e0e0e0"/>
+                                        </Style>
+                                    </GridView.ColumnHeaderContainerStyle>
+
+                                    <GridViewColumn Header="메뉴" Width="275" DisplayMemberBinding="{Binding Name}"/>
+
+                                    <GridViewColumn Header="수량" Width="150">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <TextBlock Text="{Binding Count}"/>
+                                                    <Button x:Name="btnAddMenu"
+                                                            Content="+" 
+                                                            Width="20"
+                                                            Click="btnAddMenu_Click"/>
+                                                    <Button x:Name="btnSubMenu"
+                                                            Content="-" 
+                                                            Width="20"
+                                                            Click="btnSubMenu_Click"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Header="가격" Width="150">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <TextBlock Text="{Binding Price}"/>
+                                                    <Button x:Name="btnDel"
+                                                            Content="x" 
+                                                            Click="btnDel_Click"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+                    </Grid>
+
+                    <Grid Grid.Row="1">
+                        <TextBlock Text="결제금액 : "
+                                   Width="250"
+                                   Height="50"
+                                   HorizontalAlignment="Left"
+                                   VerticalAlignment="Center"
+                                   FontSize="20"/>
+
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock x:Name="tbTotal"
+                                       Text="0"
+                                       FontSize="25"
+                                       VerticalAlignment="Center"
+                                       Margin="120,0,0,0"/>
+                            <TextBlock Text="원"
+                                       FontSize="25"
+                                       VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
                 </Grid>
 
                 <Grid Grid.Row="1">
@@ -221,7 +274,8 @@
                             Margin="5"
                             Content="주문취소"
                             Background="#008575"
-                            Style="{DynamicResource btnCommonStyle}">
+                            Style="{DynamicResource btnCommonStyle}"
+                            Click="btnCancelOrder_Click">
                         <Button.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="5"/>

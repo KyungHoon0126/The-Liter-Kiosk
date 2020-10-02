@@ -39,7 +39,7 @@ namespace THE_LITER_KIOSK
             #endregion
 
             InitData();
-            
+
             CtrlHome.btnOrder.Click += BtnOrder_Click;
             CtrlHome.Visibility = Visibility.Visible;
         }
@@ -57,7 +57,6 @@ namespace THE_LITER_KIOSK
         private void BtnOrder_Click(object sender, RoutedEventArgs e)
         {
             CtrlHome.Visibility = Visibility.Collapsed;
-            
             gdMain.Visibility = Visibility.Visible;
             CtrlOrder.Visibility = Visibility.Visible;
         }
