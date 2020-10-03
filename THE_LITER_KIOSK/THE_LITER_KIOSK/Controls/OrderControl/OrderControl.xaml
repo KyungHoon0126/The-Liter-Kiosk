@@ -238,7 +238,7 @@
 
                         <StackPanel Orientation="Horizontal">
                             <TextBlock x:Name="tbTotal"
-                                       Text="0"
+                                       Text="{Binding TotalPrice}"
                                        FontSize="25"
                                        VerticalAlignment="Center"
                                        Margin="120,0,0,0"/>
@@ -255,7 +255,8 @@
                             Content="모두삭제"
                             HorizontalAlignment="Right"
                             Background="#404040"
-                            Style="{DynamicResource btnCommonStyle}">
+                            Style="{DynamicResource btnCommonStyle}"
+                            Click="btnClearOrderList_Click">
                         <Button.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="5"/>
@@ -286,7 +287,8 @@
                             Margin="5"
                             Content="주문하기"
                             Background="#008575"
-                            Style="{DynamicResource btnCommonStyle}">
+                            Style="{DynamicResource btnCommonStyle}"
+                            Click="btnOrder_Click">
                         <Button.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="5"/>
