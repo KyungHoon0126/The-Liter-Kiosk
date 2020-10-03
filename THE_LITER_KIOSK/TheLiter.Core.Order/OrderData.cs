@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using TheLiter.Core.Order.ViewModel;
+﻿using TheLiter.Core.Order.ViewModel;
 
 namespace TheLiter.Core.Order
 {

@@ -15,7 +15,7 @@ namespace TheLiter.Core.Order.Model
         YOGURS
     }
 
-    public class Category : BindableBase
+    public class CategoryModel : BindableBase
     {
         public ECategory ECategory;
 
@@ -24,10 +24,7 @@ namespace TheLiter.Core.Order.Model
         public string CategoryName
         {
             get => _categoryName;
-            set
-            {
-                SetProperty(ref _categoryName, value);
-            }
+            set => SetProperty(ref _categoryName, value);
         }
         #endregion
     }

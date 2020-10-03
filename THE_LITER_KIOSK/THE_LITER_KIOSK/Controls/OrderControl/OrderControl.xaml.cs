@@ -36,8 +36,8 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
             }
         }
 
-        private ObservableCollection<TheLiter.Core.Order.Model.Menu> _menus = new ObservableCollection<TheLiter.Core.Order.Model.Menu>();
-        public ObservableCollection<TheLiter.Core.Order.Model.Menu> Menus
+        private ObservableCollection<TheLiter.Core.Order.Model.MenuModel> _menus = new ObservableCollection<TheLiter.Core.Order.Model.MenuModel>();
+        public ObservableCollection<TheLiter.Core.Order.Model.MenuModel> Menus
         {
             get => _menus;
             set
@@ -102,23 +102,23 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
 
         private void CollectionViewSource_Filter(object sender, FilterEventArgs e)
         {
-            int idx = Menus.IndexOf((TheLiter.Core.Order.Model.Menu)e.Item);
+            int idx = Menus.IndexOf((TheLiter.Core.Order.Model.MenuModel)e.Item);
 
             if (idx >= itemPerPage * currentPageIdx && idx < itemPerPage * (currentPageIdx + 1))
             {
                 e.Accepted = true;
-                Debug.WriteLine((e.Item as TheLiter.Core.Order.Model.Menu).Name + " " + e.Accepted);
+                Debug.WriteLine((e.Item as TheLiter.Core.Order.Model.MenuModel).Name + " " + e.Accepted);
             }
             else
             {
                 e.Accepted = false;
-                Debug.WriteLine((e.Item as TheLiter.Core.Order.Model.Menu).Name + " " + e.Accepted);
+                Debug.WriteLine((e.Item as TheLiter.Core.Order.Model.MenuModel).Name + " " + e.Accepted);
             }    
         }
 
         private void lvCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            FilteringMenuItems(((Category)lvCategory.SelectedItem).ECategory);
+            FilteringMenuItems(((CategoryModel)lvCategory.SelectedItem).ECategory);
         }
 
         private void FilteringMenuItems(ECategory category)
@@ -154,13 +154,13 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
 
         private void btnAddMenu_Click(object sender, RoutedEventArgs e)
         {
-            TheLiter.Core.Order.Model.Menu selectedFood = ((ListViewItem)lvMenuList.ContainerFromElement(sender as Button)).Content as TheLiter.Core.Order.Model.Menu;
+            TheLiter.Core.Order.Model.MenuModel selectedFood = ((ListViewItem)lvMenuList.ContainerFromElement(sender as Button)).Content as TheLiter.Core.Order.Model.MenuModel;
             IncreseMenuCount(selectedFood);
         }
 
         private void btnSubMenu_Click(object sender, RoutedEventArgs e)
         {
-            TheLiter.Core.Order.Model.Menu selectedFood = ((ListViewItem)lvMenuList.ContainerFromElement(sender as Button)).Content as TheLiter.Core.Order.Model.Menu;
+            TheLiter.Core.Order.Model.MenuModel selectedFood = ((ListViewItem)lvMenuList.ContainerFromElement(sender as Button)).Content as TheLiter.Core.Order.Model.MenuModel;
 
             if (IsNeedToRemove(selectedFood))
             {
@@ -174,7 +174,7 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
 
         }
 
-        private bool IsNeedToRemove(TheLiter.Core.Order.Model.Menu selectedMenu)
+        private bool IsNeedToRemove(TheLiter.Core.Order.Model.MenuModel selectedMenu)
         {
             if (selectedMenu.Count == 1)
             {
@@ -183,13 +183,13 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
             return false;
         }
 
-        private void IncreseMenuCount(TheLiter.Core.Order.Model.Menu selectedMenu)
+        private void IncreseMenuCount(TheLiter.Core.Order.Model.MenuModel selectedMenu)
         {
             selectedMenu.Count++;
             SetTextBlockTotal(selectedMenu, '+');
         }
 
-        private void SetTextBlockTotal(TheLiter.Core.Order.Model.Menu selectedFood, char sign)
+        private void SetTextBlockTotal(TheLiter.Core.Order.Model.MenuModel selectedFood, char sign)
         {
             switch (sign)
             {
@@ -204,7 +204,7 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
 
         private void lvMenuList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            TheLiter.Core.Order.Model.Menu selectedMenu = (TheLiter.Core.Order.Model.Menu)lvMenuList.SelectedItem;
+            TheLiter.Core.Order.Model.MenuModel selectedMenu = (TheLiter.Core.Order.Model.MenuModel)lvMenuList.SelectedItem;
             if (selectedMenu == null)
             {
                 return;
@@ -215,9 +215,9 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
             AddOrderedFoodItems(selectedMenu);
         }
 
-        private void IsOverlap(TheLiter.Core.Order.Model.Menu selectedFood)
+        private void IsOverlap(TheLiter.Core.Order.Model.MenuModel selectedFood)
         {
-            foreach (TheLiter.Core.Order.Model.Menu lvMenuList in lvOrderList.Items)
+            foreach (TheLiter.Core.Order.Model.MenuModel lvMenuList in lvOrderList.Items)
             {
                 if (selectedFood.Name.Equals(lvMenuList.Name))
                 {
@@ -227,7 +227,7 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
             }
         }
 
-        private void AddOrderedFoodItems(TheLiter.Core.Order.Model.Menu selectedFood)
+        private void AddOrderedFoodItems(TheLiter.Core.Order.Model.MenuModel selectedFood)
         {
             App.orderData.orderViewModel.OrderedMenuItems.Add(selectedFood);
         }
