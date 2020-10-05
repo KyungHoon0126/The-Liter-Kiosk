@@ -30,6 +30,12 @@ namespace THE_LITER_KIOSK
 
             CtrlHome.btnOrder.Click += BtnOrder_Click;
             CtrlHome.Visibility = Visibility.Visible;
+            CtrlOrder.OnLoadPlaceControl += CtrlOrder_OnLoadPlaceControl;
+        }
+
+        private void CtrlOrder_OnLoadPlaceControl(object sender, EventArgs e)
+        {
+            
         }
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)

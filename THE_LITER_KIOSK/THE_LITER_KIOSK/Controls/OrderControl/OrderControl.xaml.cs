@@ -16,6 +16,9 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
     /// </summary>
     public partial class OrderControl : UserControl, INotifyPropertyChanged
     {
+        public delegate void LoadPlaceControl(object sender, EventArgs e);
+        public event LoadPlaceControl OnLoadPlaceControl;
+
         //public int result
         //{
         //    get
@@ -297,6 +300,7 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
             {
                 MessageBox.Show("주문이 완료되었습니다.");
                 InitData();
+                OnLoadPlaceControl?.Invoke(sender, e);
             }
             else
             {
