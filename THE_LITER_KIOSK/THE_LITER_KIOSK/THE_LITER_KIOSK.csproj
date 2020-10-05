@@ -214,6 +214,10 @@
       <Project>{1EBD103B-9FBB-4D72-8823-A0F82D30AF20}</Project>
       <Name>TheLiter.Core.Order</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TheLitter.Core.Place\TheLitter.Core.Place.csproj">
+      <Project>{7E1EA549-B6B0-40A4-A98B-CD86C6F2D90A}</Project>
+      <Name>TheLitter.Core.Place</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
