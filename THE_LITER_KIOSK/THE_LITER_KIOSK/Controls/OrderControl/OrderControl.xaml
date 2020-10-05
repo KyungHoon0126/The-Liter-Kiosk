@@ -201,10 +201,12 @@
                                                     <Button x:Name="btnAddMenu"
                                                             Content="+" 
                                                             Width="20"
+                                                            Margin="60,0,0,0"
                                                             Click="btnAddMenu_Click"/>
                                                     <Button x:Name="btnSubMenu"
                                                             Content="-" 
                                                             Width="20"
+                                                            Margin="110,0,0,0"
                                                             Click="btnSubMenu_Click"/>
                                                 </Grid>
                                             </DataTemplate>

@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace TheLitter.Core.Place
+namespace TheLitter.Core.Place.ViewModel
 {
-    public class Class1
+    class TableViewModel
     {
     }
 }
