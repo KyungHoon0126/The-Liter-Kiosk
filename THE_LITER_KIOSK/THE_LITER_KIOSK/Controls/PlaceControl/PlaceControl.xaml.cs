@@ -23,6 +23,12 @@ namespace THE_LITER_KIOSK.Controls.PlaceControl
         public PlaceControl()
         {
             InitializeComponent();
+            Loaded += PlaceControl_Loaded;
+        }
+
+        private void PlaceControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.DataContext = App.placeData.tableViewModel;
         }
     }
 }
