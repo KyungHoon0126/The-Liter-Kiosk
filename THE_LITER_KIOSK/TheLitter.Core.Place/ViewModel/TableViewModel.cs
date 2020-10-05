@@ -29,7 +29,7 @@ namespace TheLitter.Core.Place.ViewModel
             set => SetProperty(ref _tableItems, value);
         }
 
-        private async Task LoadTableData()
+        public async Task LoadTableData()
         {
             await Task.Run(() =>
             {

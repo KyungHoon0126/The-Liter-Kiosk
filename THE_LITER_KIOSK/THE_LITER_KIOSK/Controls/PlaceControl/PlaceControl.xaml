@@ -6,7 +6,21 @@
              xmlns:local="clr-namespace:THE_LITER_KIOSK.Controls.PlaceControl"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
-    </Grid>
+
+    <Grid Background="White">
+    <ListView ItemsSource="{Binding TableItems}">
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <StackPanel>
+                    <TextBlock Text="{Binding TableIdx}"
+                               FontSize="30" />
+                        <TextBlock Text="{Binding TotalPrice}"
+                               FontSize="30" />
+                    
+                    </StackPanel>
+            </DataTemplate>
+        </ListView.ItemTemplate>
+    </ListView>
+</Grid>
+
 </UserControl>

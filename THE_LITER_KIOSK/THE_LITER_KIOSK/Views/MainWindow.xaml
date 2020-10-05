@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:HomeControl="clr-namespace:THE_LITER_KIOSK.Controls.HomeControl"
         xmlns:OrderControl="clr-namespace:THE_LITER_KIOSK.Controls.OrderControl"
+        xmlns:PlaceControl ="clr-namespace:THE_LITER_KIOSK.Controls.PlaceControl"
         WindowState="Maximized" 
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
@@ -53,12 +54,14 @@
 
             <Grid Grid.Row="1">
                 <OrderControl:OrderControl x:Name="CtrlOrder" Visibility="Collapsed"/>
+                <PlaceControl:PlaceControl x:Name="CtrlPlace" Visibility="Collapsed" />
             </Grid>
         </Grid>
 
         
         <Grid>
             <HomeControl:HomeControl x:Name="CtrlHome" Visibility="Collapsed"/>
+            
         </Grid>
     </Grid>
 </Window>

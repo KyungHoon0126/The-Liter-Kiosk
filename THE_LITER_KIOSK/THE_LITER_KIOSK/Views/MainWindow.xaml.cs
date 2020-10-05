@@ -35,7 +35,8 @@ namespace THE_LITER_KIOSK
 
         private void CtrlOrder_OnLoadPlaceControl(object sender, EventArgs e)
         {
-            
+            CtrlOrder.Visibility = Visibility.Collapsed;
+            CtrlPlace.Visibility = Visibility.Visible;
         }
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
