@@ -82,6 +82,7 @@ namespace THE_LITER_KIOSK
         {
             gdMain.Visibility = Visibility.Collapsed;
             CtrlOrder.Visibility = Visibility.Collapsed;
+            CtrlPlace.Visibility = Visibility.Collapsed;
             CtrlHome.Visibility = Visibility.Visible;
         }
     }
