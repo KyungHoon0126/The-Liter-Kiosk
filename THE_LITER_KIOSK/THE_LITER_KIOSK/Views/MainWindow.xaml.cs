@@ -29,9 +29,13 @@ namespace THE_LITER_KIOSK
             InitData();
 
             CtrlHome.btnOrder.Click += BtnOrder_Click;
+            CtrlPlace.btnStoreMeal.Click += BtnStoreMeal_Click;
+            CtrlPlace.btnPrev.Click += BtnPrev_Click;
             CtrlHome.Visibility = Visibility.Visible;
             CtrlOrder.OnLoadPlaceControl += CtrlOrder_OnLoadPlaceControl;
         }
+
+    
 
         private void CtrlOrder_OnLoadPlaceControl(object sender, EventArgs e)
         {
@@ -53,6 +57,19 @@ namespace THE_LITER_KIOSK
         {
             CtrlHome.Visibility = Visibility.Collapsed;
             gdMain.Visibility = Visibility.Visible;
+            CtrlOrder.Visibility = Visibility.Visible;
+        }
+
+        private void BtnStoreMeal_Click(object sender, RoutedEventArgs e)
+        {
+            CtrlPlace.Visibility = Visibility.Collapsed;
+            CtrlTable.Visibility = Visibility.Visible;
+
+        }
+
+        private void BtnPrev_Click(object sender, RoutedEventArgs e)
+        {
+            CtrlPlace.Visibility = Visibility.Collapsed;
             CtrlOrder.Visibility = Visibility.Visible;
         }
 
@@ -83,6 +100,7 @@ namespace THE_LITER_KIOSK
             gdMain.Visibility = Visibility.Collapsed;
             CtrlOrder.Visibility = Visibility.Collapsed;
             CtrlPlace.Visibility = Visibility.Collapsed;
+            CtrlTable.Visibility = Visibility.Collapsed;
             CtrlHome.Visibility = Visibility.Visible;
         }
     }
