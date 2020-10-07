@@ -33,9 +33,10 @@ namespace THE_LITER_KIOSK
             CtrlPlace.btnPrev.Click += BtnPrev_Click;
             CtrlHome.Visibility = Visibility.Visible;
             CtrlOrder.OnLoadPlaceControl += CtrlOrder_OnLoadPlaceControl;
+            CtrlTable.btnTablePrev.Click += BtnTablePrev_Click;
         }
 
-    
+       
 
         private void CtrlOrder_OnLoadPlaceControl(object sender, EventArgs e)
         {
@@ -71,6 +72,12 @@ namespace THE_LITER_KIOSK
         {
             CtrlPlace.Visibility = Visibility.Collapsed;
             CtrlOrder.Visibility = Visibility.Visible;
+        }
+
+        private void BtnTablePrev_Click(object sender, RoutedEventArgs e)
+        {
+            CtrlTable.Visibility = Visibility.Collapsed;
+            CtrlPlace.Visibility = Visibility.Visible;
         }
 
         private void btnHome_Click(object sender, RoutedEventArgs e)

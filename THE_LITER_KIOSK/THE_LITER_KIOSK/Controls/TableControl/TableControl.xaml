@@ -63,6 +63,7 @@
                         FontWeight="Bold"
                         FontSize="25"
                         Foreground="White"
+                        x:Name="btnTablePrev"
                         >
                     <Button.Resources>
                         <Style TargetType="Border">
