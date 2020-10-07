@@ -36,10 +36,24 @@ namespace THE_LITER_KIOSK
 
             // #2
             CtrlPlace.btnStoreMeal.Click += BtnStoreMeal_Click; // 장소 -> 테이블 (매장 식사)
+            CtrlPlace.btnPackingMeal.Click += BtnPackingMeal_Click; // 장소 -> 테이블 (포장 주문)
             CtrlPlace.btnPrev.Click += BtnPrev_Click; // 장소 -> 이전(주문)
 
             // #3
             CtrlTable.btnTablePrev.Click += BtnTablePrev_Click; // 테이블 -> 장소
+            CtrlTable.btnMoveToPay.Click += BtnMoveToPay_Click; // 테이블 -> 다음(결제)
+        }
+
+        private void BtnMoveToPay_Click(object sender, RoutedEventArgs e)
+        {
+            CtrlTable.Visibility = Visibility.Collapsed;
+            CtrlPay.Visibility = Visibility.Visible;
+        }
+
+        private void BtnPackingMeal_Click(object sender, RoutedEventArgs e)
+        {
+            CtrlTable.Visibility = Visibility.Collapsed;
+            CtrlPay.Visibility = Visibility.Visible;
         }
 
         private void CtrlOrder_OnLoadPlaceControl(object sender, EventArgs e)

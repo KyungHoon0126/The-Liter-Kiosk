@@ -7,6 +7,7 @@
         xmlns:OrderControl="clr-namespace:THE_LITER_KIOSK.Controls.OrderControl"
         xmlns:TableControl="clr-namespace:THE_LITER_KIOSK.Controls.TableControl"
         xmlns:PlaceControl ="clr-namespace:THE_LITER_KIOSK.Controls.PlaceControl"
+        xmlns:PayControl ="clr-namespace:THE_LITER_KIOSK.Controls.PayControl"
         WindowState="Maximized" 
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
@@ -57,6 +58,7 @@
                 <OrderControl:OrderControl x:Name="CtrlOrder" Visibility="Collapsed"/>
                 <TableControl:TableControl x:Name="CtrlTable" Visibility="Collapsed"/>
                 <PlaceControl:PlaceControl x:Name="CtrlPlace" Visibility="Collapsed" />
+                <PayControl:PayControl x:Name="CtrlPay" Visibility="Collapsed"/>
             </Grid>
         </Grid>
 

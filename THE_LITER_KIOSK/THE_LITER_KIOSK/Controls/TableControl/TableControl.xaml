@@ -82,7 +82,8 @@
                         Background="#7f7f7f"
                         FontWeight="Bold"
                         FontSize="25"
-                        Foreground="White" />
+                        Foreground="White"
+                        x:Name="btnMoveToPay"/>
             </Grid>
         </Grid>
      

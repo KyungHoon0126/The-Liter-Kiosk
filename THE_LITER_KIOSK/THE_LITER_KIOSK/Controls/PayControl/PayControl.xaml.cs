@@ -24,5 +24,10 @@ namespace THE_LITER_KIOSK.Controls.PayControl
         {
             InitializeComponent();
         }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

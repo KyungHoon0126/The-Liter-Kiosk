@@ -6,7 +6,76 @@
              xmlns:local="clr-namespace:THE_LITER_KIOSK.Controls.PayControl"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        
+        <Grid Grid.Row="0">
+            <TextBlock Text="결제 방식을 선택하세요."
+                       FontSize="30"
+                       FontWeight="Bold"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Center"
+                       Margin="50 0 0 0"/>
+        </Grid>
+        
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
             
+            <Grid Grid.Column="0">
+                    
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <StackPanel Orientation="Horizontal"
+                            VerticalAlignment="Center">
+                    <Button Content="현금"
+                            Width="300"
+                            Height="300"
+                            Margin="0 0 30 0"
+                            Background="#008575"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            FontSize="30" Click="Button_Click"/>
+
+
+                    <Button Content="카드"
+                            Width="300"
+                            Height="300"
+                            Background="#008575"
+                            FontWeight="Bold"
+                            Foreground="White"
+                            FontSize="30"/>
+                    
+                </StackPanel>
+            </Grid>
+            
+        </Grid>
+
+        <Grid Grid.Row="2">
+            <Button Content="이전" 
+                    Width="260"
+                    Height="70"
+                    HorizontalAlignment="Left"
+                    Margin="20 0 0 0"
+                    Background="#008575"
+                    FontWeight="Bold"
+                    FontSize="25"
+                    Foreground="White"
+                    x:Name="btnMoveTo">
+
+                <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="10"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+        </Grid>
     </Grid>
 </UserControl>
