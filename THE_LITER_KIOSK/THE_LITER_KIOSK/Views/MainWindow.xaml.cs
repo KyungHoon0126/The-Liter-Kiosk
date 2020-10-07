@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Input;
 using System.Windows.Threading;
 
 namespace THE_LITER_KIOSK
@@ -27,16 +28,19 @@ namespace THE_LITER_KIOSK
             #endregion
 
             InitData();
-
-            CtrlHome.btnOrder.Click += BtnOrder_Click;
-            CtrlPlace.btnStoreMeal.Click += BtnStoreMeal_Click;
-            CtrlPlace.btnPrev.Click += BtnPrev_Click;
             CtrlHome.Visibility = Visibility.Visible;
-            CtrlOrder.OnLoadPlaceControl += CtrlOrder_OnLoadPlaceControl;
-            CtrlTable.btnTablePrev.Click += BtnTablePrev_Click;
-        }
 
-       
+            // #1
+            CtrlHome.btnOrder.Click += BtnOrder_Click; // 홈 -> 주문
+            CtrlOrder.OnLoadPlaceControl += CtrlOrder_OnLoadPlaceControl; // 주문 -> 장소 선택
+
+            // #2
+            CtrlPlace.btnStoreMeal.Click += BtnStoreMeal_Click; // 장소 -> 테이블 (매장 식사)
+            CtrlPlace.btnPrev.Click += BtnPrev_Click; // 장소 -> 이전(주문)
+
+            // #3
+            CtrlTable.btnTablePrev.Click += BtnTablePrev_Click; // 테이블 -> 장소
+        }
 
         private void CtrlOrder_OnLoadPlaceControl(object sender, EventArgs e)
         {
