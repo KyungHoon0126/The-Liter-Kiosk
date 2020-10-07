@@ -1,7 +1,14 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
+using THE_LITER_KIOSK.Controls.HomeControl;
+using THE_LITER_KIOSK.Controls.OrderControl;
+using THE_LITER_KIOSK.Controls.PayControl;
+using THE_LITER_KIOSK.Controls.PlaceControl;
+using THE_LITER_KIOSK.Controls.TableControl;
 
 namespace THE_LITER_KIOSK
 {
@@ -11,6 +18,15 @@ namespace THE_LITER_KIOSK
     public partial class MainWindow : Window
     {
         DispatcherTimer dispatcherTimer;
+        Stack<UserControl> controls;
+        
+        #region Controls
+        HomeControl homeControl = new HomeControl();
+        OrderControl orderControl = new OrderControl();
+        PlaceControl placeControl = new PlaceControl();
+        TableControl tableControl = new TableControl();
+        PayControl payControl = new PayControl();
+        #endregion
 
         public MainWindow()
         {
@@ -28,6 +44,8 @@ namespace THE_LITER_KIOSK
             #endregion
 
             InitData();
+            SetControlsStack();
+
             CtrlHome.Visibility = Visibility.Visible;
 
             // #1
@@ -44,24 +62,6 @@ namespace THE_LITER_KIOSK
             CtrlTable.btnMoveToPay.Click += BtnMoveToPay_Click; // 테이블 -> 다음(결제)
         }
 
-        private void BtnMoveToPay_Click(object sender, RoutedEventArgs e)
-        {
-            CtrlTable.Visibility = Visibility.Collapsed;
-            CtrlPay.Visibility = Visibility.Visible;
-        }
-
-        private void BtnPackingMeal_Click(object sender, RoutedEventArgs e)
-        {
-            CtrlTable.Visibility = Visibility.Collapsed;
-            CtrlPay.Visibility = Visibility.Visible;
-        }
-
-        private void CtrlOrder_OnLoadPlaceControl(object sender, EventArgs e)
-        {
-            CtrlOrder.Visibility = Visibility.Collapsed;
-            CtrlPlace.Visibility = Visibility.Visible;
-        }
-
         private void DispatcherTimer_Tick(object sender, EventArgs e)
         {
             tbClock.Text = DateTime.Now.ToString("tt H시 mm분 ss초 dddd");
@@ -70,8 +70,26 @@ namespace THE_LITER_KIOSK
         private void InitData()
         {
             App.orderData.orderViewModel.LoadData();
+            controls = new Stack<UserControl>();
         }
 
+        // TODO : 페이지 관리 구현하기.
+        private void SetControlsStack()
+        {
+            //controls.Push(CtrlHome);
+            //controls.Push(CtrlOrder);
+            //controls.Push(CtrlPlace);
+            //controls.Push(CtrlTable);
+            //controls.Push(CtrlPay);
+
+            controls.Push(homeControl);
+            controls.Push(orderControl);
+            controls.Push(placeControl);
+            controls.Push(tableControl);
+            controls.Push(payControl);
+        }
+
+        #region Pagle Transform
         private void BtnOrder_Click(object sender, RoutedEventArgs e)
         {
             CtrlHome.Visibility = Visibility.Collapsed;
@@ -79,11 +97,22 @@ namespace THE_LITER_KIOSK
             CtrlOrder.Visibility = Visibility.Visible;
         }
 
+        private void CtrlOrder_OnLoadPlaceControl(object sender, EventArgs e)
+        {
+            CtrlOrder.Visibility = Visibility.Collapsed;
+            CtrlPlace.Visibility = Visibility.Visible;
+        }
+
         private void BtnStoreMeal_Click(object sender, RoutedEventArgs e)
         {
             CtrlPlace.Visibility = Visibility.Collapsed;
             CtrlTable.Visibility = Visibility.Visible;
+        }
 
+        private void BtnPackingMeal_Click(object sender, RoutedEventArgs e)
+        {
+            CtrlTable.Visibility = Visibility.Collapsed;
+            CtrlPay.Visibility = Visibility.Visible;
         }
 
         private void BtnPrev_Click(object sender, RoutedEventArgs e)
@@ -97,6 +126,13 @@ namespace THE_LITER_KIOSK
             CtrlTable.Visibility = Visibility.Collapsed;
             CtrlPlace.Visibility = Visibility.Visible;
         }
+
+        private void BtnMoveToPay_Click(object sender, RoutedEventArgs e)
+        {
+            CtrlTable.Visibility = Visibility.Collapsed;
+            CtrlPay.Visibility = Visibility.Visible;
+        }
+        #endregion
 
         private void btnHome_Click(object sender, RoutedEventArgs e)
         {
