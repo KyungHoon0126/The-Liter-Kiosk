@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
 using System.Windows.Threading;
-using THE_LITER_KIOSK.Controls.HomeControl;
-using THE_LITER_KIOSK.Controls.OrderControl;
-using THE_LITER_KIOSK.Controls.PayControl;
-using THE_LITER_KIOSK.Controls.PlaceControl;
-using THE_LITER_KIOSK.Controls.TableControl;
+using THE_LITER_KIOSK.UIManager;
 
 namespace THE_LITER_KIOSK
 {
@@ -18,15 +11,6 @@ namespace THE_LITER_KIOSK
     public partial class MainWindow : Window
     {
         DispatcherTimer dispatcherTimer;
-        Stack<UserControl> controls;
-        
-        #region Controls
-        HomeControl homeControl = new HomeControl();
-        OrderControl orderControl = new OrderControl();
-        PlaceControl placeControl = new PlaceControl();
-        TableControl tableControl = new TableControl();
-        PayControl payControl = new PayControl();
-        #endregion
 
         public MainWindow()
         {
@@ -45,21 +29,7 @@ namespace THE_LITER_KIOSK
 
             InitData();
             SetControlsStack();
-
-            CtrlHome.Visibility = Visibility.Visible;
-
-            // #1
-            CtrlHome.btnOrder.Click += BtnOrder_Click; // 홈 -> 주문
-            CtrlOrder.OnLoadPlaceControl += CtrlOrder_OnLoadPlaceControl; // 주문 -> 장소 선택
-
-            // #2
-            CtrlPlace.btnStoreMeal.Click += BtnStoreMeal_Click; // 장소 -> 테이블 (매장 식사)
-            CtrlPlace.btnPackingMeal.Click += BtnPackingMeal_Click; // 장소 -> 테이블 (포장 주문)
-            CtrlPlace.btnPrev.Click += BtnPrev_Click; // 장소 -> 이전(주문)
-
-            // #3
-            CtrlTable.btnTablePrev.Click += BtnTablePrev_Click; // 테이블 -> 장소
-            CtrlTable.btnMoveToPay.Click += BtnMoveToPay_Click; // 테이블 -> 다음(결제)
+            SetStartControl();
         }
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
@@ -70,75 +40,27 @@ namespace THE_LITER_KIOSK
         private void InitData()
         {
             App.orderData.orderViewModel.LoadData();
-            controls = new Stack<UserControl>();
         }
 
-        // TODO : 페이지 관리 구현하기.
         private void SetControlsStack()
         {
-            //controls.Push(CtrlHome);
-            //controls.Push(CtrlOrder);
-            //controls.Push(CtrlPlace);
-            //controls.Push(CtrlTable);
-            //controls.Push(CtrlPay);
-
-            controls.Push(homeControl);
-            controls.Push(orderControl);
-            controls.Push(placeControl);
-            controls.Push(tableControl);
-            controls.Push(payControl);
+            App.uIStateManager.SetCustomCtrl(CtrlHome, CustomControlType.HOME);
+            App.uIStateManager.SetCustomCtrl(CtrlTable, CustomControlType.TABLE);
+            App.uIStateManager.SetCustomCtrl(CtrlOrder, CustomControlType.ORDER);
+            App.uIStateManager.SetCustomCtrl(CtrlPlace, CustomControlType.PLACE);
+            App.uIStateManager.SetCustomCtrl(CtrlPay, CustomControlType.PAY);
         }
 
-        #region Pagle Transform
-        private void BtnOrder_Click(object sender, RoutedEventArgs e)
+        private void SetStartControl()
         {
-            CtrlHome.Visibility = Visibility.Collapsed;
-            gdMain.Visibility = Visibility.Visible;
-            CtrlOrder.Visibility = Visibility.Visible;
+            App.uIStateManager.PushCustomCtrl(CtrlHome);
         }
-
-        private void CtrlOrder_OnLoadPlaceControl(object sender, EventArgs e)
-        {
-            CtrlOrder.Visibility = Visibility.Collapsed;
-            CtrlPlace.Visibility = Visibility.Visible;
-        }
-
-        private void BtnStoreMeal_Click(object sender, RoutedEventArgs e)
-        {
-            CtrlPlace.Visibility = Visibility.Collapsed;
-            CtrlTable.Visibility = Visibility.Visible;
-        }
-
-        private void BtnPackingMeal_Click(object sender, RoutedEventArgs e)
-        {
-            CtrlTable.Visibility = Visibility.Collapsed;
-            CtrlPay.Visibility = Visibility.Visible;
-        }
-
-        private void BtnPrev_Click(object sender, RoutedEventArgs e)
-        {
-            CtrlPlace.Visibility = Visibility.Collapsed;
-            CtrlOrder.Visibility = Visibility.Visible;
-        }
-
-        private void BtnTablePrev_Click(object sender, RoutedEventArgs e)
-        {
-            CtrlTable.Visibility = Visibility.Collapsed;
-            CtrlPlace.Visibility = Visibility.Visible;
-        }
-
-        private void BtnMoveToPay_Click(object sender, RoutedEventArgs e)
-        {
-            CtrlTable.Visibility = Visibility.Collapsed;
-            CtrlPay.Visibility = Visibility.Visible;
-        }
-        #endregion
 
         private void btnHome_Click(object sender, RoutedEventArgs e)
         {
             if (CtrlOrder.lvOrderList.Items.Count > 0)
             {
-                MessageBoxResult result = MessageBox.Show("주문을 취소하시겠습니까?", "Order", MessageBoxButton.YesNoCancel);
+                MessageBoxResult result = MessageBox.Show("주문을 취소하시겠습니까?", "Order", MessageBoxButton.YesNo);
                 switch (result)
                 {
                     case MessageBoxResult.Yes:
@@ -150,19 +72,13 @@ namespace THE_LITER_KIOSK
                         return;
                 }
             }
-            else
-            {
-                MoveOrderToHome();
-            }
+            
+            MoveOrderToHome();
         }
 
         private void MoveOrderToHome()
         {
-            gdMain.Visibility = Visibility.Collapsed;
-            CtrlOrder.Visibility = Visibility.Collapsed;
-            CtrlPlace.Visibility = Visibility.Collapsed;
-            CtrlTable.Visibility = Visibility.Collapsed;
-            CtrlHome.Visibility = Visibility.Visible;
+            App.uIStateManager.SwitchCustomControl(CustomControlType.HOME);
         }
     }
 }

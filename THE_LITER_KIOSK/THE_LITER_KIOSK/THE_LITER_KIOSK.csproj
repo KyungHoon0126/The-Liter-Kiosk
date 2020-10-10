@@ -82,6 +82,9 @@
     <Compile Include="Controls\TableControl\TableControl.xaml.cs">
       <DependentUpon>TableControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UIManager\UIStateManager.cs" />
+    <Compile Include="UIManager\CustomControlType.cs" />
+    <Compile Include="UIManager\CustomControlModel.cs" />
     <Compile Include="Views\SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
@@ -226,5 +229,6 @@
       <Name>TheLitter.Core.Place</Name>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

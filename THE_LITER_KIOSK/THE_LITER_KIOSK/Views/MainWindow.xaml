@@ -14,7 +14,7 @@
         Title="THE LITER KIOSK" Height="450" Width="800">
 
     <Grid>
-        <Grid x:Name="gdMain" Visibility="Collapsed">
+        <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
                 <RowDefinition Height="9*"/>
@@ -54,17 +54,13 @@
                 </Grid>
             </Grid>
 
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="1" x:Name="gdControls">
+                <HomeControl:HomeControl x:Name="CtrlHome" Visibility="Collapsed"/>
                 <OrderControl:OrderControl x:Name="CtrlOrder" Visibility="Collapsed"/>
                 <TableControl:TableControl x:Name="CtrlTable" Visibility="Collapsed"/>
                 <PlaceControl:PlaceControl x:Name="CtrlPlace" Visibility="Collapsed" />
                 <PayControl:PayControl x:Name="CtrlPay" Visibility="Collapsed"/>
             </Grid>
-        </Grid>
-
-        
-        <Grid>
-            <HomeControl:HomeControl x:Name="CtrlHome" Visibility="Collapsed"/>
         </Grid>
     </Grid>
 </Window>

@@ -29,18 +29,18 @@ namespace TheLiter.Core.Order.ViewModel
             }
         }
 
-        private ObservableCollection<MenuModel> _orderedMenuItems = new ObservableCollection<MenuModel>();
+        private ObservableCollection<MenuModel> _orderedMenuItems;
         public ObservableCollection<MenuModel> OrderedMenuItems
         {
-            get
-            {
-                return _orderedMenuItems;
-            }
-            set
-            {
-                _orderedMenuItems = value;
-                SetProperty(ref _orderedMenuItems, value);
-            }
+            get => _orderedMenuItems;
+            set => SetProperty(ref _orderedMenuItems, value);
+        }
+
+        private MenuModel _selectedMenu;
+        public MenuModel SelectedMenu
+        {
+            get => _selectedMenu;
+            set => SetProperty(ref _selectedMenu, value);
         }
         #endregion
 
@@ -53,6 +53,8 @@ namespace TheLiter.Core.Order.ViewModel
         {
             CategoryItems = new ObservableCollection<CategoryModel>();
             MenuItems = new ObservableCollection<MenuModel>();
+            OrderedMenuItems = new ObservableCollection<MenuModel>();
+            SelectedMenu = new MenuModel();
         }
 
         public void LoadData()
@@ -568,6 +570,16 @@ namespace TheLiter.Core.Order.ViewModel
                 #endregion
                 #endregion
             });
+        }
+
+        public void IncreaseMenuCount(MenuModel selectedMenu)
+        {
+
+        }
+
+        public void RemoveSelectedMenu(MenuModel selectedMenu)
+        {
+            OrderedMenuItems.Remove(selectedMenu);
         }
     }
 }

@@ -1,24 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+﻿using System.Windows;
+using THE_LITER_KIOSK.UIManager;
 
 namespace THE_LITER_KIOSK.Controls.TableControl
 {
     /// <summary>
     /// Interaction logic for TableControl.xaml
     /// </summary>
-    public partial class TableControl : UserControl
+    public partial class TableControl : CustomControlModel
     {
         public TableControl()
         {
@@ -30,6 +18,16 @@ namespace THE_LITER_KIOSK.Controls.TableControl
         {
             await App.placeData.tableViewModel.LoadTableData();
             this.DataContext = App.placeData.tableViewModel;
+        }
+
+        private void btnTablePrev_Click(object sender, RoutedEventArgs e)
+        {
+            App.uIStateManager.SwitchCustomControl(CustomControlType.PLACE);
+        }
+
+        private void btnMoveToPay_Click(object sender, RoutedEventArgs e)
+        {
+            App.uIStateManager.SwitchCustomControl(CustomControlType.PAY);
         }
     }
 }

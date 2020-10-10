@@ -12,22 +12,18 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using THE_LITER_KIOSK.UIManager;
 
 namespace THE_LITER_KIOSK.Controls.PayControl
 {
     /// <summary>
     /// Interaction logic for PayControl.xaml
     /// </summary>
-    public partial class PayControl : UserControl
+    public partial class PayControl : CustomControlModel
     {
         public PayControl()
         {
             InitializeComponent();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿<UserControl x:Class="THE_LITER_KIOSK.Controls.PlaceControl.PlaceControl"
+﻿<base:CustomControlModel  xmlns:base="clr-namespace:THE_LITER_KIOSK.UIManager"
+             x:Class="THE_LITER_KIOSK.Controls.PlaceControl.PlaceControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -38,7 +39,8 @@
                         Content="매장 식사"
                         FontWeight="Bold"
                         Foreground="white"
-                        FontSize="30">
+                        FontSize="30"
+                        Click="btnStoreMeal_Click">
 
                 </Button>
             </Grid>
@@ -52,8 +54,8 @@
                         Content="포장 주문"
                         FontWeight="Bold"
                         Foreground="White"
-                        FontSize="30">
-
+                        FontSize="30"
+                        Click="btnPackingMeal_Click">
                 </Button>
             </Grid>
         </Grid>
@@ -66,9 +68,9 @@
                     FontWeight="Bold"
                     Foreground="White"
                     FontSize="20"
-                    Background="#7f7f7f">
-
+                    Background="#7f7f7f"
+                    Click="btnPrev_Click">
             </Button>
         </Grid>
     </Grid>
-</UserControl>
+</base:CustomControlModel>
