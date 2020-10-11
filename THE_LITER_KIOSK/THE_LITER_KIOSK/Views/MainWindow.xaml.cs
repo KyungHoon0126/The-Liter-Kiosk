@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using System.Windows.Threading;
 using THE_LITER_KIOSK.UIManager;
 
@@ -27,9 +29,9 @@ namespace THE_LITER_KIOSK
             dispatcherTimer.Start();
             #endregion
 
-            InitData();
-            SetControlsStack();
-            SetStartControl();
+            LoadData();
+            SetCustomControls();
+            SetStartCustomControl();
         }
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
@@ -37,12 +39,12 @@ namespace THE_LITER_KIOSK
             tbClock.Text = DateTime.Now.ToString("tt H시 mm분 ss초 dddd");
         }
 
-        private void InitData()
+        private void LoadData()
         {
-            App.orderData.orderViewModel.LoadData();
+            App.orderData.orderViewModel.LoadOrderData();
         }
 
-        private void SetControlsStack()
+        private void SetCustomControls()
         {
             App.uIStateManager.SetCustomCtrl(CtrlHome, CustomControlType.HOME);
             App.uIStateManager.SetCustomCtrl(CtrlTable, CustomControlType.TABLE);
@@ -51,7 +53,7 @@ namespace THE_LITER_KIOSK
             App.uIStateManager.SetCustomCtrl(CtrlPay, CustomControlType.PAY);
         }
 
-        private void SetStartControl()
+        private void SetStartCustomControl()
         {
             App.uIStateManager.PushCustomCtrl(CtrlHome);
         }
@@ -68,8 +70,6 @@ namespace THE_LITER_KIOSK
                         break;
                     case MessageBoxResult.No:
                         return;
-                    case MessageBoxResult.Cancel:
-                        return;
                 }
             }
             
@@ -78,7 +78,20 @@ namespace THE_LITER_KIOSK
 
         private void MoveOrderToHome()
         {
+            App.orderData.orderViewModel.ClearOrderedMenuData();
+            CtrlOrder.lvOrderList.ClearValue(ItemsControl.ItemsSourceProperty);
             App.uIStateManager.SwitchCustomControl(CustomControlType.HOME);
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (App.uIStateManager.customCtrlStack.Peek() == CtrlHome)
+            {
+                if (e.Key == Key.F2)
+                {
+                    MessageBox.Show("통계화면은 준비중 입니다.");
+                }
+            }
         }
     }
 }

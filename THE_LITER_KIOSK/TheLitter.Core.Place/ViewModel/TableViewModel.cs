@@ -34,7 +34,7 @@ namespace TheLitter.Core.Place.ViewModel
             await Task.Run(() =>
             {
                 #region TableItems
-                var menus = new ObservableCollection<MenuModel>(orderViewModel.MenuItems);
+                var menus = new List<MenuModel>(orderViewModel.MenuItems);
                 TableItems.Add(new TableModel()
                 {
                     TableIdx = 1,

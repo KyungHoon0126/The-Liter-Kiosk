@@ -5,10 +5,13 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:THE_LITER_KIOSK.Controls.OrderControl"
+             xmlns:converter="clr-namespace:THE_LITER_KIOSK.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.Resources>
+        <converter:MenuCategoryToKoreanConverter x:Key="MenuCategoryToKoreanConverter"/>
+
         <Style x:Key="btnCommonStyle" TargetType="{x:Type Button}">
             <Setter Property="FontSize" Value="20"/>
             <Setter Property="Foreground" Value="White"/>
@@ -61,7 +64,7 @@
                                     <Border CornerRadius="5" 
                                             BorderThickness="20" 
                                             BorderBrush="#e0e0e0">
-                                        <TextBlock Text="{Binding CategoryName}" 
+                                        <TextBlock Text="{Binding CategoryName, Converter={StaticResource MenuCategoryToKoreanConverter}}" 
                                                    Background="#e0e0e0"
                                                    FontSize="15">
                                         </TextBlock>

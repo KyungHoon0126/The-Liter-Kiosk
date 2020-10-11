@@ -3,15 +3,18 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        
         xmlns:HomeControl="clr-namespace:THE_LITER_KIOSK.Controls.HomeControl"
         xmlns:OrderControl="clr-namespace:THE_LITER_KIOSK.Controls.OrderControl"
+        xmlns:PayControl="clr-namespace:THE_LITER_KIOSK.Controls.PayControl"
+        xmlns:PlaceControl="clr-namespace:THE_LITER_KIOSK.Controls.PlaceControl"
         xmlns:TableControl="clr-namespace:THE_LITER_KIOSK.Controls.TableControl"
-        xmlns:PlaceControl ="clr-namespace:THE_LITER_KIOSK.Controls.PlaceControl"
-        xmlns:PayControl ="clr-namespace:THE_LITER_KIOSK.Controls.PayControl"
+        
         WindowState="Maximized" 
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
-        Title="THE LITER KIOSK" Height="450" Width="800">
+        Title="THE LITER KIOSK" Height="450" Width="800"
+        KeyDown="Window_KeyDown">
 
     <Grid>
         <Grid>
@@ -35,8 +38,9 @@
 
                 <Grid Grid.Column="1">
                     <TextBlock x:Name="tbClock" 
-                               FontSize="30" FontWeight="Light"
-                               VerticalAlignment="Center"
+                               FontSize="30" 
+                               FontWeight="Light"
+                               VerticalAlignment="Center" 
                                HorizontalAlignment="Right"/>
                 </Grid>
 
@@ -54,7 +58,7 @@
                 </Grid>
             </Grid>
 
-            <Grid Grid.Row="1" x:Name="gdControls">
+            <Grid Grid.Row="1" x:Name="gdCustomControls">
                 <HomeControl:HomeControl x:Name="CtrlHome" Visibility="Collapsed"/>
                 <OrderControl:OrderControl x:Name="CtrlOrder" Visibility="Collapsed"/>
                 <TableControl:TableControl x:Name="CtrlTable" Visibility="Collapsed"/>

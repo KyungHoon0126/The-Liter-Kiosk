@@ -8,7 +8,7 @@ namespace TheLiter.Core.Order
 
         public void LoadData()
         {
-            orderViewModel.LoadData();
+            orderViewModel.LoadOrderData();
         }
     }
 }

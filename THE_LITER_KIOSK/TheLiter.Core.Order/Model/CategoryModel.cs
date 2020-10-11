@@ -4,15 +4,15 @@ namespace TheLiter.Core.Order.Model
 {
     public enum ECategory
     {
-        ALL,
-        ADE,
-        COFFEE,
-        DESERT,
-        LATTE,
-        LITERCCINO,
-        TEA,
-        THELITERSPECIAL,
-        YOGURS
+        ALL = 0,
+        ADE = 1,
+        COFFEE = 2,
+        DESERT = 3,
+        LATTE = 4,
+        LITERCCINO = 5,
+        TEA = 6,
+        THELITERSPECIAL = 7,
+        YOGURS = 8
     }
 
     public class CategoryModel : BindableBase

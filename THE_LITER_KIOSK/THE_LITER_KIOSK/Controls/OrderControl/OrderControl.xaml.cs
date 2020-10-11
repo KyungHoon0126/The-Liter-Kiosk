@@ -141,6 +141,13 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
             }    
         }
 
+
+
+        /// <summary>
+        /// 메뉴 목록
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void lvCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             FilteringMenuItems(((CategoryModel)lvCategory.SelectedItem).ECategory);
@@ -170,7 +177,7 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
                 return;
             }
 
-            MessageBox.Show("이미 첫 페이지 입니다.");
+            MessageBox.Show("첫 페이지 입니다.");
         }
 
         private void btnNextMenu_Click(object sender, RoutedEventArgs e)
@@ -187,6 +194,11 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
 
 
 
+        /// <summary>
+        /// 주문 목록
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void lvMenuList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             MenuModel selectedMenu = (MenuModel)lvMenuList.SelectedItem;
@@ -306,15 +318,18 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
 
         private void btnClearOrderList_Click(object sender, RoutedEventArgs e)
         {
-            ShowCancelPopup("정말 모두 삭제하시겠습니까?", "모두 삭제되었습니다.");
+            if (IsOrderedMenuListValid())
+            {
+                ShowCancelPopup("정말 모두 삭제하시겠습니까?", "모두 삭제되었습니다.");
+            }
         }
 
         private void btnOrder_Click(object sender, RoutedEventArgs e)
         {
             if (IsOrderedMenuListValid())
             {
-                MessageBox.Show("주문이 완료되었습니다.");
-                InitData();
+                // MessageBox.Show("주문이 완료되었습니다.");
+                // InitData();
                 App.uIStateManager.SwitchCustomControl(CustomControlType.PLACE);
             }
             else
@@ -323,6 +338,7 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
             }
         }
 
+        // 이전
         private void btnCancelOrder_Click(object sender, RoutedEventArgs e)
         {
             ShowCancelPopup("정말 주문을 취소하시겠습니까?", "주문이 취소되었습니다.");
@@ -343,7 +359,7 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
                 {
                     case MessageBoxResult.Yes:
                         MessageBox.Show(resultMsg);
-                        InitData();
+                        // InitData();
                         break;
                     case MessageBoxResult.No:
                         break;

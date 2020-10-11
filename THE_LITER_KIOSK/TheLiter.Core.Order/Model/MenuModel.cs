@@ -5,6 +5,20 @@ namespace TheLiter.Core.Order.Model
 {
     public class MenuModel : BindableBase, ICloneable
     {
+        private int _idx;
+        public int Idx
+        {
+            get => _idx;
+            set => SetProperty(ref _idx, value);
+        }
+
+        private ECategory _menuCategory;
+        public ECategory MenuCategory
+        {
+            get => _menuCategory;
+            set => SetProperty(ref _menuCategory, value);
+        }
+
         private string _name;
         public string Name
         {
@@ -33,39 +47,29 @@ namespace TheLiter.Core.Order.Model
             set => SetProperty(ref _imageUrl, value);
         }
 
-        private int _idx;
-        public int Idx
+        public MenuModel Clone(MenuModel item)
         {
-            get => _idx;
-            set => SetProperty(ref _idx, value);
-        }
-
-        public ECategory MenuCategory 
-        {
-            get;
-            set;
-        }
-
-        public int TotalPrice
-        {
-            get
-            {
-                int total = 0;
-                total = Price * Count;
-                return total;
-            }
+            MenuModel menuModel = new MenuModel();
+            menuModel.Idx = item.Idx;
+            menuModel.MenuCategory = item.MenuCategory;
+            menuModel.Name = item.Name;
+            menuModel.Count = item.Count;
+            menuModel.Price = item.Price;
+            menuModel.ImageUrl = item.ImageUrl;
+            
+            return menuModel;
         }
 
         public object Clone()
         {
             return new MenuModel()
             {
-                Name = this.Name,
-                ImageUrl = this.ImageUrl,
-                MenuCategory = this.MenuCategory,
-                Price = this.Price,
                 Idx = this.Idx,
+                MenuCategory = this.MenuCategory,
+                Name = this.Name,
                 Count = this.Count,
+                Price = this.Price,
+                ImageUrl = this.ImageUrl,
             };
         }
     }

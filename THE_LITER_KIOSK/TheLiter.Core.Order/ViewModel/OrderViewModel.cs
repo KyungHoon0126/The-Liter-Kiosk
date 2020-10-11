@@ -57,7 +57,7 @@ namespace TheLiter.Core.Order.ViewModel
             SelectedMenu = new MenuModel();
         }
 
-        public void LoadData()
+        public void LoadOrderData()
         {
             Parallel.Invoke(
                             async () =>
@@ -570,6 +570,14 @@ namespace TheLiter.Core.Order.ViewModel
                 #endregion
                 #endregion
             });
+        }
+
+        public void ClearOrderedMenuData()
+        {
+            if (OrderedMenuItems.Count > 0)
+            {
+                OrderedMenuItems.Clear();
+            }
         }
 
         public void IncreaseMenuCount(MenuModel selectedMenu)
