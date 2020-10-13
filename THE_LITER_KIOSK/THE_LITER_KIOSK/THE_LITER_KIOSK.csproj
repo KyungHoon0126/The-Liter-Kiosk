@@ -73,8 +73,17 @@
     <Compile Include="Controls\OrderControl\OrderControl.xaml.cs">
       <DependentUpon>OrderControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\PayControl\PayControl.xaml.cs">
-      <DependentUpon>PayControl.xaml</DependentUpon>
+    <Compile Include="Controls\PayControl\CardCalcControl.xaml.cs">
+      <DependentUpon>CardCalcControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PayControl\CashCalcControl.xaml.cs">
+      <DependentUpon>CashCalcControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PayControl\PayCompleteControl.xaml.cs">
+      <DependentUpon>PayCompleteControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\PayControl\PaySelectControl.xaml.cs">
+      <DependentUpon>PaySelectControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\PlaceControl\PlaceControl.xaml.cs">
       <DependentUpon>PlaceControl.xaml</DependentUpon>
@@ -101,7 +110,19 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\PayControl\PayControl.xaml">
+    <Page Include="Controls\PayControl\CardCalcControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PayControl\CashCalcControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PayControl\PayCompleteControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\PayControl\PaySelectControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
