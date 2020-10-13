@@ -7,6 +7,9 @@
         ORDER,
         PAY,
         PLACE,
-        TABLE
+        TABLE,
+        PAYCASH,
+        PAYCARD,
+        PAYCOMPLETE
     }
 }

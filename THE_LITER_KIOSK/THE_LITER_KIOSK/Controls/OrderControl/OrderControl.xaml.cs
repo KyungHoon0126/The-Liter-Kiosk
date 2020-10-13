@@ -259,6 +259,7 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
         private void IncreseMenuCount(MenuModel selectedMenu)
         {
             selectedMenu.Count++;
+            // tbTotal.Text += selectedMenu.Price;
             TotalPrice += selectedMenu.Price;
             // SetTextBlockTotal(selectedMenu, '+');
         }
@@ -266,6 +267,7 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
         private void DecreaseMenuCount(MenuModel selectedMenu)
         {
             selectedMenu.Count--;
+            // tbTotal.Text -= selectedMenu.Price;
             TotalPrice -= selectedMenu.Price;
             // SetTextBlockTotal(selectedMenu, '-');
         }

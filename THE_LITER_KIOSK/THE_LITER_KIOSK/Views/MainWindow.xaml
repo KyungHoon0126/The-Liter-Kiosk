@@ -63,7 +63,10 @@
                 <OrderControl:OrderControl x:Name="CtrlOrder" Visibility="Collapsed"/>
                 <TableControl:TableControl x:Name="CtrlTable" Visibility="Collapsed"/>
                 <PlaceControl:PlaceControl x:Name="CtrlPlace" Visibility="Collapsed" />
-                <PayControl:PayControl x:Name="CtrlPay" Visibility="Collapsed"/>
+                <PayControl:PaySelectionControl x:Name="CtrlPaySelect" Visibility="Collapsed"/>
+                <PayControl:CashCalcControl x:Name="CtrlPayCash" Visibility="Collapsed"/>
+                <PayControl:CardCalcControl x:Name="CtrlPayCard" Visibility="Collapsed"/>
+                <PayControl:PayCompleteControl x:Name="CtrlPayComplete" Visibility="Collapsed"/>
             </Grid>
         </Grid>
     </Grid>

@@ -19,9 +19,9 @@ namespace THE_LITER_KIOSK.Controls.PayControl
     /// <summary>
     /// Interaction logic for PayControl.xaml
     /// </summary>
-    public partial class PayControl : CustomControlModel
+    public partial class PaySelectionControl : CustomControlModel
     {
-        public PayControl()
+        public PaySelectionControl()
         {
             InitializeComponent();
         }

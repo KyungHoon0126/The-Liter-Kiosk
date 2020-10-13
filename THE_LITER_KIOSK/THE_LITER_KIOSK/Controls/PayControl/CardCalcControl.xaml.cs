@@ -12,13 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using THE_LITER_KIOSK.UIManager;
 
 namespace THE_LITER_KIOSK.Controls.PayControl
 {
     /// <summary>
     /// CardCalcControl.xaml에 대한 상호 작용 논리
     /// </summary>
-    public partial class CardCalcControl : UserControl
+    public partial class CardCalcControl : CustomControlModel
     {
         public CardCalcControl()
         {
@@ -27,7 +28,7 @@ namespace THE_LITER_KIOSK.Controls.PayControl
 
         private void btnTablePrev_Click(object sender, RoutedEventArgs e)
         {
-
+            App.uIStateManager.SwitchCustomControl(CustomControlType.PLACE);
         }
     }
 }
