@@ -24,5 +24,10 @@ namespace THE_LITER_KIOSK.Controls.PayControl
         {
             InitializeComponent();
         }
+
+        private void btnTablePrev_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

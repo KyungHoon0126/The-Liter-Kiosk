@@ -6,7 +6,43 @@
              xmlns:local="clr-namespace:THE_LITER_KIOSK.Controls.PayControl"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-            
+    <Grid Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0" > 
+            <StackPanel VerticalAlignment="Center"
+                        HorizontalAlignment="Center">
+                <TextBlock Text="현금 계산을 선택하셨습니다. 현금연수증카드를 제시해주세요."/>
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <TextBlock Text="총 금액"/>
+                    <TextBlock Text="16,000"/>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1">
+             <Button Content="이전" 
+                        Width="260"
+                        Height="70"
+                        HorizontalAlignment="Left"
+                        Margin="20 0 0 0"
+                        Background="#008575"
+                        FontWeight="Bold"
+                        FontSize="25"
+                        Foreground="White"
+                        x:Name="btnTablePrev"
+                        Click="btnTablePrev_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
+        </Grid>
     </Grid>
 </UserControl>
