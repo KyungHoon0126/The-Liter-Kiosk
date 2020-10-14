@@ -15,7 +15,9 @@
         </Grid.RowDefinitions>
         
         <Grid Grid.Row="0">
-            <ListView ItemsSource="{Binding TableItems}">
+            <ListView x:Name="lvTableList"
+                ItemsSource="{Binding TableItems}"
+                      SelectionChanged="lvTableList_SelectionChanged">
 
                 <ListView.ItemsPanel>
                     <ItemsPanelTemplate>
@@ -39,9 +41,11 @@
                                        FontSize="30"
                                        FontWeight="Bold"
                                        />
-                            <TextBlock Text="{Binding TotalPrice, StringFormat={}{0}원}"
-                               FontSize="30" />
-
+                           <!-- <TextBlock Text="{Binding TotalPrice, StringFormat={}{0}원}"
+                               FontSize="30" /> -->
+                            <TextBlock x:Name="tbRemainTime"
+                                       Text="{Binding RemainTime}"
+                                       Focusable="False"/>
                         </StackPanel>
                     </DataTemplate>
                 </ListView.ItemTemplate>
