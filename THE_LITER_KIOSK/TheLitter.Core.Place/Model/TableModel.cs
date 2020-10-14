@@ -1,6 +1,7 @@
 ﻿using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.Windows.Threading;
 using TheLiter.Core.Order.Model;
 
 namespace TheLitter.Core.Place.Model
@@ -34,5 +35,13 @@ namespace TheLitter.Core.Place.Model
             get => _menuList;
             set => SetProperty(ref _menuList, value);
         }
+
+        private string _remainTime;
+        public string RemainTime
+        {
+            get => _remainTime;
+            set => SetProperty(ref _remainTime, value);
+        }
+         
     }
 }

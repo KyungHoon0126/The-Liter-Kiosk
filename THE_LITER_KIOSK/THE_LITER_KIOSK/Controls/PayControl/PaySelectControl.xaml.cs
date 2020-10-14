@@ -24,6 +24,13 @@ namespace THE_LITER_KIOSK.Controls.PayControl
         public PaySelectionControl()
         {
             InitializeComponent();
+            Loaded += PaySelectionControl_Loaded;
+        }
+
+        private void PaySelectionControl_Loaded(object sender, RoutedEventArgs e)
+        {
+             this.DataContext = App.orderData.orderViewModel;
+
         }
     }
 }

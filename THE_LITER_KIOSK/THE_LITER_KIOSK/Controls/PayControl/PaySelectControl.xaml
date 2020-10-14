@@ -30,7 +30,41 @@
             </Grid.ColumnDefinitions>
             
             <Grid Grid.Column="0">
-                    
+                <ListView x:Name="lvOrderList" Margin="5"
+                                  ItemsSource="{Binding OrderedMenuItems}">
+                            <ListView.View>
+                                <GridView>
+                                    <GridView.ColumnHeaderContainerStyle>
+                                        <Style TargetType="{x:Type GridViewColumnHeader}">
+                                            <Setter Property="Background" Value="#e0e0e0"/>
+                                        </Style>
+                                    </GridView.ColumnHeaderContainerStyle>
+
+                                    <GridViewColumn Header="메뉴" Width="275" DisplayMemberBinding="{Binding Name}"/>
+
+                                    <GridViewColumn Header="수량" Width="150">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                            <TextBlock Text="{Binding Count}"/>
+                                        </Grid>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+
+                                    <GridViewColumn Header="가격" Width="150">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <Grid>
+                                                    <TextBlock Text="{Binding Price}"/>
+                                                </Grid>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
+                                </GridView>
+                            </ListView.View>
+                        </ListView>
+
             </Grid>
 
             <Grid Grid.Column="1">
