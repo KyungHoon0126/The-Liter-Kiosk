@@ -42,6 +42,19 @@ namespace TheLitter.Core.Place.Model
             get => _remainTime;
             set => SetProperty(ref _remainTime, value);
         }
+
+       /* private DispatcherTimer _dispatcherTimer;
+        public DispatcherTimer DispatcherTimer
+        {
+            get => _dispatcherTimer;
+            set => SetProperty(ref _dispatcherTimer, value);
+        } */
+
+        public DispatcherTimer DispatcherTimer
+        {
+            get;
+            set;
+        }
          
     }
 }
