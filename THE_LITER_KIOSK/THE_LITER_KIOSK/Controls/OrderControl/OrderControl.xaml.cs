@@ -6,6 +6,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
+using System.Windows.Input;
 using System.Windows.Threading;
 using THE_LITER_KIOSK.UIManager;
 using TheLiter.Core.Order.Model;
@@ -17,34 +18,13 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
     /// </summary>
     public partial class OrderControl : CustomControlModel, INotifyPropertyChanged
     {
-        //public int result
-        //{
-        //    get
-        //    {
-        //        int total = 0;
-        //        total = Price * Count;
-        //        return total;
-        //    }
-        //}
-
-        private int _totalPrice = 0;
-        public int TotalPrice
-        {
-            get => _totalPrice;
-            set
-            {
-                _totalPrice = value;
-                NotifyPropertyChanged(nameof(TotalPrice));
-            }
-        }
-
+        #region Properties
         public event PropertyChangedEventHandler PropertyChanged;
         public void NotifyPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        #region Properties
         private CollectionViewSource _collectionViewSource = new CollectionViewSource();
         public CollectionViewSource CollectionViewSource
         {
@@ -84,9 +64,6 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
         {
             this.DataContext = App.orderData.orderViewModel;
 
-            // TODO : 값은 들어가나 바인딩이 안됨.
-            tbTotal.DataContext = TotalPrice;
-
             // DispatcherPriority.Noraml :  보통 우선 순위로 작업이 처리됩니다. 일반적인 애플리케이션 우선 순위이다.
             Dispatcher.Invoke(DispatcherPriority.Normal, new Action(delegate
             {
@@ -101,9 +78,10 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
             }));
 
             lvCategory.SelectedIndex = 0;
-            // SetMenuPage();
+            // SetMenuPage();   
         }
 
+        #region MenuItemsPage
         private void SetMenuPage()
         {
             if (lvMenuList.Items.Count > 0)
@@ -140,14 +118,8 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
                 Debug.WriteLine(((MenuModel)e.Item).Name + e.Accepted);
             }    
         }
+        #endregion
 
-
-
-        /// <summary>
-        /// 메뉴 목록
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void lvCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             FilteringMenuItems(((CategoryModel)lvCategory.SelectedItem).ECategory);
@@ -168,6 +140,7 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
             }
         }
 
+        #region MenuItemsPage
         private void btnPreviousMenu_Click(object sender, RoutedEventArgs e)
         {
             if (currentPageIdx > 0)
@@ -191,60 +164,55 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
 
             MessageBox.Show("마지막 페이지 입니다.");
         }
+        #endregion
 
-
-
-        /// <summary>
-        /// 주문 목록
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
         private void lvMenuList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             MenuModel selectedMenu = (MenuModel)lvMenuList.SelectedItem;
-            //if (selectedMenu != null && IsDuplicateMenu(selectedMenu))
-            //{
-            //    IncreseMenuCount(selectedMenu);
-            //    AddOrderedFoodItems(selectedMenu);
-            //}
-
-            var selectedMenu2 = App.orderData.orderViewModel.SelectedMenu;
 
             if (selectedMenu != null && IsDuplicateMenu(selectedMenu))
             {
-                IncreseMenuCount(selectedMenu);
-                AddOrderedFoodItems(selectedMenu);
+                IncreaseMenuCount(selectedMenu);
             }
+            else
+            {
+                IncreaseMenuCount(selectedMenu);
+                AddOrderedMenuItems(selectedMenu);
+            }
+
+            // lvMenuList.SelectedIndex = -1;
+            // (sender as ListViewItem).IsSelected = false;
+        }
+
+        private bool IsDuplicateMenu(MenuModel selectedMenu)
+        {
+            for (int i = 0; i < lvOrderList.Items.Count; i++)
+            {
+                if (selectedMenu.Name == (lvOrderList.Items[i] as MenuModel).Name)
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         // +
         private void btnAddMenu_Click(object sender, RoutedEventArgs e)     
         {
-            MenuModel selectedMenu = ((ListViewItem)lvOrderList.ContainerFromElement(sender as Button)).Content as MenuModel;
-            IncreseMenuCount(selectedMenu);
+            IncreaseMenuCount(((ListViewItem)lvOrderList.ContainerFromElement(sender as Button)).Content as MenuModel);
         }
 
         // -
         private void btnSubMenu_Click(object sender, RoutedEventArgs e)
         {
-            MenuModel selectedMenu = ((ListViewItem)lvOrderList.ContainerFromElement(sender as Button)).Content as MenuModel;
-
+            var selectedMenu = ((ListViewItem)lvOrderList.ContainerFromElement(sender as Button)).Content as MenuModel;
             if (IsQuantityValid(selectedMenu))
             {
-                btnDel_Click(sender, e);
+                DecreaseMenuCount(selectedMenu);
+                RemoveSelectedMenu(selectedMenu);
                 return;
             }
             DecreaseMenuCount(selectedMenu);
-        }
-
-        // x
-        private void btnDel_Click(object sender, RoutedEventArgs e)
-        {
-            // MenuModel selectedMenu = (MenuModel)lvMenuList.SelectedItem;
-            
-            var selectedMenu = App.orderData.orderViewModel.SelectedMenu;
-            DecreaseMenuCount(selectedMenu);
-            RemoveSelectedMenu(selectedMenu);
         }
 
         private bool IsQuantityValid(MenuModel selectedMenu)
@@ -256,67 +224,33 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
             return false;
         }
 
-        private void IncreseMenuCount(MenuModel selectedMenu)
+        // x
+        private void btnDel_Click(object sender, RoutedEventArgs e)
         {
-            selectedMenu.Count++;
-            // tbTotal.Text += selectedMenu.Price;
-            TotalPrice += selectedMenu.Price;
-            // SetTextBlockTotal(selectedMenu, '+');
+            MenuModel selectedMenu = ((ListViewItem)lvOrderList.ContainerFromElement(sender as Button)).Content as MenuModel;
+            DecreaseMenuCount(selectedMenu);
+            RemoveSelectedMenu(selectedMenu);
+        }
+
+        private void AddOrderedMenuItems(MenuModel menuModel)
+        {
+            App.orderData.orderViewModel.AddOrderedMenuItems(menuModel);
+        }
+
+        private void IncreaseMenuCount(MenuModel selectedMenu)
+        {
+            App.orderData.orderViewModel.IncreaseMenuCount(selectedMenu);
         }
 
         private void DecreaseMenuCount(MenuModel selectedMenu)
         {
-            selectedMenu.Count--;
-            // tbTotal.Text -= selectedMenu.Price;
-            TotalPrice -= selectedMenu.Price;
-            // SetTextBlockTotal(selectedMenu, '-');
+            App.orderData.orderViewModel.DecreaseMenuCount(selectedMenu);
         }
 
         private void RemoveSelectedMenu(MenuModel selectedMenu)
         {
             App.orderData.orderViewModel.RemoveSelectedMenu(selectedMenu);
         }
-
-        private void SetTextBlockTotal(MenuModel selectedMenu, char sign)
-        {
-            //switch (sign)
-            //{
-            //    case '+':
-            //        tbTotal.Text = Convert.ToString(result += selectedMenu.Price);
-            //        break;
-            //    case '-':
-            //        tbTotal.Text = Convert.ToString(result -= selectedMenu.Price);
-            //        break;
-            //}
-        }
-
-        private bool IsDuplicateMenu(MenuModel selectedMenu)
-        {
-            if(lvOrderList.Items.IndexOf(selectedMenu) == 1)
-            {
-
-            }
-            else
-            {
-
-            }
-
-            for (int i = 0; i < lvOrderList.Items.Count; i++)
-            {
-                if (selectedMenu.Name == (lvOrderList.Items[i] as MenuModel).Name)
-                {
-                    MessageBox.Show("수량을 조정해주세요.");
-                    return false;
-                }
-            }
-            return true;
-        }
-
-        private void AddOrderedFoodItems(MenuModel selectedMenu)
-        {
-            App.orderData.orderViewModel.OrderedMenuItems.Add(selectedMenu);
-        }
-
 
         private void btnClearOrderList_Click(object sender, RoutedEventArgs e)
         {
@@ -330,8 +264,6 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
         {
             if (IsOrderedMenuListValid())
             {
-                // MessageBox.Show("주문이 완료되었습니다.");
-                // InitData();
                 App.uIStateManager.SwitchCustomControl(CustomControlType.PLACE);
             }
             else
@@ -340,16 +272,15 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
             }
         }
 
-        // 이전
-        private void btnCancelOrder_Click(object sender, RoutedEventArgs e)
-        {
-            ShowCancelPopup("정말 주문을 취소하시겠습니까?", "주문이 취소되었습니다.");
-            App.uIStateManager.SwitchCustomControl(CustomControlType.HOME);
-        }
-
         private bool IsOrderedMenuListValid()
         {
             return (App.orderData.orderViewModel.OrderedMenuItems.Count > 0) ? true : false;
+        }
+
+        private void btnMoveToHome_Click(object sender, RoutedEventArgs e)
+        {
+            ShowCancelPopup("정말 주문을 취소하시겠습니까?", "주문이 취소되었습니다.");
+            App.uIStateManager.SwitchCustomControl(CustomControlType.HOME);
         }
 
         private void ShowCancelPopup(string popupMsg, string resultMsg)
@@ -361,7 +292,6 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
                 {
                     case MessageBoxResult.Yes:
                         MessageBox.Show(resultMsg);
-                        // InitData();
                         break;
                     case MessageBoxResult.No:
                         break;
@@ -371,12 +301,7 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
 
         private void InitData()
         {
-            foreach (MenuModel menuItem in App.orderData.orderViewModel.OrderedMenuItems)
-            {
-                menuItem.Count = 0;
-            }
-            App.orderData.orderViewModel.OrderedMenuItems.Clear();
-            tbTotal.Text = string.Empty;
+            App.orderData.InitData();
         }
     }
 }

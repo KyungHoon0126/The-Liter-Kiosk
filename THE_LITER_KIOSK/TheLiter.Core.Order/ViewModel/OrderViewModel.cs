@@ -29,6 +29,13 @@ namespace TheLiter.Core.Order.ViewModel
             }
         }
 
+        private MenuModel _selectedMenu;
+        public MenuModel SelectedMenu
+        {
+            get => _selectedMenu;
+            set => SetProperty(ref _selectedMenu, value);
+        }
+
         private ObservableCollection<MenuModel> _orderedMenuItems;
         public ObservableCollection<MenuModel> OrderedMenuItems
         {
@@ -36,11 +43,11 @@ namespace TheLiter.Core.Order.ViewModel
             set => SetProperty(ref _orderedMenuItems, value);
         }
 
-        private MenuModel _selectedMenu;
-        public MenuModel SelectedMenu
+        private int _totalPrice = 0;
+        public int TotalPrice
         {
-            get => _selectedMenu;
-            set => SetProperty(ref _selectedMenu, value);
+            get => _totalPrice;
+            set => SetProperty(ref _totalPrice, value);
         }
         #endregion
 
@@ -54,7 +61,6 @@ namespace TheLiter.Core.Order.ViewModel
             CategoryItems = new ObservableCollection<CategoryModel>();
             MenuItems = new ObservableCollection<MenuModel>();
             OrderedMenuItems = new ObservableCollection<MenuModel>();
-            SelectedMenu = new MenuModel();
         }
 
         public void LoadOrderData()
@@ -572,7 +578,7 @@ namespace TheLiter.Core.Order.ViewModel
             });
         }
 
-        public void ClearOrderedMenuData()
+        public void ClearOrderedMenuDatas()
         {
             if (OrderedMenuItems.Count > 0)
             {
@@ -580,9 +586,29 @@ namespace TheLiter.Core.Order.ViewModel
             }
         }
 
+        public void InitializeMenuCount()
+        {
+            foreach (MenuModel menuItem in OrderedMenuItems)
+            {
+                menuItem.Count = 0;
+            }
+        }
+
+        public void AddOrderedMenuItems(MenuModel selectedMenu)
+        {
+            OrderedMenuItems.Add(selectedMenu);
+        }
+
         public void IncreaseMenuCount(MenuModel selectedMenu)
         {
+            selectedMenu.Count++;
+            TotalPrice += selectedMenu.Price;
+        }
 
+        public void DecreaseMenuCount(MenuModel selectedMenu)
+        {
+            selectedMenu.Count--;
+            TotalPrice -= selectedMenu.Price;
         }
 
         public void RemoveSelectedMenu(MenuModel selectedMenu)

@@ -236,29 +236,20 @@
                     </Grid>
 
                     <Grid Grid.Row="1">
-                        <TextBlock Text="결제금액 : "
-                                   Width="250"
-                                   Height="50"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center"
-                                   FontSize="20"/>
-
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock x:Name="tbTotal"
-                                       Text="{Binding TotalPrice}"
-                                       FontSize="25"
-                                       VerticalAlignment="Center"
-                                       Margin="120,0,0,0"/>
-                            <TextBlock Text="원"
-                                       FontSize="25"
-                                       VerticalAlignment="Center"/>
+                        <StackPanel Orientation="Horizontal" Margin="10">
+                            <StackPanel.Resources>
+                                <Style TargetType="TextBlock">
+                                    <Setter Property="FontSize" Value="30"/>
+                                </Style>
+                            </StackPanel.Resources>
+                            <TextBlock Text="총가격 : "/>
+                            <TextBlock Text="{Binding TotalPrice, StringFormat={}{0}원}"/>
                         </StackPanel>
                     </Grid>
                 </Grid>
 
                 <Grid Grid.Row="1">
                     <Button x:Name="btnClearOrderList"
-                            Margin="0,10,0,0"
                             Content="모두삭제"
                             HorizontalAlignment="Right"
                             Background="#404040"
@@ -278,12 +269,12 @@
                             VerticalAlignment="Bottom"
                             HorizontalAlignment="Right"
                             Margin="0,0,0,30">
-                    <Button x:Name="btnCancelOrder"
+                    <Button x:Name="btnMoveToHome"
                             Margin="5"
                             Content="이전"
                             Background="#008575"
                             Style="{DynamicResource btnCommonStyle}"
-                            Click="btnCancelOrder_Click">
+                            Click="btnMoveToHome_Click">
                         <Button.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="5"/>

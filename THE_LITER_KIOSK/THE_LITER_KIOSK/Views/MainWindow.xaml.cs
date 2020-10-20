@@ -81,7 +81,7 @@ namespace THE_LITER_KIOSK
 
         private void MoveOrderToHome()
         {
-            App.orderData.orderViewModel.ClearOrderedMenuData();
+            App.orderData.orderViewModel.ClearOrderedMenuDatas();
             CtrlOrder.lvOrderList.ClearValue(ItemsControl.ItemsSourceProperty);
             App.uIStateManager.SwitchCustomControl(CustomControlType.HOME);
         }
