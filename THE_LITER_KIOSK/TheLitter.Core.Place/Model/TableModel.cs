@@ -6,8 +6,26 @@ using TheLiter.Core.Order.Model;
 
 namespace TheLitter.Core.Place.Model
 {
-    public class TableModel: BindableBase
+    public class TableModel : BindableBase
     {
+        public TableModel()
+        {
+            //Timer.Interval = TimeSpan.FromSeconds(1);
+            //Timer.Tick += DispatcherTimer_Tick;
+        }
+
+        //private void DispatcherTimer_Tick(object sender, EventArgs e)
+        //{
+        //    RemainTime = $"사용시간이 {LeftTime}초 남았습니다.";
+        //    LeftTime = LeftTime - 1;
+
+        //    if (LeftTime == 0)
+        //    {
+        //        Timer.Stop();
+        //        RemainTime = string.Empty;
+        //    }
+        //}
+
         private int _tableIdx;
         public int TableIdx
         {
@@ -43,18 +61,15 @@ namespace TheLitter.Core.Place.Model
             set => SetProperty(ref _remainTime, value);
         }
 
-       /* private DispatcherTimer _dispatcherTimer;
-        public DispatcherTimer DispatcherTimer
-        {
-            get => _dispatcherTimer;
-            set => SetProperty(ref _dispatcherTimer, value);
-        } */
+        public int LeftTime { get; set; } = 60;
 
-        public DispatcherTimer DispatcherTimer
-        {
-            get;
-            set;
-        }
-         
+        //private DispatcherTimer _dispatcherTimer = new DispatcherTimer();
+        //public DispatcherTimer Timer
+        //{
+        //    get => _dispatcherTimer;
+        //    set => SetProperty(ref _dispatcherTimer, value);
+        //}
+
+        public DispatcherTimer DispatcherTimer { get; set; }
     }
 }
