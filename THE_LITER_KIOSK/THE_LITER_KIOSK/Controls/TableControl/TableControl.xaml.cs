@@ -39,22 +39,8 @@ namespace THE_LITER_KIOSK.Controls.TableControl
             var selectedTable = App.placeData.tableViewModel.SelectedTable;
             selectedTable.DispatcherTimer = new DispatcherTimer();
             selectedTable.DispatcherTimer.Interval = TimeSpan.FromSeconds(1);
-            selectedTable.DispatcherTimer.Tick += DispatcherTimer_Tick;
+            selectedTable.DispatcherTimer.Tick += selectedTable.DispatcherTimer_Tick;
             selectedTable.DispatcherTimer.Start();
-        }
-
-        private void DispatcherTimer_Tick(object sender, EventArgs e)
-        {
-            var selectedTable = (TableModel)lvTableList.SelectedItem;
-            selectedTable.RemainTime = $"사용시간이 {selectedTable.LeftTime}초 남았습니다.";
-            selectedTable.LeftTime = selectedTable.LeftTime - 1;
-
-            if (selectedTable.LeftTime <= 0)
-            {
-                (sender as DispatcherTimer).Stop();
-                selectedTable.RemainTime = string.Empty;
-                lvTableList.SelectedIndex = -1;
-            }
         }
     }
 }
