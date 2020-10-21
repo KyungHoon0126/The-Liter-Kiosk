@@ -92,9 +92,9 @@
       <DependentUpon>TableControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\MenuCategoryToKoreanConverter.cs" />
-    <Compile Include="UIManager\UIStateManager.cs" />
-    <Compile Include="UIManager\CustomControlType.cs" />
-    <Compile Include="UIManager\CustomControlModel.cs" />
+    <Compile Include="UIStateManager\UIStateManager.cs" />
+    <Compile Include="UIStateManager\CustomControlType.cs" />
+    <Compile Include="UIStateManager\CustomControlModel.cs" />
     <Compile Include="Views\SplashScreen.xaml.cs">
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
@@ -131,6 +131,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\TableControl\TableControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ResourceDictionaries\CtrlOrderBtnStyle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

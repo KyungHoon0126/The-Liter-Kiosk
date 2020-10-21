@@ -6,7 +6,8 @@
              xmlns:local="clr-namespace:THE_LITER_KIOSK.Controls.AdminControl"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
+    
+    <Grid Background="White">
             
     </Grid>
 </UserControl>
