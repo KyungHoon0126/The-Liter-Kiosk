@@ -41,7 +41,8 @@ namespace THE_LITER_KIOSK
 
         private void LoadData()
         {
-            App.orderData.orderViewModel.LoadOrderData();
+            App.orderData.LoadData();
+            App.placeData.LoadTableData();
         }
 
         private void SetCustomControls()
@@ -63,7 +64,7 @@ namespace THE_LITER_KIOSK
 
         private void btnHome_Click(object sender, RoutedEventArgs e)
         {
-            if (CtrlOrder.lvOrderList.Items.Count > 0)
+            if (App.orderData.orderViewModel.IsOrderedMenuListValid())
             {
                 MessageBoxResult result = MessageBox.Show("주문을 취소하시겠습니까?", "Order", MessageBoxButton.YesNo);
                 switch (result)
@@ -81,8 +82,7 @@ namespace THE_LITER_KIOSK
 
         private void MoveOrderToHome()
         {
-            App.orderData.orderViewModel.ClearOrderedMenuDatas();
-            CtrlOrder.lvOrderList.ClearValue(ItemsControl.ItemsSourceProperty);
+            App.orderData.InitData();
             App.uIStateManager.SwitchCustomControl(CustomControlType.HOME);
         }
 

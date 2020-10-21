@@ -6,7 +6,6 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Input;
 using System.Windows.Threading;
 using THE_LITER_KIOSK.UIManager;
 using TheLiter.Core.Order.Model;
@@ -168,6 +167,11 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
 
         private void lvMenuList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            if (lvMenuList.SelectedItem == null)
+            {
+                return;
+            }
+
             MenuModel selectedMenu = (MenuModel)lvMenuList.SelectedItem;
 
             if (selectedMenu != null && IsDuplicateMenu(selectedMenu))
@@ -180,8 +184,7 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
                 AddOrderedMenuItems(selectedMenu);
             }
 
-            // lvMenuList.SelectedIndex = -1;
-            // (sender as ListViewItem).IsSelected = false;
+            lvMenuList.SelectedIndex = -1;
         }
 
         private bool IsDuplicateMenu(MenuModel selectedMenu)
@@ -228,8 +231,12 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
         private void btnDel_Click(object sender, RoutedEventArgs e)
         {
             MenuModel selectedMenu = ((ListViewItem)lvOrderList.ContainerFromElement(sender as Button)).Content as MenuModel;
-            DecreaseMenuCount(selectedMenu);
-            RemoveSelectedMenu(selectedMenu);
+            ClearSelectedMenuItems(selectedMenu);
+        }
+
+        private void ClearSelectedMenuItems(MenuModel selectedMenu)
+        {
+            App.orderData.orderViewModel.ClearSelectedMenuItems(selectedMenu);
         }
 
         private void AddOrderedMenuItems(MenuModel menuModel)
@@ -254,10 +261,8 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
 
         private void btnClearOrderList_Click(object sender, RoutedEventArgs e)
         {
-            if (IsOrderedMenuListValid())
-            {
-                ShowCancelPopup("정말 모두 삭제하시겠습니까?", "모두 삭제되었습니다.");
-            }
+            ShowCancelPopup("정말 모두 삭제하시겠습니까?", "모두 삭제되었습니다.");
+            lvMenuList.SelectedItem = null;
         }
 
         private void btnOrder_Click(object sender, RoutedEventArgs e)
@@ -274,7 +279,7 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
 
         private bool IsOrderedMenuListValid()
         {
-            return (App.orderData.orderViewModel.OrderedMenuItems.Count > 0) ? true : false;
+            return App.orderData.orderViewModel.IsOrderedMenuListValid();
         }
 
         private void btnMoveToHome_Click(object sender, RoutedEventArgs e)
@@ -292,6 +297,7 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
                 {
                     case MessageBoxResult.Yes:
                         MessageBox.Show(resultMsg);
+                        InitData();
                         break;
                     case MessageBoxResult.No:
                         break;

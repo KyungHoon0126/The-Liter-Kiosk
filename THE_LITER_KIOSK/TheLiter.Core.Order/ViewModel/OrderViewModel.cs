@@ -1,5 +1,6 @@
 ﻿using Prism.Mvvm;
 using System.Collections.ObjectModel;
+using System.Linq;
 using System.Threading.Tasks;
 using THE_LITER_KIOSK.Common;
 using TheLiter.Core.Order.Model;
@@ -43,11 +44,11 @@ namespace TheLiter.Core.Order.ViewModel
             set => SetProperty(ref _orderedMenuItems, value);
         }
 
-        private int _totalPrice = 0;
-        public int TotalPrice
+        private int _orderTotalPrice = 0;
+        public int OrderTotalPrice
         {
-            get => _totalPrice;
-            set => SetProperty(ref _totalPrice, value);
+            get => _orderTotalPrice;
+            set => SetProperty(ref _orderTotalPrice, value);
         }
         #endregion
 
@@ -578,20 +579,16 @@ namespace TheLiter.Core.Order.ViewModel
             });
         }
 
-        public void ClearOrderedMenuDatas()
+        public void ClearMenuData()
         {
-            if (OrderedMenuItems.Count > 0)
+            for (int i = 0; i < OrderedMenuItems.Count; i++)
             {
-                OrderedMenuItems.Clear();
+                OrderedMenuItems[i].Count = 0;
+                OrderedMenuItems[i].TotalPrice = 0;
             }
-        }
 
-        public void InitializeMenuCount()
-        {
-            foreach (MenuModel menuItem in OrderedMenuItems)
-            {
-                menuItem.Count = 0;
-            }
+            OrderedMenuItems.Clear();
+            OrderTotalPrice = 0;
         }
 
         public void AddOrderedMenuItems(MenuModel selectedMenu)
@@ -602,18 +599,38 @@ namespace TheLiter.Core.Order.ViewModel
         public void IncreaseMenuCount(MenuModel selectedMenu)
         {
             selectedMenu.Count++;
-            TotalPrice += selectedMenu.Price;
+            selectedMenu.TotalPrice += selectedMenu.Price;
+            OrderTotalPrice += selectedMenu.Price;
         }
 
         public void DecreaseMenuCount(MenuModel selectedMenu)
         {
             selectedMenu.Count--;
-            TotalPrice -= selectedMenu.Price;
+            selectedMenu.TotalPrice -= selectedMenu.Price;
+            OrderTotalPrice -= selectedMenu.Price;
+        }
+
+        public void ClearSelectedMenuItems(MenuModel selectedMenu)
+        {
+            var temp = selectedMenu.Count;
+            var removeTarget = OrderedMenuItems.Where(x => x.Name == selectedMenu.Name).FirstOrDefault();
+            for (int i = 0; i < temp; i++)
+            {
+                selectedMenu.Count--;
+                OrderTotalPrice -= removeTarget.Price;
+            }
+            selectedMenu.TotalPrice = 0;
+            RemoveSelectedMenu(selectedMenu);
         }
 
         public void RemoveSelectedMenu(MenuModel selectedMenu)
-        {
+        { 
             OrderedMenuItems.Remove(selectedMenu);
+        }
+
+        public bool IsOrderedMenuListValid()
+        {
+            return (OrderedMenuItems.Count > 0) ? true : false;
         }
     }
 }

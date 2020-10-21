@@ -32,62 +32,63 @@
             <Grid Grid.Column="0">
                 <ListView x:Name="lvOrderList" Margin="5"
                                   ItemsSource="{Binding OrderedMenuItems}">
-                            <ListView.View>
-                                <GridView>
-                                    <GridView.ColumnHeaderContainerStyle>
-                                        <Style TargetType="{x:Type GridViewColumnHeader}">
-                                            <Setter Property="Background" Value="#e0e0e0"/>
-                                        </Style>
-                                    </GridView.ColumnHeaderContainerStyle>
+                    <ListView.View>
+                        <GridView>
+                            <GridView.ColumnHeaderContainerStyle>
+                                <Style TargetType="{x:Type GridViewColumnHeader}">
+                                    <Setter Property="Background" Value="#e0e0e0"/>
+                                </Style>
+                            </GridView.ColumnHeaderContainerStyle>
 
-                                    <GridViewColumn Header="메뉴" Width="275" DisplayMemberBinding="{Binding Name}"/>
+                            <GridViewColumn Header="메뉴" Width="275" DisplayMemberBinding="{Binding Name}"/>
 
-                                    <GridViewColumn Header="수량" Width="150">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <Grid>
+                            <GridViewColumn Header="수량" Width="150">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid>
                                             <TextBlock Text="{Binding Count}"/>
                                         </Grid>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
 
-                                    <GridViewColumn Header="가격" Width="150">
-                                        <GridViewColumn.CellTemplate>
-                                            <DataTemplate>
-                                                <Grid>
-                                                    <TextBlock Text="{Binding Price}"/>
-                                                </Grid>
-                                            </DataTemplate>
-                                        </GridViewColumn.CellTemplate>
-                                    </GridViewColumn>
-                                </GridView>
-                            </ListView.View>
-                        </ListView>
-
+                            <GridViewColumn Header="가격" Width="150">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Grid>
+                                            <TextBlock Text="{Binding Price}"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
             </Grid>
 
             <Grid Grid.Column="1">
                 <StackPanel Orientation="Horizontal"
-                            VerticalAlignment="Center">
-                    <Button Content="현금"
-                            Width="300"
-                            Height="300"
-                            Margin="0 0 30 0"
-                            Background="#008575"
-                            FontWeight="Bold"
-                            Foreground="White"
-                            FontSize="30"/>
+                            HorizontalAlignment="Center">
+                    <StackPanel.Resources>
+                        <Style TargetType="Button">
+                            <Setter Property="Width" Value="300"/>
+                            <Setter Property="Height" Value="300"/>
+                            <Setter Property="Background" Value="#008575"/>
+                            <Setter Property="FontWeight" Value="Bold"/>
+                            <Setter Property="Foreground" Value="White"/>
+                            <Setter Property="FontSize" Value="30"/>
+                            <Setter Property="Margin" Value="20"/>
+                            <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
+                        </Style>
+                    </StackPanel.Resources>
 
-
-                    <Button Content="카드"
-                            Width="300"
-                            Height="300"
-                            Background="#008575"
-                            FontWeight="Bold"
-                            Foreground="White"
-                            FontSize="30"/>
+                    <Button x:Name="btnPayByCash" 
+                            Content="현금"
+                            Click="btnPayByCash_Click"/>
                     
+                    <Button x:Name="btnPayByCard"
+                            Content="카드"
+                            Click="btnPayByCard_Click"/>
                 </StackPanel>
             </Grid>
             
@@ -111,6 +112,16 @@
                         </Style>
                     </Button.Resources>
                 </Button>
+
+            <StackPanel Orientation="Horizontal" Margin="10" HorizontalAlignment="Right">
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="30"/>
+                    </Style>
+                </StackPanel.Resources>
+                <TextBlock Text="총금액 : "/>
+                <TextBlock Text="{Binding OrderTotalPrice, StringFormat=\{0:N0\}원}"/>
+            </StackPanel>
         </Grid>
     </Grid>
 </base:CustomControlModel>

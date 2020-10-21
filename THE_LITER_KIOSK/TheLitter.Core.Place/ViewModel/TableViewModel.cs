@@ -1,12 +1,9 @@
 ﻿using Prism.Mvvm;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using TheLiter.Core.Order.Model;
-using TheLiter.Core.Order.ViewModel; 
+using TheLiter.Core.Order.ViewModel;
 using TheLitter.Core.Place.Model;
 
 namespace TheLitter.Core.Place.ViewModel
@@ -15,6 +12,7 @@ namespace TheLitter.Core.Place.ViewModel
     {
         OrderViewModel orderViewModel = new OrderViewModel();
 
+        #region Properties
         private bool _isActive;
         public bool IsActive
         {
@@ -35,8 +33,14 @@ namespace TheLitter.Core.Place.ViewModel
             get => _selectedTable;
             set => SetProperty(ref _selectedTable, value);
         }
+        #endregion
 
-        public async Task LoadTableData()
+        public async void LoadTableData()
+        {
+            await LoadTableDataAysnc();
+        }
+
+        public async Task LoadTableDataAysnc()
         {
             await Task.Run(() =>
             {
@@ -45,60 +49,50 @@ namespace TheLitter.Core.Place.ViewModel
                 TableItems.Add(new TableModel()
                 {
                     TableIdx = 1,
-                    TotalPrice = 0,
-                    MenuList = menus,
+                    TotalPrice = 0
                 });
                 TableItems.Add(new TableModel()
                 {
                     TableIdx = 2,
-                    TotalPrice = 0,
-                    MenuList = menus,
+                    TotalPrice = 0
                 });
                 TableItems.Add(new TableModel()
                 {
                     TableIdx = 3,
-                    TotalPrice = 0,
-                    MenuList = menus,
+                    TotalPrice = 0
                 });
                 TableItems.Add(new TableModel()
                 {
                     TableIdx = 4,
-                    TotalPrice = 0,
-                    MenuList = menus,
+                    TotalPrice = 0
                 });
                 TableItems.Add(new TableModel()
                 {
                     TableIdx = 5,
-                    TotalPrice = 0,
-                    MenuList = menus,
+                    TotalPrice = 0
                 });
                 TableItems.Add(new TableModel()
                 {
                     TableIdx = 6,
-                    TotalPrice = 0,
-                    MenuList = menus,
+                    TotalPrice = 0
                 });
                 TableItems.Add(new TableModel()
                 {
                     TableIdx = 7,
-                    TotalPrice = 0,
-                    MenuList = menus,
+                    TotalPrice = 0
                 });
                 TableItems.Add(new TableModel()
                 {
                     TableIdx = 8,
-                    TotalPrice = 0,
-                    MenuList = menus,
+                    TotalPrice = 0
                 });
                 TableItems.Add(new TableModel()
                 {
                     TableIdx = 9,
-                    TotalPrice = 0,
-                    MenuList = menus,
+                    TotalPrice = 0
                 });
                 #endregion
             });
-            
         }
     }
 }

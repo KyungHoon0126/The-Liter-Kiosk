@@ -47,6 +47,13 @@ namespace TheLiter.Core.Order.Model
             set => SetProperty(ref _imageUrl, value);
         }
 
+        private int _totalPrice;
+        public int TotalPrice
+        {
+            get => _totalPrice;
+            set => SetProperty(ref _totalPrice, value);
+        }
+
         public MenuModel Clone(MenuModel item)
         {
             MenuModel menuModel = new MenuModel();
@@ -56,7 +63,6 @@ namespace TheLiter.Core.Order.Model
             menuModel.Count = item.Count;
             menuModel.Price = item.Price;
             menuModel.ImageUrl = item.ImageUrl;
-            
             return menuModel;
         }
 

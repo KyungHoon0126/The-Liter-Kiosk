@@ -3,7 +3,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Threading;
 using THE_LITER_KIOSK.UIManager;
-using TheLitter.Core.Place.Model;
 
 namespace THE_LITER_KIOSK.Controls.TableControl
 {
@@ -18,12 +17,13 @@ namespace THE_LITER_KIOSK.Controls.TableControl
             Loaded += TableControl_Loaded;
         }
 
-        private async void TableControl_Loaded(object sender, RoutedEventArgs e)
+        private void TableControl_Loaded(object sender, RoutedEventArgs e)
         {
-            await App.placeData.tableViewModel.LoadTableData();
+            //App.placeData.LoadTableData();
             this.DataContext = App.placeData.tableViewModel;
         }
 
+        #region UserControl Transition
         private void btnTablePrev_Click(object sender, RoutedEventArgs e)
         {
             App.uIStateManager.SwitchCustomControl(CustomControlType.PLACE);
@@ -33,6 +33,7 @@ namespace THE_LITER_KIOSK.Controls.TableControl
         {
             App.uIStateManager.SwitchCustomControl(CustomControlType.PAY);
         }
+        #endregion
 
         private void lvTableList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {   

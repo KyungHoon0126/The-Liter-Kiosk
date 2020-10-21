@@ -13,8 +13,7 @@ namespace TheLiter.Core.Order
 
         public void InitData()
         {
-            orderViewModel.InitializeMenuCount();
-            orderViewModel.ClearOrderedMenuDatas();
+            orderViewModel.ClearMenuData();
         }
     }
 }

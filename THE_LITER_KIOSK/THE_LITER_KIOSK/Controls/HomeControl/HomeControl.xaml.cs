@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows;
-using System.Windows.Controls;
+﻿using System.Windows;
 using THE_LITER_KIOSK.UIManager;
 
 namespace THE_LITER_KIOSK.Controls.HomeControl
@@ -15,9 +13,11 @@ namespace THE_LITER_KIOSK.Controls.HomeControl
             InitializeComponent();
         }
 
+        #region UserControl Transition
         private void btnOrder_Click(object sender, RoutedEventArgs e)
         {
             App.uIStateManager.SwitchCustomControl(CustomControlType.ORDER);
         }
+        #endregion
     }
 }

@@ -206,12 +206,11 @@
                                                     <Button x:Name="btnAddMenu"
                                                             Content="+" 
                                                             Width="20"
-                                                            Margin="60,0,0,0"
                                                             Click="btnAddMenu_Click"/>
                                                     <Button x:Name="btnSubMenu"
                                                             Content="-" 
                                                             Width="20"
-                                                            Margin="110,0,0,0"
+                                                            Margin="50,0,0,0"
                                                             Click="btnSubMenu_Click"/>
                                                 </Grid>
                                             </DataTemplate>
@@ -222,9 +221,11 @@
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Grid>
-                                                    <TextBlock Text="{Binding Price}"/>
+                                                    <TextBlock Text="{Binding TotalPrice, StringFormat=\{0:N0\}원}"/>
                                                     <Button x:Name="btnDel"
-                                                            Content="x" 
+                                                            Content="x"
+                                                            Width="20"
+                                                            Margin="50,0,0,0"
                                                             Click="btnDel_Click"/>
                                                 </Grid>
                                             </DataTemplate>
@@ -243,7 +244,7 @@
                                 </Style>
                             </StackPanel.Resources>
                             <TextBlock Text="총가격 : "/>
-                            <TextBlock Text="{Binding TotalPrice, StringFormat={}{0}원}"/>
+                            <TextBlock Text="{Binding OrderTotalPrice, StringFormat=\{0:N0\}원}"/>
                         </StackPanel>
                     </Grid>
                 </Grid>
