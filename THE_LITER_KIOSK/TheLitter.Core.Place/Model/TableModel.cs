@@ -1,6 +1,7 @@
 ﻿using Prism.Mvvm;
 using System;
 using System.Collections.Generic;
+using System.Reflection;
 using System.Windows.Threading;
 using TheLiter.Core.Order.Model;
 
@@ -10,8 +11,22 @@ namespace TheLitter.Core.Place.Model
     {
         public TableModel()
         {
+            DispatcherTimer.Tick += DispatcherTimer_Tick;
+            
             //Timer.Interval = TimeSpan.FromSeconds(1);
             //Timer.Tick += DispatcherTimer_Tick;
+        }
+
+        public void DispatcherTimer_Tick(object sender, EventArgs e)
+        {
+            RemainTime = $"사용시간이 {LeftTime}초 남았습니다.";
+            LeftTime = LeftTime - 1;
+            if (LeftTime < 0)
+            {
+                (sender as DispatcherTimer).Stop();
+                RemainTime = string.Empty;
+                LeftTime = 60;
+            }
         }
 
         //private void DispatcherTimer_Tick(object sender, EventArgs e)
@@ -70,6 +85,9 @@ namespace TheLitter.Core.Place.Model
         //    set => SetProperty(ref _dispatcherTimer, value);
         //}
 
-        public DispatcherTimer DispatcherTimer { get; set; }
+        public DispatcherTimer DispatcherTimer = new DispatcherTimer();
+
+        
+
     }
 }
