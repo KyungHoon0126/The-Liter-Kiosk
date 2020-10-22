@@ -16,11 +16,13 @@ namespace THE_LITER_KIOSK.Controls.PlaceControl
         #region UserControl Transition
         private void btnStoreMeal_Click(object sender, RoutedEventArgs e)
         {
+            App.ctrlName = "TABLE";
             App.uIStateManager.SwitchCustomControl(CustomControlType.TABLE);
         }
 
         private void btnPackingMeal_Click(object sender, RoutedEventArgs e)
         {
+            App.ctrlName = "PAY";
             App.uIStateManager.SwitchCustomControl(CustomControlType.PAY);
         }
 
@@ -31,3 +33,4 @@ namespace THE_LITER_KIOSK.Controls.PlaceControl
         #endregion
     }
 }
+ 

@@ -140,7 +140,6 @@ namespace KQRCode
                     string msg = ex.Message;
                     Debug.WriteLine(msg);
                 }
-
             }
         }
 

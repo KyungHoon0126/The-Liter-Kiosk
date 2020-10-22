@@ -11,6 +11,12 @@ namespace THE_LITER_KIOSK.Controls.PayControl
         public CardCalcControl()
         {
             InitializeComponent();
+            Loaded += CardCalcControl_Loaded;
+        }
+
+        private void CardCalcControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            webcam.CameraIndex = 0;
         }
 
         #region UserControl Transition
@@ -19,5 +25,10 @@ namespace THE_LITER_KIOSK.Controls.PayControl
             App.uIStateManager.SwitchCustomControl(CustomControlType.PLACE);
         }
         #endregion
+
+        private void webcam_QrDecoded(object sender, string e)
+        {
+            tbRecog.Text = e;
+        }
     }
 }

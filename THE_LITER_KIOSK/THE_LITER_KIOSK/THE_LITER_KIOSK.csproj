@@ -246,6 +246,10 @@
     <Resource Include="Assets\Menus\Yogurs\StrawberryYogurs.jpg" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\KQRCode\KQRCode.csproj">
+      <Project>{62f1b37e-4bb2-442b-99a7-36279c5c0f3f}</Project>
+      <Name>KQRCode</Name>
+    </ProjectReference>
     <ProjectReference Include="..\TheLiter.Core.Order\TheLiter.Core.Order.csproj">
       <Project>{1EBD103B-9FBB-4D72-8823-A0F82D30AF20}</Project>
       <Name>TheLiter.Core.Order</Name>

@@ -104,7 +104,8 @@
                     FontWeight="Bold"
                     FontSize="25"
                     Foreground="White"
-                    x:Name="btnMoveTo">
+                    x:Name="btnMoveToPrevCtrl"
+                    Click="btnMoveToPrevCtrl_Click">
 
                 <Button.Resources>
                         <Style TargetType="Border">

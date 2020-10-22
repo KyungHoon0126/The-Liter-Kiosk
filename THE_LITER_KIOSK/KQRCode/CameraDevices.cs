@@ -8,16 +8,10 @@ namespace KQRCode
 {
     public class CameraDevices : INotifyPropertyChanged
     {
-        public CameraDevices()
-        {
-            GatherDevices();
-        }
-
-        public void GatherDevices() => devices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+        public event PropertyChangedEventHandler PropertyChanged;
 
         private FilterInfoCollection devices;
         public VideoCaptureDevice Current { get; set; }
-
         public FilterInfoCollection Devices
         {
             get { return devices; }
@@ -28,8 +22,15 @@ namespace KQRCode
             }
         }
 
+        public CameraDevices()
+        {
+            GatherDevices();
+        }
+
+        public void GatherDevices() => devices = new FilterInfoCollection(FilterCategory.VideoInputDevice);
+
         /// <summary>
-        ///     Gets all camera devices names from this system
+        /// Gets all camera devices names from this system
         /// </summary>
         /// <returns></returns>
         public List<string> GetStringCameras()
@@ -43,10 +44,8 @@ namespace KQRCode
             return dvs;
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-
         /// <summary>
-        ///     Activates a camera based on returned index from the GetStringCameras
+        /// Activates a camera based on returned index from the GetStringCameras
         /// </summary>
         /// <param name="index"></param>
         public void SelectCamera(int index)

@@ -41,7 +41,6 @@
                         Foreground="white"
                         FontSize="30"
                         Click="btnStoreMeal_Click">
-
                 </Button>
             </Grid>
 
