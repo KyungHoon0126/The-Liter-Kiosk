@@ -25,7 +25,7 @@
         </Grid>
 
         <Grid Grid.Row="1">
-             <Button Content="이전" 
+            <Button Content="이전" 
                         Width="260"
                         Height="70"
                         HorizontalAlignment="Left"
@@ -36,13 +36,12 @@
                         Foreground="White"
                         x:Name="btnTablePrev"
                         Click="btnTablePrev_Click">
-                    <Button.Resources>
-                        <Style TargetType="Border">
+                <Button.Resources>
+                    <Style TargetType="Border">
                         <Setter Property="CornerRadius" Value="10"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
-
+                    </Style>
+                </Button.Resources>
+            </Button>
         </Grid>
     </Grid>
 </base:CustomControlModel>

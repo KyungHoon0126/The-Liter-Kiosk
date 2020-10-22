@@ -22,7 +22,7 @@ namespace THE_LITER_KIOSK.Controls.PayControl
         #region UserControl Transition
         private void btnTablePrev_Click(object sender, RoutedEventArgs e)
         {
-            App.uIStateManager.SwitchCustomControl(CustomControlType.PLACE);
+            App.uIStateManager.SwitchCustomControl(CustomControlType.PAY);
         }
         #endregion
 

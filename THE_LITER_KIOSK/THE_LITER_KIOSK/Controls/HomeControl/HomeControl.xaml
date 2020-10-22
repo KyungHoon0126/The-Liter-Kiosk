@@ -60,12 +60,35 @@
 
             <Grid Grid.Row="1">
                 <Button x:Name="btnOrder" 
-                        Width="140px" Height="40"  
+                        Background="#4898de"
+                        Width="140px" Height="50"  
                         BorderThickness="0"
+                        Foreground="White"
                         VerticalAlignment="Top"
                         FocusVisualStyle="{x:Null}"
                         Click="btnOrder_Click">
                     <TextBlock FontSize="16px">주문하기</TextBlock>
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+
+                <Button x:Name="btnAdmin"
+                        Margin="15"
+                        Content="관리"
+                        Width="150"
+                        Background="#008575"
+                        VerticalAlignment="Bottom"
+                        HorizontalAlignment="Right"
+                        Style="{StaticResource btnCommonStyle}"
+                        Click="btnAdmin_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="5"/>
+                        </Style>
+                    </Button.Resources>
                 </Button>
             </Grid>
         </Grid>

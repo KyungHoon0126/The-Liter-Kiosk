@@ -19,5 +19,10 @@ namespace THE_LITER_KIOSK.Controls.HomeControl
             App.uIStateManager.SwitchCustomControl(CustomControlType.ORDER);
         }
         #endregion
+
+        private void btnAdmin_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
