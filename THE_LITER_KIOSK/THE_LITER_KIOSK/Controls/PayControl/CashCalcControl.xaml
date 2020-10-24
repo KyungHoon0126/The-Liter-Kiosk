@@ -13,8 +13,12 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0" > 
-            <StackPanel VerticalAlignment="Center"
-                        HorizontalAlignment="Center">
+            <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="20"/>
+                    </Style>
+                </StackPanel.Resources>
                 <TextBlock Text="현금 계산을 선택하셨습니다. 현금연수증카드를 제시해주세요."/>
                 <StackPanel Orientation="Horizontal"
                             HorizontalAlignment="Center">

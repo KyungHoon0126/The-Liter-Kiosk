@@ -31,7 +31,7 @@ namespace THE_LITER_KIOSK
 
             LoadData();
             SetCustomControls();
-            SetStartCustomControl();
+            // SetStartCustomControl();
         }
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
@@ -88,12 +88,22 @@ namespace THE_LITER_KIOSK
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if (App.uIStateManager.customCtrlStack.Peek() == CtrlHome)
+            if (e.Key == Key.F2)
             {
-                if (e.Key == Key.F2)
+                if (App.uIStateManager.customCtrlStack.Peek() == CtrlHome)
                 {
                     MessageBox.Show("통계화면은 준비중 입니다.");
                 }
+            }
+        }
+
+        private void CtrlLogin_OnLoginResultRecieved(object sender, bool success)
+        {
+            if (success)
+            {
+                MessageBox.Show("로그인에 성공하셨습니다!");
+                CtrlLogin.Visibility = Visibility.Collapsed;
+                SetStartCustomControl();
             }
         }
     }

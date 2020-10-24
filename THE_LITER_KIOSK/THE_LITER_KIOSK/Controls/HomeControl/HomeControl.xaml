@@ -15,7 +15,7 @@
             <RowDefinition Height="3*" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0">
+        <Grid Grid.Row="0" Grid.RowSpan="2">
             <MediaElement Margin="5" x:Name="media"
                           LoadedBehavior="Manual"
                           Source="Assets/Video/TheLiterVideo.mp4"

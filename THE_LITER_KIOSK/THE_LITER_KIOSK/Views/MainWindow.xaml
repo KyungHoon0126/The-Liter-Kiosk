@@ -4,11 +4,12 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         
-        xmlns:HomeControl="clr-namespace:THE_LITER_KIOSK.Controls.HomeControl"
-        xmlns:OrderControl="clr-namespace:THE_LITER_KIOSK.Controls.OrderControl"
-        xmlns:PayControl="clr-namespace:THE_LITER_KIOSK.Controls.PayControl"
-        xmlns:PlaceControl="clr-namespace:THE_LITER_KIOSK.Controls.PlaceControl"
-        xmlns:TableControl="clr-namespace:THE_LITER_KIOSK.Controls.TableControl"
+        xmlns:LoginCtrl="clr-namespace:THE_LITER_KIOSK.Controls"
+        xmlns:HomeCtrl="clr-namespace:THE_LITER_KIOSK.Controls.HomeControl"
+        xmlns:OrderCtrl="clr-namespace:THE_LITER_KIOSK.Controls.OrderControl"
+        xmlns:PayCtrl="clr-namespace:THE_LITER_KIOSK.Controls.PayControl"
+        xmlns:PlaceCtrl="clr-namespace:THE_LITER_KIOSK.Controls.PlaceControl"
+        xmlns:TableCtrl="clr-namespace:THE_LITER_KIOSK.Controls.TableControl"
         
         WindowState="Maximized" 
         WindowStartupLocation="CenterScreen"
@@ -59,15 +60,17 @@
             </Grid>
 
             <Grid Grid.Row="1" x:Name="gdCustomControls">
-                <HomeControl:HomeControl x:Name="CtrlHome" Visibility="Collapsed"/>
-                <OrderControl:OrderControl x:Name="CtrlOrder" Visibility="Collapsed"/>
-                <TableControl:TableControl x:Name="CtrlTable" Visibility="Collapsed"/>
-                <PlaceControl:PlaceControl x:Name="CtrlPlace" Visibility="Collapsed" />
-                <PayControl:PaySelectionControl x:Name="CtrlPaySelect" Visibility="Collapsed"/>
-                <PayControl:CashCalcControl x:Name="CtrlPayCash" Visibility="Collapsed"/>
-                <PayControl:CardCalcControl x:Name="CtrlPayCard" Visibility="Collapsed"/>
-                <PayControl:PayCompleteControl x:Name="CtrlPayComplete" Visibility="Collapsed"/>
+                <HomeCtrl:HomeControl x:Name="CtrlHome" Visibility="Collapsed"/>
+                <OrderCtrl:OrderControl x:Name="CtrlOrder" Visibility="Collapsed"/>
+                <TableCtrl:TableControl x:Name="CtrlTable" Visibility="Collapsed"/>
+                <PlaceCtrl:PlaceControl x:Name="CtrlPlace" Visibility="Collapsed" />
+                <PayCtrl:PaySelectionControl x:Name="CtrlPaySelect" Visibility="Collapsed"/>
+                <PayCtrl:CashCalcControl x:Name="CtrlPayCash" Visibility="Collapsed"/>
+                <PayCtrl:CardCalcControl x:Name="CtrlPayCard" Visibility="Collapsed"/>
+                <PayCtrl:PayCompleteControl x:Name="CtrlPayComplete" Visibility="Collapsed"/>
             </Grid>
         </Grid>
+
+        <LoginCtrl:LoginControl x:Name="CtrlLogin" Visibility="Visible" OnLoginResultRecieved="CtrlLogin_OnLoginResultRecieved"/>
     </Grid>
 </Window>

@@ -15,8 +15,12 @@
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <StackPanel HorizontalAlignment="Center"
-                        VerticalAlignment="Center">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock">
+                        <Setter Property="FontSize" Value="20"/>
+                    </Style>
+                </StackPanel.Resources>
                 <TextBlock Text="카드 계산을 선택하셨습니다."/>
                 <TextBlock Text="카메라에 QR코드를 인식하세요" />
                 <StackPanel Orientation="Horizontal"

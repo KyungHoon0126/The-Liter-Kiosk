@@ -176,7 +176,8 @@
                     </Grid.RowDefinitions>
 
                     <Grid Grid.Row="0">
-                        <ListView x:Name="lvOrderList" Margin="5"
+                        <ListView x:Name="lvOrderList" Margin="5" 
+                                  FontSize="20" Foreground="Black"
                                   ItemsSource="{Binding OrderedMenuItems}">
                             <ListView.View>
                                 <GridView>

@@ -22,7 +22,7 @@ namespace THE_LITER_KIOSK.Controls.HomeControl
 
         private void btnAdmin_Click(object sender, RoutedEventArgs e)
         {
-
+            MessageBox.Show("관리자 화면은 준비중입니다.");
         }
     }
 }
