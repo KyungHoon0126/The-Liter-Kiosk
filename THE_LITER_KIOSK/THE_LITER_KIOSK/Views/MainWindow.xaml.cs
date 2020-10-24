@@ -47,6 +47,7 @@ namespace THE_LITER_KIOSK
 
         private void SetCustomControls()
         {
+            App.uIStateManager.SetCustomCtrl(CtrlAdmin, CustomControlType.ADMIN);
             App.uIStateManager.SetCustomCtrl(CtrlHome, CustomControlType.HOME);
             App.uIStateManager.SetCustomCtrl(CtrlTable, CustomControlType.TABLE);
             App.uIStateManager.SetCustomCtrl(CtrlOrder, CustomControlType.ORDER);
@@ -88,11 +89,11 @@ namespace THE_LITER_KIOSK
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.F2)
+            if (App.uIStateManager.customCtrlStack.Count > 0)
             {
-                if (App.uIStateManager.customCtrlStack.Peek() == CtrlHome)
+                if (e.Key == Key.F2 && App.uIStateManager.customCtrlStack.Peek() == CtrlHome)
                 {
-                    MessageBox.Show("통계화면은 준비중 입니다.");
+                    App.uIStateManager.SwitchCustomControl(CustomControlType.ADMIN);
                 }
             }
         }

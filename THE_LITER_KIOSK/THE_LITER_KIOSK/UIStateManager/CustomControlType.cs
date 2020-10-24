@@ -10,6 +10,6 @@
         TABLE,
         PAYCASH,
         PAYCARD,
-        PAYCOMPLETE
+        PAYCOMPLETE,
     }
 }

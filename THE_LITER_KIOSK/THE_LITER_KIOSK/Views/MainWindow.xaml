@@ -5,6 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         
         xmlns:LoginCtrl="clr-namespace:THE_LITER_KIOSK.Controls"
+        xmlns:AdminCtrl="clr-namespace:THE_LITER_KIOSK.Controls.AdminControl"
         xmlns:HomeCtrl="clr-namespace:THE_LITER_KIOSK.Controls.HomeControl"
         xmlns:OrderCtrl="clr-namespace:THE_LITER_KIOSK.Controls.OrderControl"
         xmlns:PayCtrl="clr-namespace:THE_LITER_KIOSK.Controls.PayControl"
@@ -60,6 +61,7 @@
             </Grid>
 
             <Grid Grid.Row="1" x:Name="gdCustomControls">
+                <AdminCtrl:AdminControl x:Name="CtrlAdmin" Visibility="Collapsed"/>
                 <HomeCtrl:HomeControl x:Name="CtrlHome" Visibility="Collapsed"/>
                 <OrderCtrl:OrderControl x:Name="CtrlOrder" Visibility="Collapsed"/>
                 <TableCtrl:TableControl x:Name="CtrlTable" Visibility="Collapsed"/>
@@ -72,5 +74,6 @@
         </Grid>
 
         <LoginCtrl:LoginControl x:Name="CtrlLogin" Visibility="Visible" OnLoginResultRecieved="CtrlLogin_OnLoginResultRecieved"/>
+        
     </Grid>
 </Window>
