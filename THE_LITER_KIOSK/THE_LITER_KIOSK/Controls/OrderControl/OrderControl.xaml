@@ -282,6 +282,7 @@
                             <StackPanel.Resources>
                                 <Style TargetType="TextBlock">
                                     <Setter Property="FontSize" Value="30"/>
+                                    <Setter Property="FontFamily" Value="AppleSDGothicNeoSB00"/>
                                 </Style>
                             </StackPanel.Resources>
                             <TextBlock Text="총가격 : "/>

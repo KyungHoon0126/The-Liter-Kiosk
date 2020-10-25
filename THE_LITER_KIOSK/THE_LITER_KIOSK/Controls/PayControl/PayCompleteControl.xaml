@@ -17,20 +17,20 @@
     
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="3*"/>
-            <RowDefinition Height="4*"/>
+            <RowDefinition Height="2*"/>
+            <RowDefinition Height="2*"/>
             <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
                 <TextBlock Text="결제되었습니다."/>
                 <TextBlock Text="{Binding OrderTotalPrice, StringFormat=총 금액 : \{0:N0\}원}"/>
             </StackPanel>
         </Grid>
 
         <Grid Grid.Row="1">
-            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
                 <!--TODO : 주문번호 추가하기-->
                 <!--<TextBlock Text="{Binding OrderIdx, StringFormat={}주문번호 : {0}}"
                            VerticalAlignment="Center"

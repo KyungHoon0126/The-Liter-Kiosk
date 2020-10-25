@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -30,6 +31,8 @@ namespace THE_LITER_KIOSK
 
             LoadData();
             SetCustomControls();
+
+            App.adminData.adminViewModel.StartTime = DateTime.Now;
         }
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
@@ -91,6 +94,7 @@ namespace THE_LITER_KIOSK
             {
                 if (e.Key == Key.F2 && App.uIStateManager.customCtrlStack.Peek() == CtrlHome)
                 {
+                    App.adminData.SynchronizationOperationTime();
                     App.uIStateManager.SwitchCustomControl(CustomControlType.ADMIN);
                 }
             }
@@ -109,6 +113,11 @@ namespace THE_LITER_KIOSK
         private void CtrlPayCash_OnCompletePayByCash()
         {
             CtrlPayComplete.dispatcherTimer.Start();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+
         }
     }
 }

@@ -19,5 +19,10 @@ namespace THE_LITER_KIOSK.Controls.AdminControl
             App.adminData.LoadData();
             this.DataContext = App.adminData.adminViewModel;
         }
+
+        private void btnReload_Click(object sender, RoutedEventArgs e)
+        {
+            App.adminData.SynchronizationOperationTime();
+        }
     }
 }

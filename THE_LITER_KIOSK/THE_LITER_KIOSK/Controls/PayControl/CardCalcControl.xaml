@@ -17,50 +17,48 @@
         <Grid Grid.Row="0">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
                 <StackPanel.Resources>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="FontSize" Value="20"/>
+                    <Style TargetType="{x:Type TextBlock}">
+                        <Setter Property="FontFamily" Value="AppleSDGothicNeoSB00"/>
+                        <Setter Property="FontSize" Value="30"/>
+                        <Setter Property="Margin" Value="20"/>
+                        <Setter Property="HorizontalAlignment" Value="Center"/>
                     </Style>
                 </StackPanel.Resources>
-                <TextBlock Text="카드 계산을 선택하셨습니다."/>
+                
+                <TextBlock Text="카드 계산을 선택하셨습니다." />
                 <TextBlock Text="카메라에 QR코드를 인식하세요" />
-                <StackPanel Orientation="Horizontal"
-                            HorizontalAlignment="Center">
-                    <TextBlock Text="총 금액"/>
-                    <TextBlock Text="16,000원"/>
-                </StackPanel>
+
+                <TextBlock Text="{Binding OrderTotalPrice, StringFormat=총 금액 : \{0:N0\}원}"/>
             </StackPanel>
         </Grid>
 
         <Grid Grid.Row="1">
-            <qrcode:KQRWebCam x:Name="webcam" Margin="12" 
-                              QrDecoded="webcam_QrDecoded"/>
-            <TextBox x:Name="tbRecog" Margin="12,12,12,12" 
-                     Text="인식된 값이 여기에 나온단다" 
-                     Height="30" 
-                     VerticalAlignment="Bottom" 
-                     HorizontalContentAlignment="Stretch"
-                     VerticalContentAlignment="Center"/>
+            <StackPanel>
+                <qrcode:KQRWebCam x:Name="webcam" Margin="12" 
+                                  QrDecoded="webcam_QrDecoded"/>
+                <TextBox x:Name="tbRecog" Margin="12,12,12,12" 
+                         Text="인식된 값이 여기에 나온단다" 
+                         Height="30" 
+                         VerticalAlignment="Bottom" 
+                         HorizontalContentAlignment="Stretch"
+                         VerticalContentAlignment="Center"/>
+            </StackPanel>
         </Grid>
 
         <Grid Grid.Row="2">
-              <Button Content="이전" 
-                        Width="260"
-                        Height="70"
-                        HorizontalAlignment="Left"
-                        Margin="20 0 0 0"
-                        Background="#008575"
-                        FontWeight="Bold"
-                        FontSize="25"
-                        Foreground="White"
-                        x:Name="btnTablePrev"
-                        Click="btnTablePrev_Click">
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="10"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
-
+            <Button x:Name="btnCashCalcOk"
+                    Margin="10"
+                    Content="이전" 
+                    Background="#008575"
+                    HorizontalAlignment="Left"
+                    Style="{DynamicResource btnCommonStyle}"
+                    Click="btnTablePrev_Click">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
         </Grid>
     </Grid>
 </base:CustomControlModel>

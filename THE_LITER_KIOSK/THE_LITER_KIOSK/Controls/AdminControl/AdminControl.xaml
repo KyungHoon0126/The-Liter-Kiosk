@@ -9,14 +9,60 @@
              d:DesignHeight="450" d:DesignWidth="800">
     
     <Grid Background="White">
-        <lvc:PieChart x:Name="pcGenderRatio" Series="{Binding SeriesCollection}" Width="800"
-                      LegendLocation="Right" InnerRadius="100" Margin="10" StartingRotationAngle="180">
-            <lvc:PieChart.ChartLegend>
-                <lvc:DefaultLegend BulletSize="20"/>
-            </lvc:PieChart.ChartLegend>
-            <lvc:PieChart.DataTooltip>
-                <lvc:DefaultTooltip BulletSize="20"/>
-            </lvc:PieChart.DataTooltip>
-        </lvc:PieChart>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <lvc:PieChart x:Name="pcGenderRatio" Margin="10" Series="{Binding SeriesCollection}"
+                          Width="700"
+                          LegendLocation="Right" InnerRadius="200" StartingRotationAngle="180">
+                <lvc:PieChart.ChartLegend>
+                    <lvc:DefaultLegend BulletSize="20"/>
+                </lvc:PieChart.ChartLegend>
+                <lvc:PieChart.DataTooltip>
+                    <lvc:DefaultTooltip BulletSize="20"/>
+                </lvc:PieChart.DataTooltip>
+            </lvc:PieChart>
+        </Grid>
+
+        <Grid Grid.Column="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="1*"/>
+                <RowDefinition Height="9*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="8*"/>
+                    <ColumnDefinition Width="2*"/>
+                </Grid.ColumnDefinitions>
+
+                <Grid Grid.Column="0">
+                    <TextBlock Margin="10"
+                               Text="{Binding OperationTime, Mode=TwoWay, StringFormat=프로그램 구동 시간 : \{0:\\ hh\\시\\간\\ mm\\분\\ ss\\초\}}"
+                               FontSize="30"
+                               FontFamily="AppleSDGothicNeoSB00"
+                               VerticalAlignment="Center"
+                               HorizontalAlignment="Right"/>
+                </Grid>
+
+                <Grid Grid.Column="1">
+                    <Button x:Name="btnReload" Margin="10"
+                            Content="R"
+                            FocusVisualStyle="{x:Null}"
+                            Height="50" Width="50"
+                            VerticalAlignment="Center" HorizontalAlignment="Right"
+                            FontSize="20" Foreground="White" FontFamily="AppleSDGothicNeoSB00"
+                            Style="{StaticResource MaterialDesignFloatingActionAccentButton}"
+                            Click="btnReload_Click"/>
+                </Grid>
+            </Grid>
+
+            <Grid Grid.Row="1">
+
+            </Grid>
+        </Grid>
     </Grid>
 </base:CustomControlModel>

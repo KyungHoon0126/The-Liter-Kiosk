@@ -1,18 +1,39 @@
 ﻿using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
+using Prism.Mvvm;
+using System;
 
 namespace TheLiter.Core.Admin.ViewModel
 {
-    public class AdminViewModel
+    public class AdminViewModel : BindableBase
     {
         #region Properties
+        private DateTime _startTime;
+        public DateTime StartTime
+        {
+            get => _startTime;
+            set => SetProperty(ref _startTime, value);
+        }
+
+        private TimeSpan _operationTime;
+        public TimeSpan OperationTime
+        {
+            get => _operationTime;
+            set => SetProperty(ref _operationTime, value);
+        }
+
         public SeriesCollection SeriesCollection { get; set; }
         #endregion
 
         public AdminViewModel()
         {
 
+        }
+
+        public void SynchronizationOperationTime()
+        {
+            OperationTime = DateTime.Now.Subtract(StartTime);
         }
 
         public void LoadChartDatas()

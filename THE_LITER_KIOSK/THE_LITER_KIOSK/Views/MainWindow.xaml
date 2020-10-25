@@ -16,7 +16,8 @@
         WindowStartupLocation="CenterScreen"
         mc:Ignorable="d"
         Title="THE LITER KIOSK" Height="450" Width="800"
-        KeyDown="Window_KeyDown">
+        KeyDown="Window_KeyDown"
+        Closed="Window_Closed">
 
     <Grid>
         <Grid>

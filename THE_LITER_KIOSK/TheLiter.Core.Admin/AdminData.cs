@@ -10,5 +10,10 @@ namespace TheLiter.Core.Admin
         {
             adminViewModel.LoadChartDatas();
         }
+
+        public void SynchronizationOperationTime()
+        {
+            adminViewModel.SynchronizationOperationTime();
+        }
     }
 }

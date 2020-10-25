@@ -199,13 +199,11 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
             return false;
         }
 
-        // +
         private void btnAddMenu_Click(object sender, RoutedEventArgs e)     
         {
             IncreaseMenuCount(((ListViewItem)lvOrderList.ContainerFromElement(sender as Button)).Content as MenuModel);
         }
 
-        // -
         private void btnSubMenu_Click(object sender, RoutedEventArgs e)
         {
             var selectedMenu = ((ListViewItem)lvOrderList.ContainerFromElement(sender as Button)).Content as MenuModel;
@@ -227,7 +225,6 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
             return false;
         }
 
-        // x
         private void btnDel_Click(object sender, RoutedEventArgs e)
         {
             MenuModel selectedMenu = ((ListViewItem)lvOrderList.ContainerFromElement(sender as Button)).Content as MenuModel;
