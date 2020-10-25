@@ -17,6 +17,7 @@ namespace THE_LITER_KIOSK.Controls.PayControl
         private void CardCalcControl_Loaded(object sender, RoutedEventArgs e)
         {
             webcam.CameraIndex = 0;
+            this.DataContext = App.orderData.orderViewModel;
         }
 
         #region UserControl Transition

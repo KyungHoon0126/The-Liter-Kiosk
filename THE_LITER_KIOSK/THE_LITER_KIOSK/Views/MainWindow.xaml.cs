@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Threading;
 using THE_LITER_KIOSK.UIManager;
@@ -31,7 +30,6 @@ namespace THE_LITER_KIOSK
 
             LoadData();
             SetCustomControls();
-            // SetStartCustomControl();
         }
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
@@ -106,6 +104,11 @@ namespace THE_LITER_KIOSK
                 CtrlLogin.Visibility = Visibility.Collapsed;
                 SetStartCustomControl();
             }
+        }
+
+        private void CtrlPayCash_OnCompletePayByCash()
+        {
+            CtrlPayComplete.dispatcherTimer.Start();
         }
     }
 }

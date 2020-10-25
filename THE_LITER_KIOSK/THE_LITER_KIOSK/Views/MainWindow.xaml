@@ -48,7 +48,7 @@
 
                 <Grid Grid.Column="2">
                     <Button x:Name="btnHome" 
-                            Height="50" Width="50"
+                            Height="80" Width="80"
                             Background="Transparent"
                             BorderBrush="Transparent"
                             FocusVisualStyle="{x:Null}"
@@ -67,7 +67,7 @@
                 <TableCtrl:TableControl x:Name="CtrlTable" Visibility="Collapsed"/>
                 <PlaceCtrl:PlaceControl x:Name="CtrlPlace" Visibility="Collapsed" />
                 <PayCtrl:PaySelectionControl x:Name="CtrlPaySelect" Visibility="Collapsed"/>
-                <PayCtrl:CashCalcControl x:Name="CtrlPayCash" Visibility="Collapsed"/>
+                <PayCtrl:CashCalcControl x:Name="CtrlPayCash" Visibility="Collapsed" OnCompletePayByCash="CtrlPayCash_OnCompletePayByCash"/>
                 <PayCtrl:CardCalcControl x:Name="CtrlPayCard" Visibility="Collapsed"/>
                 <PayCtrl:PayCompleteControl x:Name="CtrlPayComplete" Visibility="Collapsed"/>
             </Grid>

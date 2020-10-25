@@ -20,7 +20,7 @@
                        VerticalAlignment="Center"
                        Text="식사 장소를 선택하세요."
                        FontSize="40"
-                       FontWeight="Bold"/>
+                       FontWeight="Light"/>
         </Grid>
 
         <Grid Grid.Row="1">

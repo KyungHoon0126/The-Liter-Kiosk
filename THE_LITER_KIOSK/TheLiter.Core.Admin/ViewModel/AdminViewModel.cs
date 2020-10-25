@@ -1,11 +1,6 @@
 ﻿using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TheLiter.Core.Admin.ViewModel
 {
@@ -40,7 +35,7 @@ namespace TheLiter.Core.Admin.ViewModel
                 {
                     Title = "S1 Soda",
                     Values = new ChartValues<ObservableValue> { new ObservableValue(30) },
-                    DataLabels = true
+                    DataLabels = true 
                 }
             };
 

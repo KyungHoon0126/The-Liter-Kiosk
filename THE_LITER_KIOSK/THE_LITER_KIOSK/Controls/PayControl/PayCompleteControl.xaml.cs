@@ -1,17 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
+using System.Windows.Threading;
 using THE_LITER_KIOSK.UIManager;
 
 namespace THE_LITER_KIOSK.Controls.PayControl
@@ -21,9 +10,34 @@ namespace THE_LITER_KIOSK.Controls.PayControl
     /// </summary>
     public partial class PayCompleteControl : CustomControlModel
     {
+        public DispatcherTimer dispatcherTimer { get; set; }
+        public int remainTime = 10;
+
         public PayCompleteControl()
         {
             InitializeComponent();
+            Loaded += PayCompleteControl_Loaded;
+        }
+
+        private void PayCompleteControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.DataContext = App.orderData.orderViewModel;
+            dispatcherTimer = new DispatcherTimer();
+            dispatcherTimer.Tick += new EventHandler(CompletePayByCashTimer_Tick);
+            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+        }
+
+        private void CompletePayByCashTimer_Tick(object sender, EventArgs e)
+        {
+            tbTimer.Text = string.Format($"{remainTime}초 후에 홈 화면으로 이동합니다.");
+            remainTime--;
+            if (remainTime < 0)
+            {
+                (sender as DispatcherTimer).Stop();
+                remainTime = 10;
+                App.orderData.InitData();
+                App.uIStateManager.SwitchCustomControl(CustomControlType.HOME);
+            }
         }
     }
 }

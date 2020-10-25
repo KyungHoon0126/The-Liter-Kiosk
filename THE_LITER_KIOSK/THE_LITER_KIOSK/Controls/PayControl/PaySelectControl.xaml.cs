@@ -8,8 +8,6 @@ namespace THE_LITER_KIOSK.Controls.PayControl
     /// </summary>
     public partial class PaySelectionControl : CustomControlModel
     {
-        CustomControlModel placeCtrl = App.uIStateManager.GetCustomCtrl(CustomControlType.PLACE);
-
         public PaySelectionControl()
         {
             InitializeComponent();

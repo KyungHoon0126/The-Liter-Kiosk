@@ -44,6 +44,15 @@
                         <Style TargetType="ListViewItem">
                             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
                             <Setter Property="Margin" Value="5"/>
+                            <Setter Property="Background" Value="Transparent" />
+                            <Setter Property="FontWeight" Value="SemiBold"/>
+                            <!--<Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                        <ContentPresenter />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>-->
                         </Style>
                     </ListView.ItemContainerStyle>
 
@@ -51,7 +60,7 @@
                         <DataTemplate>
                             <Border CornerRadius="5">
                                 <Grid>
-                                    <Border CornerRadius="5" 
+                                    <Border CornerRadius="1" 
                                             BorderThickness="20" 
                                             BorderBrush="#e0e0e0">
                                         <TextBlock Text="{Binding CategoryName, Converter={StaticResource MenuCategoryToKoreanConverter}}" 
@@ -86,6 +95,13 @@
                             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
                             <Setter Property="Margin" Value="5"/>
                             <Setter Property="MaxHeight" Value="410"/> <!--메뉴가 적은 경우 최대 높이를 지정.-->
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                        <ContentPresenter />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
                         </Style>
                     </ListView.ItemContainerStyle>
                     
@@ -101,8 +117,7 @@
                                 <Image Source="{Binding ImageUrl}"/>
                                 <TextBlock Text="{Binding Name}" 
                                            FontWeight="SemiBold"/>
-                                <TextBlock Text="{Binding Price, StringFormat={}{0}원}"
-                                           FontWeight="Light"/>
+                                <TextBlock Text="{Binding Price, StringFormat={}{0}원}"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -128,6 +143,10 @@
                 <Grid Grid.Column="0">
                     <Button x:Name="btnPreviousMenu"
                             Content="&lt; 이전"
+                            Background="#e6e6e6"
+                            BorderBrush="Transparent"
+                            FontSize="20"
+                            FontWeight="SemiBold"
                             Click="btnPreviousMenu_Click">
                         <Button.Resources>
                             <Style TargetType="Border">
@@ -144,6 +163,10 @@
                 <Grid Grid.Column="2">
                     <Button x:Name="btnNextMenu"
                             Content="다음 &gt;"
+                            Background="#e6e6e6"
+                            BorderBrush="Transparent"
+                            FontSize="20"
+                            FontWeight="SemiBold"
                             Click="btnNextMenu_Click">
                         <Button.Resources>
                             <Style TargetType="Border">
@@ -178,7 +201,15 @@
                     <Grid Grid.Row="0">
                         <ListView x:Name="lvOrderList" Margin="5" 
                                   FontSize="20" Foreground="Black"
-                                  ItemsSource="{Binding OrderedMenuItems}">
+                                  ItemsSource="{Binding OrderedMenuItems}"
+                                  ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
+                            <ListView.ItemContainerStyle>
+                                <Style TargetType="ListViewItem">
+                                    <Setter Property="HorizontalContentAlignment" Value="Center" />
+                                </Style>
+                            </ListView.ItemContainerStyle>
+                            
                             <ListView.View>
                                 <GridView>
                                     <GridView.ColumnHeaderContainerStyle>
@@ -187,37 +218,56 @@
                                         </Style>
                                     </GridView.ColumnHeaderContainerStyle>
 
-                                    <GridViewColumn Header="메뉴" Width="275" DisplayMemberBinding="{Binding Name}"/>
+                                    <GridViewColumn Header="메뉴" Width="360">
+                                        <GridViewColumn.CellTemplate>
+                                            <DataTemplate>
+                                                <TextBlock Text="{Binding Name}"
+                                                           Margin="5"/>
+                                            </DataTemplate>
+                                        </GridViewColumn.CellTemplate>
+                                    </GridViewColumn>
 
-                                    <GridViewColumn Header="수량" Width="150">
+                                    <GridViewColumn Header="수량" Width="260">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Grid>
-                                                    <TextBlock Text="{Binding Count}"/>
-                                                    <Button x:Name="btnAddMenu"
-                                                            Content="+" 
-                                                            Width="20"
-                                                            Click="btnAddMenu_Click"/>
-                                                    <Button x:Name="btnSubMenu"
-                                                            Content="-" 
-                                                            Width="20"
-                                                            Margin="50,0,0,0"
-                                                            Click="btnSubMenu_Click"/>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <Button x:Name="btnAddMenu"
+                                                                Content="+"
+                                                                Margin="5"
+                                                                Width="20"
+                                                                Click="btnAddMenu_Click"
+                                                                Style="{StaticResource MaterialDesignToolForegroundButton}"/>
+
+                                                        <TextBlock Text="{Binding Count}"
+                                                                   Margin="5"/>
+
+                                                        <Button x:Name="btnSubMenu"
+                                                                Content="-" 
+                                                                Margin="5"
+                                                                Width="20"
+                                                                Click="btnSubMenu_Click"
+                                                                Style="{StaticResource MaterialDesignToolForegroundButton}"/>
+                                                    </StackPanel>
                                                 </Grid>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
                                     </GridViewColumn>
 
-                                    <GridViewColumn Header="가격" Width="150">
+                                    <GridViewColumn Header="가격" Width="260">
                                         <GridViewColumn.CellTemplate>
                                             <DataTemplate>
                                                 <Grid>
-                                                    <TextBlock Text="{Binding TotalPrice, StringFormat=\{0:N0\}원}"/>
-                                                    <Button x:Name="btnDel"
-                                                            Content="x"
-                                                            Width="20"
-                                                            Margin="50,0,0,0"
-                                                            Click="btnDel_Click"/>
+                                                    <StackPanel Orientation="Horizontal">
+                                                        <TextBlock Text="{Binding TotalPrice, StringFormat=\{0:N0\}원}"
+                                                                   Margin="5"/>
+                                                        <Button x:Name="btnDel"
+                                                                Content="x"
+                                                                Width="20"
+                                                                Margin="5"
+                                                                Click="btnDel_Click"
+                                                                Style="{StaticResource MaterialDesignToolForegroundButton}"/>
+                                                    </StackPanel>
                                                 </Grid>
                                             </DataTemplate>
                                         </GridViewColumn.CellTemplate>
@@ -244,6 +294,7 @@
                     <Button x:Name="btnClearOrderList"
                             Content="모두삭제"
                             HorizontalAlignment="Right"
+                            FontWeight="SemiBold"
                             Background="#404040"
                             Style="{DynamicResource btnCommonStyle}"
                             Click="btnClearOrderList_Click">

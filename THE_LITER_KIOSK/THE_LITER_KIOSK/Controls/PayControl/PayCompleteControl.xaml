@@ -6,7 +6,40 @@
              xmlns:local="clr-namespace:THE_LITER_KIOSK.Controls.PayControl"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <Style TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="30"/>
+            <Setter Property="FontFamily" Value="AppleSDGothicNeoSB00"/>
+            <Setter Property="Margin" Value="20"/>
+        </Style>
+    </UserControl.Resources>
+    
     <Grid Background="White">
-            
+        <Grid.RowDefinitions>
+            <RowDefinition Height="3*"/>
+            <RowDefinition Height="4*"/>
+            <RowDefinition Height="3*"/>
+        </Grid.RowDefinitions>
+
+        <Grid Grid.Row="0">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                <TextBlock Text="결제되었습니다."/>
+                <TextBlock Text="{Binding OrderTotalPrice, StringFormat=총 금액 : \{0:N0\}원}"/>
+            </StackPanel>
+        </Grid>
+
+        <Grid Grid.Row="1">
+            <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center">
+                <!--TODO : 주문번호 추가하기-->
+                <!--<TextBlock Text="{Binding OrderIdx, StringFormat={}주문번호 : {0}}"
+                           VerticalAlignment="Center"
+                           FontSize="30"
+                           FontFamily="AppleSDGothicNeoSB00"/>-->
+                <TextBlock Text="주문번호 : 123" HorizontalAlignment="Center"/>
+
+                <TextBlock x:Name="tbTimer" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Grid>
     </Grid>
 </base:CustomControlModel>

@@ -6,46 +6,80 @@
              xmlns:local="clr-namespace:THE_LITER_KIOSK.Controls.PayControl"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="*" />
+            <RowDefinition Height="8*" />
+            <RowDefinition Height="2*" />
         </Grid.RowDefinitions>
 
-        <Grid Grid.Row="0" > 
+        <Grid Grid.Row="0" >
             <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center">
-                <StackPanel.Resources>
-                    <Style TargetType="TextBlock">
-                        <Setter Property="FontSize" Value="20"/>
-                    </Style>
-                </StackPanel.Resources>
-                <TextBlock Text="현금 계산을 선택하셨습니다. 현금연수증카드를 제시해주세요."/>
-                <StackPanel Orientation="Horizontal"
-                            HorizontalAlignment="Center">
-                    <TextBlock Text="총 금액"/>
-                    <TextBlock Text="16,000"/>
+                <TextBlock Text="현금 계산을 선택하셨습니다. 현금영수증카드를 제시해주세요."
+                           Margin="20"
+                           FontFamily="AppleSDGothicNeoSB00"
+                           FontSize="30"/>
+                
+                <StackPanel HorizontalAlignment="Center">
+                    <StackPanel.Resources>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Setter Property="FontFamily" Value="AppleSDGothicNeoSB00"/>
+                            <Setter Property="FontSize" Value="30"/>
+                            <Setter Property="Margin" Value="20"/>
+                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                        </Style>
+                    </StackPanel.Resources>
+
+                    <TextBlock Text="{Binding OrderTotalPrice, StringFormat=총 금액 : \{0:N0\}원}"/>
+                    
+                    <!--TODO : 카드 번호 추가-->
+                    <TextBlock Text="인식된 카드번호 : 001230456"/>
+                    <!--<TextBlock Text="{Binding CardNumber, StringFormat={}인식된 카드 번호 : {0}}"/>-->
+
+                     <!--TODO : 회원 정보 추가-->
+                    <TextBlock Text="회원명 : 홍길동"/>
+                    <!--<TextBlock Text="{Binding MemberName, StringFormat={}회원명 : {0}}"/>-->
                 </StackPanel>
             </StackPanel>
         </Grid>
 
         <Grid Grid.Row="1">
-            <Button Content="이전" 
-                        Width="260"
-                        Height="70"
-                        HorizontalAlignment="Left"
-                        Margin="20 0 0 0"
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">
+                <Button x:Name="btnTablePrev"
+                        Margin="10"
+                        Content="이전" 
                         Background="#008575"
-                        FontWeight="Bold"
-                        FontSize="25"
-                        Foreground="White"
-                        x:Name="btnTablePrev"
+                        HorizontalAlignment="Right"
+                        Style="{DynamicResource btnCommonStyle}"
                         Click="btnTablePrev_Click">
-                <Button.Resources>
-                    <Style TargetType="Border">
-                        <Setter Property="CornerRadius" Value="10"/>
-                    </Style>
-                </Button.Resources>
-            </Button>
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="10"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+            </Grid>
+
+            <Grid Grid.Column="1">
+                <Button x:Name="btnCashCalcOk"
+                        Margin="10"
+                        Content="확인" 
+                        Background="#008575"
+                        HorizontalAlignment="Left"
+                        Style="{DynamicResource btnCommonStyle}"
+                        Click="btnCashCalcOk_Click">
+                    <Button.Resources>
+                        <Style TargetType="Border">
+                            <Setter Property="CornerRadius" Value="10"/>
+                        </Style>
+                    </Button.Resources>
+                </Button>
+            </Grid>
         </Grid>
     </Grid>
 </base:CustomControlModel>

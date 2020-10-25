@@ -31,7 +31,16 @@
             
             <Grid Grid.Column="0">
                 <ListView x:Name="lvOrderList" Margin="5"
-                                  ItemsSource="{Binding OrderedMenuItems}">
+                          ItemsSource="{Binding OrderedMenuItems}"
+                          Width="700" FontSize="20"
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled">
+
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="ListViewItem">
+                            <Setter Property="HorizontalContentAlignment" Value="Center" />
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                    
                     <ListView.View>
                         <GridView>
                             <GridView.ColumnHeaderContainerStyle>
@@ -40,23 +49,34 @@
                                 </Style>
                             </GridView.ColumnHeaderContainerStyle>
 
-                            <GridViewColumn Header="메뉴" Width="275" DisplayMemberBinding="{Binding Name}"/>
+                            <GridViewColumn Header="메뉴" Width="300">
+                                <GridViewColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}"
+                                                   Margin="5"/>
+                                    </DataTemplate>
+                                </GridViewColumn.CellTemplate>
+                            </GridViewColumn>
 
-                            <GridViewColumn Header="수량" Width="150">
+                            <GridViewColumn Header="수량" Width="200">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid>
-                                            <TextBlock Text="{Binding Count}"/>
+                                            <StackPanel Orientation="Horizontal">
+                                                <TextBlock Text="{Binding Count}"
+                                                           Margin="5"/>
+                                            </StackPanel>
                                         </Grid>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
                             </GridViewColumn>
 
-                            <GridViewColumn Header="가격" Width="150">
+                            <GridViewColumn Header="가격" Width="200">
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid>
-                                            <TextBlock Text="{Binding TotalPrice, StringFormat=\{0:N0\}원}"/>
+                                            <TextBlock Text="{Binding TotalPrice, StringFormat=\{0:N0\}원}"
+                                                       Margin="5"/>
                                         </Grid>
                                     </DataTemplate>
                                 </GridViewColumn.CellTemplate>
@@ -120,8 +140,9 @@
                         <Setter Property="FontSize" Value="30"/>
                     </Style>
                 </StackPanel.Resources>
-                <TextBlock Text="총금액 : "/>
-                <TextBlock Text="{Binding OrderTotalPrice, StringFormat=\{0:N0\}원}"/>
+                <TextBlock Text="{Binding OrderTotalPrice, StringFormat=총 금액 : \{0:N0\}원}"
+                           FontFamily="AppleSDGothicNeoSB00"
+                           Margin="5"/>
             </StackPanel>
         </Grid>
     </Grid>
