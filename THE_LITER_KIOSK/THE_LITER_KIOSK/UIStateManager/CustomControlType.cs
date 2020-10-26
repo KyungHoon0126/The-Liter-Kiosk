@@ -11,5 +11,7 @@
         PAYCASH,
         PAYCARD,
         PAYCOMPLETE,
+        LOGIN,
+        SIGNUP,
     }
 }
