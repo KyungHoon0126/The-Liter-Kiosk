@@ -1,26 +1,49 @@
 ﻿using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
-using Prism.Mvvm;
 using System;
+using System.ComponentModel;
+using System.Data;
+using System.Diagnostics;
+using System.Threading.Tasks;
+using TheLiter.Core.DBManager;
+using TheLiter.Core.Admin.Database;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace TheLiter.Core.Admin.ViewModel
 {
-    public class AdminViewModel : BindableBase
+    public class AdminViewModel : MySqlDBConnectionManager, INotifyPropertyChanged
     {
+        private DBManager<MeasureModel> measureDBManager = new DBManager<MeasureModel>();
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void NotifyPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
         #region Properties
         private DateTime _startTime;
         public DateTime StartTime
         {
             get => _startTime;
-            set => SetProperty(ref _startTime, value);
+            set
+            {
+                _startTime = value;
+                NotifyPropertyChanged(nameof(StartTime));
+            }
         }
 
         private TimeSpan _operationTime;
         public TimeSpan OperationTime
         {
             get => _operationTime;
-            set => SetProperty(ref _operationTime, value);
+            set
+            {
+                _operationTime = value;
+                NotifyPropertyChanged(nameof(OperationTime));
+            }
         }
 
         public SeriesCollection SeriesCollection { get; set; }
@@ -59,10 +82,97 @@ namespace TheLiter.Core.Admin.ViewModel
                     DataLabels = true 
                 }
             };
-
-            //adding values or series will update and animate the chart automatically
-            //SeriesCollection.Add(new PieSeries());
-            //SeriesCollection[0].Values.Add(5);
         }
+
+        // TODO : 리펙토링
+        #region Database
+        private async Task<MeasureModel> GetProgramTotalUsageTime()
+        {
+            try
+            {
+                var measureItems = new List<MeasureModel>();
+
+                using (IDbConnection db = GetConnection())
+                {
+                    db.Open();
+
+
+                    string selectSql = @"
+SELECT
+    *
+FROM
+    measure_tb
+";
+                    measureItems = await measureDBManager.GetListAsync(db, selectSql, "");
+                }
+
+                return measureItems.Where(x => x.MeasureDate.ToString("yyyy-MM-dd") == DateTime.Now.ToString("yyyy-MM-dd")).FirstOrDefault();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("GET PROGRAM TOTAL USAGE TIME ERROR : " + e.Message);
+            }
+
+            return null;
+        }
+
+        public async void SaveProgramTotalUsageTime()
+        {
+            try
+            {
+                using (IDbConnection db = GetConnection())
+                {
+                    db.Open();
+
+                    var measureModel = new MeasureModel();
+                    measureModel = await GetProgramTotalUsageTime();
+                    
+                    if (measureModel != null)
+                    {
+                        measureModel.TotalUsageTime += OperationTime;
+                        string updateSql = $@"
+UPDATE
+    measure_tb
+SET
+    totalUsageTime = '{measureModel.TotalUsageTime}'
+WHERE
+    idx = '{measureModel.Idx}'
+;";
+                        if (await measureDBManager.UpdateAsync(db, updateSql, measureModel) == 1)
+                        {
+                            Debug.WriteLine("SUCCESS UPDATE PROGRAM TOTAL USAGE TIME");
+                        }
+                        else
+                        {
+                            Debug.WriteLine("FAILURE UPDATE PROGRAM TOTAL USAGE TIME");
+                        }
+                    }
+                    else
+                    {
+                        measureModel.TotalUsageTime = OperationTime;
+                        string insertSql = @"
+INSERT INTO measure_tb(
+    totalUsageTime
+)
+VALUES(
+    @totalUsageTime
+);";
+                        if (await measureDBManager.InsertAsync(db, insertSql, measureModel) == 1)
+                        {
+                            Debug.WriteLine("SUCCESS SAVE PROGRAM TOTAL USAGE TIME");
+                        }
+                        else
+                        {
+                            Debug.WriteLine("FAILURE SAVE PROGRAM TOTAL USAGE TIME");
+                        }
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("SAVE PROGRAM TOTAL USAGE TIME ERROR : " + e.Message);
+            }
+        }
+        #endregion
     }
 }

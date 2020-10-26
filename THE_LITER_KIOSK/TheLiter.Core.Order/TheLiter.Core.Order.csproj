@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\ComDef.cs" />
+    <Compile Include="DataBase\Model\SalesModel.cs" />
     <Compile Include="Model\MenuModel.cs" />
     <Compile Include="OrderData.cs" />
     <Compile Include="Model\CategoryModel.cs" />
@@ -55,7 +56,14 @@
     <Compile Include="ViewModel\OrderViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TheLiter.Core.DBManager\TheLiter.Core.DBManager.csproj">
+      <Project>{6ec64a35-cb63-4c73-a201-65be762fbe6c}</Project>
+      <Name>TheLiter.Core.DBManager</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

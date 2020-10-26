@@ -1,9 +1,10 @@
 ﻿using Dapper;
 using System.Collections.Generic;
 using System.Data;
+using System.Linq;
 using System.Threading.Tasks;
 
-namespace THE_LITER_KIOSK.DataBase
+namespace TheLiter.Core.DBManager
 {
     public class DBManager<T>
     {

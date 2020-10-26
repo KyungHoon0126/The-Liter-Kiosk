@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace THE_LITER_KIOSK.DataBase
+namespace THE_LITER_KIOSK.DataBase.Models
 {
-    public class KioskDBManager : MySqlDBConnectionManager
+    public class SalesModel
     {
-
     }
 }

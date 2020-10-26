@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheLitter.Core.Place", "The
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "KQRCode", "KQRCode\KQRCode.csproj", "{62F1B37E-4BB2-442B-99A7-36279C5C0F3F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheLiter.Core.DBManager", "TheLiter.Core.DBManager\TheLiter.Core.DBManager.csproj", "{6EC64A35-CB63-4C73-A201-65BE762FBE6C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{62F1B37E-4BB2-442B-99A7-36279C5C0F3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{62F1B37E-4BB2-442B-99A7-36279C5C0F3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{62F1B37E-4BB2-442B-99A7-36279C5C0F3F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6EC64A35-CB63-4C73-A201-65BE762FBE6C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6EC64A35-CB63-4C73-A201-65BE762FBE6C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6EC64A35-CB63-4C73-A201-65BE762FBE6C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6EC64A35-CB63-4C73-A201-65BE762FBE6C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

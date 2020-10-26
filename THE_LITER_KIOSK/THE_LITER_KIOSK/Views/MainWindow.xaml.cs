@@ -3,6 +3,7 @@ using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using THE_LITER_KIOSK.DataBase;
 using THE_LITER_KIOSK.UIManager;
 
 namespace THE_LITER_KIOSK
@@ -117,7 +118,8 @@ namespace THE_LITER_KIOSK
 
         private void Window_Closed(object sender, EventArgs e)
         {
-
+            App.adminData.SynchronizationOperationTime();
+            App.adminData.adminViewModel.SaveProgramTotalUsageTime();
         }
     }
 }

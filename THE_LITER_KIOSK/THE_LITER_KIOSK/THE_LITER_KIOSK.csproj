@@ -158,9 +158,6 @@
       <DependentUpon>TableControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\MenuCategoryToKoreanConverter.cs" />
-    <Compile Include="DataBase\DBConnectionManager.cs" />
-    <Compile Include="DataBase\DBManager.cs" />
-    <Compile Include="DataBase\MySqlDBConnectionManager.cs" />
     <Compile Include="UIStateManager\UIStateManager.cs" />
     <Compile Include="UIStateManager\CustomControlType.cs" />
     <Compile Include="UIStateManager\CustomControlModel.cs" />
@@ -326,6 +323,10 @@
     <ProjectReference Include="..\TheLiter.Core.Admin\TheLiter.Core.Admin.csproj">
       <Project>{EDA87E45-7E4D-4931-AB53-21E214060FE3}</Project>
       <Name>TheLiter.Core.Admin</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TheLiter.Core.DBManager\TheLiter.Core.DBManager.csproj">
+      <Project>{6EC64A35-CB63-4C73-A201-65BE762FBE6C}</Project>
+      <Name>TheLiter.Core.DBManager</Name>
     </ProjectReference>
     <ProjectReference Include="..\TheLiter.Core.Order\TheLiter.Core.Order.csproj">
       <Project>{1EBD103B-9FBB-4D72-8823-A0F82D30AF20}</Project>
