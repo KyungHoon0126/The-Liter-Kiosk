@@ -1,13 +1,14 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using THE_LITER_KIOSK.UIManager;
 
 namespace THE_LITER_KIOSK.Controls
 {
     /// <summary>
     /// Interaction logic for LoginControl.xaml
     /// </summary>
-    public partial class LoginControl : UserControl
+    public partial class LoginControl : CustomControlModel
     {
         public delegate void OnLoginResultRecievedHandler(object sender, bool success);
         public event OnLoginResultRecievedHandler OnLoginResultRecieved;
@@ -65,6 +66,11 @@ namespace THE_LITER_KIOSK.Controls
             {
                 OnLoginResultRecieved?.Invoke(this, true);
             }
+        }
+
+        private void btnSignup_Click(object sender, RoutedEventArgs e)
+        {
+            App.uIStateManager.SwitchCustomControl(CustomControlType.SIGNUP);
         }
     }
 

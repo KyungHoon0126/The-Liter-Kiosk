@@ -58,6 +58,8 @@ namespace THE_LITER_KIOSK
             App.uIStateManager.SetCustomCtrl(CtrlPayCash, CustomControlType.PAYCASH);
             App.uIStateManager.SetCustomCtrl(CtrlPayCard, CustomControlType.PAYCARD);
             App.uIStateManager.SetCustomCtrl(CtrlPayComplete, CustomControlType.PAYCOMPLETE);
+            App.uIStateManager.SetCustomCtrl(CtrlLogin, CustomControlType.LOGIN);
+            App.uIStateManager.SetCustomCtrl(CtrlSignup, CustomControlType.SIGNUP);
         }
 
         private void SetStartCustomControl()
