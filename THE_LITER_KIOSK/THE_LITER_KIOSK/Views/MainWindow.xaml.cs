@@ -32,6 +32,7 @@ namespace THE_LITER_KIOSK
 
             LoadData();
             SetCustomControls();
+            SetStartCustomControl();
 
             App.adminData.adminViewModel.StartTime = DateTime.Now;
         }
@@ -64,7 +65,7 @@ namespace THE_LITER_KIOSK
 
         private void SetStartCustomControl()
         {
-            App.uIStateManager.PushCustomCtrl(CtrlHome);
+            App.uIStateManager.PushCustomCtrl(CtrlLogin);
         }
 
         private void btnHome_Click(object sender, RoutedEventArgs e)
@@ -109,7 +110,7 @@ namespace THE_LITER_KIOSK
             {
                 MessageBox.Show("로그인에 성공하셨습니다!");
                 CtrlLogin.Visibility = Visibility.Collapsed;
-                SetStartCustomControl();
+                App.uIStateManager.SwitchCustomControl(CustomControlType.HOME);
             }
         }
 

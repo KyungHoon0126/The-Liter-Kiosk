@@ -24,6 +24,19 @@ namespace THE_LITER_KIOSK.Controls.SignupControl
         public SignupControl()
         {
             InitializeComponent();
+            Loaded += SignupControl_Loaded;
         }
+
+        private void SignupControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            this.DataContext = App.memberData.memberViewModel;
+        }
+
+        #region UserControl Transition
+        private void btnMoveToLogin_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+        #endregion
     }
 }

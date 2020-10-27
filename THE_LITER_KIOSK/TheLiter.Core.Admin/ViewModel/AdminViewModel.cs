@@ -2,14 +2,14 @@
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
-using System.Threading.Tasks;
-using TheLiter.Core.DBManager;
-using TheLiter.Core.Admin.Database;
-using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using TheLiter.Core.Admin.Database;
+using TheLiter.Core.DBManager;
 
 namespace TheLiter.Core.Admin.ViewModel
 {

@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("Solomn.Core.DBManager")]
+[assembly: AssemblyTitle("TheLiter.Core.Member")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("Solomn.Core.DBManager")]
+[assembly: AssemblyProduct("TheLiter.Core.Member")]
 [assembly: AssemblyCopyright("Copyright ©  2020")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("10679bb4-c6f4-44e3-a23d-b7c4597776bf")]
+[assembly: Guid("3b669985-ca61-4b31-bd3b-02d9270a1bcd")]
 
 // Version information for an assembly consists of the following four values:
 //

@@ -9,42 +9,6 @@
              KeyDown="UserControl_KeyDown">
 
     <UserControl.Resources>
-        <Style x:Key="tbWatermarkStyle" TargetType="{x:Type TextBox}">
-            <Setter Property="Template">
-                <Setter.Value>
-                    <ControlTemplate TargetType="{x:Type TextBox}">
-                        <Border x:Name="Border"
-                            Background="Transparent"
-                            BorderBrush="#F1F1F1"
-                            CornerRadius="0"
-                            BorderThickness="1">
-                            <Grid Height="50">
-                                <Grid>
-                                    <Grid Margin="15 0 20 0">
-                                        <ScrollViewer x:Name="PART_ContentHost"
-                                                  VerticalAlignment="Center"
-                                                  Cursor="IBeam"/>
-                                        <TextBlock x:Name="WaterMark"
-                                               Foreground="#C2C2C2"
-                                               Margin="2 0 0 0"
-                                               VerticalAlignment="Center"
-                                               Visibility="Collapsed"
-                                               FontWeight="Medium"
-                                               Text="{TemplateBinding Tag}"/>
-                                    </Grid>
-                                </Grid>
-                            </Grid>
-                        </Border>
-                        <ControlTemplate.Triggers>
-                            <Trigger Property="Text" Value="">
-                                <Setter TargetName="WaterMark" Property="Visibility" Value="Visible"/>
-                            </Trigger>
-                        </ControlTemplate.Triggers>
-                    </ControlTemplate>
-                </Setter.Value>
-            </Setter>
-        </Style>
-
         <Style x:Key="pbWaterMarkStyle" TargetType="{x:Type PasswordBox}">
             <Setter Property="local:PasswordBoxMonitor.IsMonitoring"
                     Value="True"/>
@@ -145,6 +109,8 @@
                                 HorizontalAlignment="Left"
                                 FontSize="12"
                                 x:Name="btnSignup"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
                                 Click="btnSignup_Click"/>
 
                         <CheckBox x:Name="cbAutoLogin"

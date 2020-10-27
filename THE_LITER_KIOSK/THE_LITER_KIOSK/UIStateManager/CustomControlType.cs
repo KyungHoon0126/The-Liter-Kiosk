@@ -12,6 +12,6 @@
         PAYCARD,
         PAYCOMPLETE,
         LOGIN,
-        SIGNUP,
+        SIGNUP
     }
 }

@@ -217,6 +217,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="ResourceDictionaries\TbWaterMarkStyle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -336,6 +340,10 @@
     <ProjectReference Include="..\TheLiter.Core.DBManager\TheLiter.Core.DBManager.csproj">
       <Project>{6EC64A35-CB63-4C73-A201-65BE762FBE6C}</Project>
       <Name>TheLiter.Core.DBManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TheLiter.Core.Member\TheLiter.Core.Member.csproj">
+      <Project>{3B669985-CA61-4B31-BD3B-02D9270A1BCD}</Project>
+      <Name>TheLiter.Core.Member</Name>
     </ProjectReference>
     <ProjectReference Include="..\TheLiter.Core.Order\TheLiter.Core.Order.csproj">
       <Project>{1EBD103B-9FBB-4D72-8823-A0F82D30AF20}</Project>

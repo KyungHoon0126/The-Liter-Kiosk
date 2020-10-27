@@ -3,7 +3,8 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:SignupCrtl="clr-namespace:THE_LITER_KIOSK.Controls.SignupControl"
+        
+        xmlns:SignupCtrl="clr-namespace:THE_LITER_KIOSK.Controls.SignupControl"
         xmlns:LoginCtrl="clr-namespace:THE_LITER_KIOSK.Controls"
         xmlns:AdminCtrl="clr-namespace:THE_LITER_KIOSK.Controls.AdminControl"
         xmlns:HomeCtrl="clr-namespace:THE_LITER_KIOSK.Controls.HomeControl"
@@ -71,11 +72,10 @@
                 <PayCtrl:CashCalcControl x:Name="CtrlPayCash" Visibility="Collapsed" OnCompletePayByCash="CtrlPayCash_OnCompletePayByCash"/>
                 <PayCtrl:CardCalcControl x:Name="CtrlPayCard" Visibility="Collapsed"/>
                 <PayCtrl:PayCompleteControl x:Name="CtrlPayComplete" Visibility="Collapsed"/>
-                <SignupCrtl:SignupControl x:Name="CtrlSignup" Visibility="Collapsed" />
             </Grid>
         </Grid>
 
-        <LoginCtrl:LoginControl x:Name="CtrlLogin" Visibility="Visible" OnLoginResultRecieved="CtrlLogin_OnLoginResultRecieved"/>
-        
+        <LoginCtrl:LoginControl x:Name="CtrlLogin" Visibility="Collapsed" OnLoginResultRecieved="CtrlLogin_OnLoginResultRecieved"/>
+        <SignupCtrl:SignupControl x:Name="CtrlSignup" Visibility="Collapsed" />
     </Grid>
 </Window>

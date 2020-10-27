@@ -6,20 +6,48 @@
              xmlns:local="clr-namespace:THE_LITER_KIOSK.Controls.SignupControl"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+    
     <Grid Background="White">
-     <Grid.ColumnDefinitions>
+        <Grid.ColumnDefinitions>
             <ColumnDefinition Width="2.5*"/>
             <ColumnDefinition Width="5*"/>
             <ColumnDefinition Width="2.5*"/>
         </Grid.ColumnDefinitions>
+        
         <Grid Grid.Column="1">
-            <StackPanel>
-                <TextBox />
-                <TextBox />
-                <TextBox />
-                <TextBox />
-                <Button Content="회원가입"/>
-                <Button Content="돌아가기"/>
+            <StackPanel VerticalAlignment="Center">
+                <TextBox Margin="5"
+                         Text="{Binding Id}"
+                         Style="{StaticResource tbWatermarkStyle}"
+                         Tag="아이디"/>
+                
+                <TextBox Margin="5"
+                         Text="{Binding Pw}"
+                         Style="{StaticResource tbWatermarkStyle}"
+                         Tag="비밀번호"/>
+                
+                <TextBox Margin="5"
+                         Text="{Binding QrCode}"
+                         Style="{StaticResource tbWatermarkStyle}"
+                         Tag="QR 코드"/>
+                
+                <TextBox Margin="5"
+                         Text="{Binding BarCode}"
+                         Style="{StaticResource tbWatermarkStyle}"
+                         Tag="바코드"/>
+                
+                <Button x:Name="btnSignUp"
+                        Margin="5"
+                        Content="회원가입"
+                        Background="Transparent"
+                        BorderBrush="Transparent"/>
+                
+                <Button x:Name="btnMoveToLogin" 
+                        Margin="5"
+                        Content="돌아가기"
+                        Background="Transparent"
+                        BorderBrush="Transparent"
+                        Click="btnMoveToLogin_Click"/>
             </StackPanel>
         </Grid>
     </Grid>

@@ -60,7 +60,7 @@ namespace THE_LITER_KIOSK.Controls
             return false;
         }
 
-        private void UserControl_KeyDown(object sender, System.Windows.Input.KeyEventArgs e)
+        private void UserControl_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return && btnLogin.IsEnabled)
             {
@@ -68,10 +68,12 @@ namespace THE_LITER_KIOSK.Controls
             }
         }
 
+        #region UserControl Transition
         private void btnSignup_Click(object sender, RoutedEventArgs e)
         {
             App.uIStateManager.SwitchCustomControl(CustomControlType.SIGNUP);
         }
+        #endregion
     }
 
     #region PasswordBoxMonitor
