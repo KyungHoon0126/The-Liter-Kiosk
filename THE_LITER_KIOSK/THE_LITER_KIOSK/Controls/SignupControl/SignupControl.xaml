@@ -49,6 +49,7 @@
                         Content="돌아가기"
                         Background="Transparent"
                         BorderBrush="Transparent"
+                        FocusVisualStyle="{x:Null}"
                         Click="btnMoveToLogin_Click"/>
             </StackPanel>
         </Grid>

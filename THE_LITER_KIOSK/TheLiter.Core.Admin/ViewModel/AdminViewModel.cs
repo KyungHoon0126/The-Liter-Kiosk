@@ -106,14 +106,18 @@ FROM
                     measureItems = await measureDBManager.GetListAsync(db, selectSql, "");
                 }
 
-                return measureItems.Where(x => x.MeasureDate.ToString("yyyy-MM-dd") == DateTime.Now.ToString("yyyy-MM-dd")).FirstOrDefault();
+                var todayMeasureItem =  measureItems.Where(x => x.MeasureDate.ToString("yyyy-MM-dd") == DateTime.Now.ToString("yyyy-MM-dd")).FirstOrDefault();
+                if (todayMeasureItem != null)
+                    return todayMeasureItem;
+                else
+                    return new MeasureModel();
             }
             catch (Exception e)
             {
                 Debug.WriteLine("GET PROGRAM TOTAL USAGE TIME ERROR : " + e.Message);
             }
 
-            return null;
+            return new MeasureModel();
         }
 
         public async void SaveProgramTotalUsageTime()
@@ -127,7 +131,7 @@ FROM
                     var measureModel = new MeasureModel();
                     measureModel = await GetProgramTotalUsageTime();
                     
-                    if (measureModel != null)
+                    if (measureModel != null && measureModel.Idx != 0)
                     {
                         measureModel.TotalUsageTime += OperationTime;
                         string updateSql = $@"
