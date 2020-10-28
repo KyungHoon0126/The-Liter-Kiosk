@@ -32,7 +32,7 @@
                          Tag="QR 코드"/>
                 
                 <TextBox Margin="5"
-                         Text="{Binding BarCode}"
+                         Text="{Binding BarCode, UpdateSourceTrigger=PropertyChanged}"
                          Style="{StaticResource tbWatermarkStyle}"
                          Tag="바코드"/>
                 
@@ -40,7 +40,9 @@
                         Margin="5"
                         Content="회원가입"
                         Background="Transparent"
-                        BorderBrush="Transparent"/>
+                        BorderBrush="Transparent"
+                        FocusVisualStyle="{x:Null}"
+                        Command="{Binding SignUpCommand}"/>
                 
                 <Button x:Name="btnMoveToLogin" 
                         Margin="5"

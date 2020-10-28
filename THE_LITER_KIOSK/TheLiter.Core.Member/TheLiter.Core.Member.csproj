@@ -55,5 +55,11 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\TheLiter.Core.DBManager\TheLiter.Core.DBManager.csproj">
+      <Project>{6EC64A35-CB63-4C73-A201-65BE762FBE6C}</Project>
+      <Name>TheLiter.Core.DBManager</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
