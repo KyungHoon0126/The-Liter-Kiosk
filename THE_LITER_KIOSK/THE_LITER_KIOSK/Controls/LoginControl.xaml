@@ -95,7 +95,9 @@
                                      Style="{StaticResource pbWaterMarkStyle}"
                                      PasswordChanged="tb_TextChanged"
                                      local:PasswordHelper.Attach="True"
-                                     local:PasswordHelper.Password="{Binding Password, Mode=TwoWay}"/>
+                                     local:PasswordHelper.Password="{Binding Pw, 
+                                                                             Mode=TwoWay,
+                                                                             UpdateSourceTrigger=PropertyChanged}"/>
                     </Grid>
 
                     <Grid Grid.Row="2" Margin="5">
@@ -125,7 +127,7 @@
                                 Foreground="White"
                                 BorderBrush="#C2C2C2"
                                 Height="50"
-                                Click="btnLogin_Click"
+                                Command="{Binding LoginCommand}"
                                 Style="{StaticResource MaterialDesignFlatAccentBgButton}">
                         </Button>
                     </Grid>

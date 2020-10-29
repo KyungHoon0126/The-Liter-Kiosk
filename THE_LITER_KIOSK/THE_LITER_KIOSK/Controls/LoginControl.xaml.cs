@@ -22,17 +22,22 @@ namespace THE_LITER_KIOSK.Controls
         private void LoginControl_Loaded(object sender, RoutedEventArgs e)
         {
             btnLogin.IsEnabled = false;
+            App.memberData.memberViewModel.OnLoginResultRecieved += MemberViewModel_OnLoginResultRecieved;
+            this.DataContext = App.memberData.memberViewModel;
         }
 
-        private void btnLogin_Click(object sender, RoutedEventArgs e)
+        private void MemberViewModel_OnLoginResultRecieved(object sender, bool success)
         {
-            if (btnLogin.IsEnabled)
+            if (success)
             {
-                // if () => 로그인 성공, true
-                // else => false
-
-                // 일단은 true
-                OnLoginResultRecieved?.Invoke(this, true);
+                if (btnLogin.IsEnabled)
+                {
+                    OnLoginResultRecieved?.Invoke(this, true);
+                }
+            }
+            else
+            {
+                MessageBox.Show("로그인에 실패하였습니다.");
             }
         }
 

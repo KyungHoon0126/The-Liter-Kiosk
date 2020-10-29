@@ -13,6 +13,9 @@ namespace TheLiter.Core.Member.ViewModel
     {
         private DBManager<MemberModel> memberDBManager = new DBManager<MemberModel>();
 
+        public delegate void OnLoginResultRecievedHandler(object sender, bool success);
+        public event OnLoginResultRecievedHandler OnLoginResultRecieved;
+
         public event PropertyChangedEventHandler PropertyChanged;
         public void NotifyPropertyChanged(string propertyName)
         {
@@ -67,16 +70,44 @@ namespace TheLiter.Core.Member.ViewModel
 
         #region Command
         public ICommand SignUpCommand { get; set; }
+        public ICommand LoginCommand { get; set; }
         #endregion
 
         #region Constructor
         public MemberViewModel()
         {
+            InitCommands();
+        }
+        #endregion
+
+        #region Init
+        private void InitCommands()
+        {
             SignUpCommand = new DelegateCommand(OnSignUp, CanSignUp).ObservesProperty(() => BarCode);
+            LoginCommand = new DelegateCommand(OnLogin, CanLogin).ObservesProperty(() => Pw);
+        }
+
+        private void ClearSignUpData()
+        {
+            Id = string.Empty;
+            Pw = string.Empty;
+            QrCode = string.Empty;
+            BarCode = string.Empty;
+        }
+
+        private void ClearLoginData()
+        {
+            Id = string.Empty;
+            Pw = string.Empty;
         }
         #endregion
 
         #region Command Method
+        private bool CanSignUp()
+        {
+            return (Id != null) && (Pw != null) && (QrCode != null) && (BarCode != null);
+        }
+
         private async void OnSignUp()
         {
             try
@@ -121,18 +152,50 @@ VALUES(
             }
         }
 
-        private bool CanSignUp()
+        private async void OnLogin()
         {
-            return (Id != null) && (Pw != null) && (QrCode != null) && (BarCode != null);
+            try
+            {
+                using (IDbConnection db = GetConnection())
+                {
+                    db.Open();
+
+                    var memberModel = new MemberModel();
+
+                    string selectSql = $@"
+SELECT
+    *
+FROM
+     member_tb
+WHERE
+    id = '{Id}'
+;";
+                    var member = await memberDBManager.GetSingleDataAsync(db, selectSql, "");
+                    if (member != null)
+                    {
+                        SendOnLoginResultRecievedEvent(true);
+                    }
+                    else
+                    {
+                        SendOnLoginResultRecievedEvent(false);
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("LOGIN ERROR : " + e.Message);
+            }
+        }
+
+        private bool CanLogin()
+        {
+            return (Id != null) && (Pw != null);
         }
         #endregion
 
-        private void ClearSignUpData()
+        private void SendOnLoginResultRecievedEvent(bool success)
         {
-            Id = string.Empty;
-            Pw = string.Empty;
-            QrCode = string.Empty;
-            BarCode = string.Empty;
+            OnLoginResultRecieved?.Invoke(this, success);
         }
     }
 }
