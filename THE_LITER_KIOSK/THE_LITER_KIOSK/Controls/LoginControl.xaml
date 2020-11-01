@@ -118,6 +118,7 @@
                         <CheckBox x:Name="cbAutoLogin"
                                   Content="자동로그인"
                                   HorizontalAlignment="Right"
+                                  Checked="CbAutologin_Checked"
                                   Style="{StaticResource MaterialDesignAccentCheckBox}" Grid.Column="1"/>
                     </Grid>
 
@@ -128,6 +129,7 @@
                                 BorderBrush="#C2C2C2"
                                 Height="50"
                                 Command="{Binding LoginCommand}"
+                                IsEnabled="{Binding BtnEnabled}"
                                 Style="{StaticResource MaterialDesignFlatAccentBgButton}">
                         </Button>
                     </Grid>

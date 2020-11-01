@@ -38,14 +38,16 @@
                 
                 <Button x:Name="btnSignUp"
                         Margin="5"
+                        Height="50"
                         Content="회원가입"
-                        Background="Transparent"
                         BorderBrush="Transparent"
                         FocusVisualStyle="{x:Null}"
-                        Command="{Binding SignUpCommand}"/>
+                        Command="{Binding SignUpCommand}"
+                        Style="{StaticResource MaterialDesignFlatAccentBgButton}"/>
                 
                 <Button x:Name="btnMoveToLogin" 
                         Margin="5"
+                        Height="50"
                         Content="돌아가기"
                         Background="Transparent"
                         BorderBrush="Transparent"

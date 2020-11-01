@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using THE_LITER_KIOSK.Common;
 using THE_LITER_KIOSK.UIManager;
 using TheLiter.Core.Admin;
 using TheLiter.Core.Member;
@@ -19,5 +20,10 @@ namespace THE_LITER_KIOSK
         public static PlaceData placeData = new PlaceData();
         public static AdminData adminData = new AdminData();
         public static MemberData memberData = new MemberData();
+
+        public App()
+        {
+            Setting.Load();
+        }
     }
 }

@@ -66,6 +66,28 @@ namespace TheLiter.Core.Member.ViewModel
                 NotifyPropertyChanged(nameof(BarCode));
             }
         }
+
+        private string _serverAddress;
+        public string ServerAddress
+        {
+            get => _serverAddress;
+            set
+            {
+                _serverAddress = value.Trim();
+                NotifyPropertyChanged(nameof(ServerAddress));
+            }
+        }
+
+        private bool _btnEnabled;
+        public bool BtnEnabled
+        {
+            get => _btnEnabled;
+            set
+            {
+                _btnEnabled = value;
+                NotifyPropertyChanged(nameof(BtnEnabled));
+            }
+        }
         #endregion
 
         #region Command
@@ -152,8 +174,11 @@ VALUES(
             }
         }
 
-        private async void OnLogin()
+        internal async void OnLogin()
         {
+            BtnEnabled = false;
+            var member = new MemberModel();
+
             try
             {
                 using (IDbConnection db = GetConnection())
@@ -169,22 +194,29 @@ FROM
      member_tb
 WHERE
     id = '{Id}'
+AND
+    pw = '{Pw}'
 ;";
-                    var member = await memberDBManager.GetSingleDataAsync(db, selectSql, "");
-                    if (member != null)
-                    {
-                        SendOnLoginResultRecievedEvent(true);
-                    }
-                    else
-                    {
-                        SendOnLoginResultRecievedEvent(false);
-                    }
+                    member = await memberDBManager.GetSingleDataAsync(db, selectSql, "");
+                    if (member.Id == null)
+                        member = null;
                 }
             }
             catch (Exception e)
             {
                 Debug.WriteLine("LOGIN ERROR : " + e.Message);
             }
+
+            if (member != null)
+            {
+                SendOnLoginResultRecievedEvent(true);
+            }
+            else
+            {
+                SendOnLoginResultRecievedEvent(false);
+            }
+
+            BtnEnabled = true;
         }
 
         private bool CanLogin()

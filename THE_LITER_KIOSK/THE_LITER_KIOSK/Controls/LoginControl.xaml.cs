@@ -1,6 +1,9 @@
-﻿using System.Windows;
+﻿using System;
+using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using THE_LITER_KIOSK.Common;
 using THE_LITER_KIOSK.UIManager;
 
 namespace THE_LITER_KIOSK.Controls
@@ -10,8 +13,10 @@ namespace THE_LITER_KIOSK.Controls
     /// </summary>
     public partial class LoginControl : CustomControlModel
     {
+        private bool isAutoLogin = false;
+
         public delegate void OnLoginResultRecievedHandler(object sender, bool success);
-        public event OnLoginResultRecievedHandler OnLoginResultRecieved;
+        public event OnLoginResultRecievedHandler LoginResultRecieved;
 
         public LoginControl()
         {
@@ -21,24 +26,67 @@ namespace THE_LITER_KIOSK.Controls
 
         private void LoginControl_Loaded(object sender, RoutedEventArgs e)
         {
-            btnLogin.IsEnabled = false;
+            CheckAutoLogin();
             App.memberData.memberViewModel.OnLoginResultRecieved += MemberViewModel_OnLoginResultRecieved;
             this.DataContext = App.memberData.memberViewModel;
+        }
+
+        private void CheckAutoLogin()
+        {
+            string id = Setting.GetUserId();
+            isAutoLogin = Setting.IsAutoLogin;
+            cbAutoLogin.IsChecked = isAutoLogin;
+            App.memberData.memberViewModel.Id = id;
+
+            string pw = Setting.GetUserPw();
+            pbPw.Password = pw;
+
+            if (isAutoLogin)
+            {
+                App.memberData.memberViewModel.Pw = pw;
+                App.memberData.Login();
+            }
+            else if (!string.IsNullOrEmpty(id))
+            {
+                pbPw.Focus();
+            }
+            else
+            {
+                tbId.Focus();
+            }
         }
 
         private void MemberViewModel_OnLoginResultRecieved(object sender, bool success)
         {
             if (success)
             {
-                if (btnLogin.IsEnabled)
-                {
-                    OnLoginResultRecieved?.Invoke(this, true);
-                }
+                Setting.SaveUserdata(App.memberData.memberViewModel.Id, App.memberData.memberViewModel.Pw);
+                Setting.Save();
+            }
+
+            SetUserData(App.memberData.memberViewModel.Id, App.memberData.memberViewModel.Pw);
+
+            if (isAutoLogin == true)
+            {
+                Setting.IsAutoLogin = true;
+            }
+
+            LoginResultRecieved?.Invoke(this, success);
+        }
+
+        private void SetUserData(string id, string pw)
+        {
+            if (isAutoLogin)
+            {
+                Setting.SaveUserdata(id, pw);
             }
             else
             {
-                MessageBox.Show("로그인에 실패하였습니다.");
+                Setting.SaveUserData(id);
             }
+
+            Setting.IsAutoLogin = isAutoLogin;
+            Setting.Save();
         }
 
         private void tb_TextChanged(object sender, RoutedEventArgs e)
@@ -69,7 +117,7 @@ namespace THE_LITER_KIOSK.Controls
         {
             if (e.Key == Key.Return && btnLogin.IsEnabled)
             {
-                OnLoginResultRecieved?.Invoke(this, true);
+                App.memberData.Login();
             }
         }
 
@@ -79,6 +127,20 @@ namespace THE_LITER_KIOSK.Controls
             App.uIStateManager.SwitchCustomControl(CustomControlType.SIGNUP);
         }
         #endregion
+
+        private void CbAutologin_Checked(object sender, EventArgs e)
+        {
+            CheckBox cb = sender as CheckBox;
+
+            if (cb.IsChecked ?? false)
+            {
+                isAutoLogin = true;
+            }
+            else
+            {
+                isAutoLogin = false;
+            }
+        }
     }
 
     #region PasswordBoxMonitor

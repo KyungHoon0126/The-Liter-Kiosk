@@ -75,7 +75,7 @@
             </Grid>
         </Grid>
 
-        <LoginCtrl:LoginControl x:Name="CtrlLogin" Visibility="Collapsed" OnLoginResultRecieved="CtrlLogin_OnLoginResultRecieved"/>
+        <LoginCtrl:LoginControl x:Name="CtrlLogin" Visibility="Collapsed" LoginResultRecieved="CtrlLogin_OnLoginResultRecieved"/>
         <SignupCtrl:SignupControl x:Name="CtrlSignup" Visibility="Collapsed" />
     </Grid>
 </Window>
