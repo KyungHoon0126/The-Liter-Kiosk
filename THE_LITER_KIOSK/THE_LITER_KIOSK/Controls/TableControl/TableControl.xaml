@@ -5,9 +5,15 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:THE_LITER_KIOSK.Controls.TableControl"
+             xmlns:converter ="clr-namespace:THE_LITER_KIOSK.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
+    <base:CustomControlModel.Resources>
+        <converter:BackgroundColorConverter x:Key="BackgroundColorConverter"/>
+        <converter:IsUsedToFocusableConverter x:Key="IsUsedToFocusableConverter" />
+    </base:CustomControlModel.Resources>
+    
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="8*" />
@@ -29,20 +35,21 @@
 
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
-                        <Setter Property="Background" Value="#e7dff3"/>
-                        <Setter Property="Height" Value="240"/>
-                        <Setter Property="Width" Value="640"/>
+                        <Setter Property="Margin" Value="0"/>
+                        <Setter Property="Padding" Value="0" />
                         <Setter Property="HorizontalContentAlignment" Value="Center"/>
+                        <Setter Property="Focusable" Value="{Binding IsUsed, Converter={StaticResource IsUsedToFocusableConverter} }" />
                     </Style>
                 </ListView.ItemContainerStyle>
                 
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel>
+                        <StackPanel Width="640" Height="240" Background="{Binding IsUsed, Converter={StaticResource BackgroundColorConverter}}">
                             <TextBlock Text="{Binding TableIdx, StringFormat={}{0}번}"
                                        FontSize="30"
-                                       FontWeight="Bold"/>
-                           <!-- <TextBlock Text="{Binding TotalPrice, StringFormat={}{0}원}"
+                                       FontWeight="Bold"
+                                       />
+                            <!-- <TextBlock Text="{Binding TotalPrice, StringFormat={}{0}원}"
                                FontSize="30" /> -->
                             <TextBlock x:Name="tbRemainTime"
                                        Text="{Binding RemainTime}"

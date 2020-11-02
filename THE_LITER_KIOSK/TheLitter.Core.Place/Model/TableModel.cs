@@ -22,6 +22,7 @@ namespace TheLitter.Core.Place.Model
                 (sender as DispatcherTimer).Stop();
                 RemainTime = string.Empty;
                 LeftTime = 60;
+                IsUsed = false;
             }
         }
 
@@ -51,6 +52,13 @@ namespace TheLitter.Core.Place.Model
         {
             get => _remainTime;
             set => SetProperty(ref _remainTime, value);
+        }
+
+        private bool _isUsed;
+        public bool IsUsed
+        {
+            get => _isUsed;
+            set => SetProperty(ref _isUsed, value);
         }
 
         public int LeftTime { get; set; } = 60;

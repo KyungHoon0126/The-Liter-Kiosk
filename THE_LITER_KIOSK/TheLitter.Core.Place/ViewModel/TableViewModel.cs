@@ -49,47 +49,56 @@ namespace TheLitter.Core.Place.ViewModel
                 TableItems.Add(new TableModel()
                 {
                     TableIdx = 1,
-                    TotalPrice = 0
+                    TotalPrice = 0,
+                    IsUsed=false,
                 });
                 TableItems.Add(new TableModel()
                 {
                     TableIdx = 2,
-                    TotalPrice = 0
+                    TotalPrice = 0,             
+                    IsUsed=false,
                 });
                 TableItems.Add(new TableModel()
                 {
                     TableIdx = 3,
-                    TotalPrice = 0
+                    TotalPrice = 0,
+                    IsUsed=false,
                 });
                 TableItems.Add(new TableModel()
                 {
                     TableIdx = 4,
-                    TotalPrice = 0
+                    TotalPrice = 0, 
+                    IsUsed=false,
                 });
                 TableItems.Add(new TableModel()
                 {
                     TableIdx = 5,
-                    TotalPrice = 0
+                    TotalPrice = 0,
+                    IsUsed=false,
                 });
                 TableItems.Add(new TableModel()
                 {
                     TableIdx = 6,
-                    TotalPrice = 0
+                    TotalPrice = 0,
+                   IsUsed=false,
                 });
                 TableItems.Add(new TableModel()
                 {
                     TableIdx = 7,
-                    TotalPrice = 0
+                    TotalPrice = 0,
+                    IsUsed=false,
                 });
                 TableItems.Add(new TableModel()
                 {
                     TableIdx = 8,
-                    TotalPrice = 0
+                    TotalPrice = 0,
+                    IsUsed=false,
                 });
                 TableItems.Add(new TableModel()
                 {
                     TableIdx = 9,
-                    TotalPrice = 0
+                    TotalPrice = 0,
+                    IsUsed=false,
                 });
                 #endregion
             });
