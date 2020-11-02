@@ -163,6 +163,8 @@
     <Compile Include="Controls\TableControl\TableControl.xaml.cs">
       <DependentUpon>TableControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Converters\BackgroundColorConverter.cs" />
+    <Compile Include="Converters\IsUsedToFocusableConverter.cs" />
     <Compile Include="Converters\MenuCategoryToKoreanConverter.cs" />
     <Compile Include="UIStateManager\UIStateManager.cs" />
     <Compile Include="UIStateManager\CustomControlType.cs" />
