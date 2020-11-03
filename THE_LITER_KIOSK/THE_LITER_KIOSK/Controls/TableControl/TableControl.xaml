@@ -35,8 +35,6 @@
 
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
-                        <Setter Property="Margin" Value="0"/>
-                        <Setter Property="Padding" Value="0" />
                         <Setter Property="HorizontalContentAlignment" Value="Center"/>
                         <Setter Property="Focusable" Value="{Binding IsUsed, Converter={StaticResource IsUsedToFocusableConverter} }" />
                     </Style>
@@ -44,7 +42,7 @@
                 
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Width="640" Height="240" Background="{Binding IsUsed, Converter={StaticResource BackgroundColorConverter}}">
+                        <StackPanel Width="640" Height="240"  Background="{Binding IsUsed, Converter={StaticResource BackgroundColorConverter}}">
                             <TextBlock Text="{Binding TableIdx, StringFormat={}{0}번}"
                                        FontSize="30"
                                        FontWeight="Bold"
