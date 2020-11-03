@@ -13,6 +13,9 @@
 
                 <ResourceDictionary Source="ResourceDictionaries/CtrlOrderBtnStyle.xaml"/>
                 <ResourceDictionary Source="ResourceDictionaries/TbWaterMarkStyle.xaml"/>
+                
+                <ResourceDictionary Source="pack://application:,,,/LoadingIndicators.WPF;component/Colors.xaml"/>
+                <ResourceDictionary Source="pack://application:,,,/LoadingIndicators.WPF;component/Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
 
             <Style TargetType="{x:Type TextBlock}" BasedOn="{StaticResource {x:Type TextBlock}}">
@@ -22,5 +25,6 @@
                 <Setter Property="FontFamily" Value="AppleSDGothicNeoSB00"/>
             </Style>
         </ResourceDictionary>
+        
     </Application.Resources>
 </Application>
