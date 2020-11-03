@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using THE_LITER_KIOSK.DataBase.Models;
 using THE_LITER_KIOSK.UIManager;
 
 namespace THE_LITER_KIOSK.Controls.PayControl
@@ -29,7 +31,31 @@ namespace THE_LITER_KIOSK.Controls.PayControl
 
         private void webcam_QrDecoded(object sender, string e)
         {
-            tbRecog.Text = e;
+            var qrCode = App.orderData.orderViewModel.QrCode;
+            if (qrCode != null)
+            {
+                return;
+            }
+
+            qrCode = e;
+
+            var selectedTable = App.placeData.tableViewModel.SelectedTable;
+            var memberId = App.memberData.memberViewModel.Id;
+            var payTime = DateTime.Now;
+            var paymentType = PaymentType.CARD.ToString();
+
+            if (selectedTable != null)
+            {
+                // 매장 식사
+                App.orderData.orderViewModel.SaveSalesInformation(payTime, paymentType, selectedTable.TableIdx, memberId);
+                App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE);
+            }
+            else
+            {
+                // 포장 주문
+                App.orderData.orderViewModel.SaveSalesInformation(payTime, paymentType, null, memberId);
+                App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE); 
+            }
         }
     }
 }

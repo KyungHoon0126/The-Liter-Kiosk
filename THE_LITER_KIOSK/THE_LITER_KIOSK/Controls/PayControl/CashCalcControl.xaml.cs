@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
 using THE_LITER_KIOSK.UIManager;
 
 namespace THE_LITER_KIOSK.Controls.PayControl
@@ -14,6 +17,7 @@ namespace THE_LITER_KIOSK.Controls.PayControl
         public CashCalcControl()
         {
             InitializeComponent();
+            tbCardNumber.Focus();
             Loaded += CashCalcControl_Loaded;
         }
 
@@ -27,12 +31,16 @@ namespace THE_LITER_KIOSK.Controls.PayControl
         {
             App.uIStateManager.SwitchCustomControl(CustomControlType.PAY);
         }
+        #endregion
 
-        private void btnCashCalcOk_Click(object sender, RoutedEventArgs e)
+        private void CustomControlModel_KeyDown(object sender, KeyEventArgs e)
         {
-            App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE);
+            if (e.Key == Key.Return)
+            {
+                tbCardNumber.Text += e.Key;
+            }
+            Debug.WriteLine(tbCardNumber.Text);
             OnCompletePayByCash?.Invoke();
         }
-        #endregion
     }
 }

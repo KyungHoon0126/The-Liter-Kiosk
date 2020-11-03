@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
-using THE_LITER_KIOSK.DataBase;
 using THE_LITER_KIOSK.UIManager;
 
 namespace THE_LITER_KIOSK

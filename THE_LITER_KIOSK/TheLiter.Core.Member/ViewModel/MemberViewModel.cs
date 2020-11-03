@@ -1,7 +1,6 @@
 ﻿using Prism.Commands;
 using System;
 using System.ComponentModel;
-using System.Data;
 using System.Diagnostics;
 using System.Windows.Input;
 using TheLiter.Core.DBManager;
@@ -17,10 +16,6 @@ namespace TheLiter.Core.Member.ViewModel
         public event OnLoginResultRecievedHandler OnLoginResultRecieved;
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public void NotifyPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
 
         #region Properties
         private string _id;
@@ -42,6 +37,17 @@ namespace TheLiter.Core.Member.ViewModel
             {
                 _pw = value;
                 NotifyPropertyChanged(nameof(Pw));
+            }
+        }
+
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set
+            {
+                _name = value;
+                NotifyPropertyChanged(nameof(Name));
             }
         }
 
@@ -113,28 +119,23 @@ namespace TheLiter.Core.Member.ViewModel
         {
             Id = string.Empty;
             Pw = string.Empty;
+            Name = string.Empty;
             QrCode = string.Empty;
             BarCode = string.Empty;
-        }
-
-        private void ClearLoginData()
-        {
-            Id = string.Empty;
-            Pw = string.Empty;
         }
         #endregion
 
         #region Command Method
         private bool CanSignUp()
         {
-            return (Id != null) && (Pw != null) && (QrCode != null) && (BarCode != null);
+            return (Id != null) && (Pw != null) && (Name != null) && (QrCode != null) && (BarCode != null);
         }
 
         private async void OnSignUp()
         {
             try
             {
-                using (IDbConnection db = GetConnection())
+                using (var db = GetConnection())
                 {
                     db.Open();
 
@@ -143,19 +144,22 @@ namespace TheLiter.Core.Member.ViewModel
                     memberModel.QrCode = QrCode;
                     memberModel.Id = Id;
                     memberModel.Pw = Pw;
+                    memberModel.Name = Name;
 
                     string insertSql = @"
 INSERT INTO member_tb(
     BarCode,
     QrCode,
     Id,
-    Pw
+    Pw,
+    Name
 )
 VALUES(
     @qrCode,
     @barCode,
     @id,
-    @pw
+    @pw,
+    @name
 );";
                     if (await memberDBManager.InsertAsync(db, insertSql, memberModel) == 1)
                     {
@@ -181,7 +185,7 @@ VALUES(
 
             try
             {
-                using (IDbConnection db = GetConnection())
+                using (var db = GetConnection())
                 {
                     db.Open();
 
@@ -225,9 +229,18 @@ AND
         }
         #endregion
 
+        #region DataBase
+        
+        #endregion
+
         private void SendOnLoginResultRecievedEvent(bool success)
         {
             OnLoginResultRecieved?.Invoke(this, success);
+        }
+
+        public void NotifyPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

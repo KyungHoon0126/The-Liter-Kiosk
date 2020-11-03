@@ -28,21 +28,23 @@
                 <TextBlock Text="카드 계산을 선택하셨습니다." />
                 <TextBlock Text="카메라에 QR코드를 인식하세요" />
 
-                <TextBlock Text="{Binding OrderTotalPrice, StringFormat=총 금액 : \{0:N0\}원}"/>
+                <TextBlock Text="{Binding RelativeSource={RelativeSource AncestorType={x:Type base:CustomControlModel}},
+                                          Path=DataContext.OrderTotalPrice,
+                                          StringFormat=총 금액 : \{0:N0\}원}"/>
             </StackPanel>
         </Grid>
 
         <Grid Grid.Row="1">
-            <StackPanel>
-                <qrcode:KQRWebCam x:Name="webcam" Margin="12" 
-                                  QrDecoded="webcam_QrDecoded"/>
-                <TextBox x:Name="tbRecog" Margin="12,12,12,12" 
-                         Text="인식된 값이 여기에 나온단다" 
-                         Height="30" 
-                         VerticalAlignment="Bottom" 
-                         HorizontalContentAlignment="Stretch"
-                         VerticalContentAlignment="Center"/>
-            </StackPanel>
+            <qrcode:KQRWebCam x:Name="webcam" 
+                              Margin="12" 
+                              QrDecoded="webcam_QrDecoded" />
+            <TextBox x:Name="tbRecog" 
+                     Margin="12,12,12,12" 
+                     Text="{Binding QrCode}" 
+                     Height="30" 
+                     VerticalAlignment="Bottom" 
+                     HorizontalContentAlignment="Stretch" 
+                     VerticalContentAlignment="Center"/>
         </Grid>
 
         <Grid Grid.Row="2">

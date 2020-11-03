@@ -25,7 +25,12 @@
                          Text="{Binding Pw}"
                          Style="{StaticResource tbWatermarkStyle}"
                          Tag="비밀번호"/>
-                
+
+                <TextBox Margin="5"
+                         Text="{Binding Name}"
+                         Style="{StaticResource tbWatermarkStyle}"
+                         Tag="이름"/>
+
                 <TextBox Margin="5"
                          Text="{Binding QrCode}"
                          Style="{StaticResource tbWatermarkStyle}"

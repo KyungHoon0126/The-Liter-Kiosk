@@ -1,14 +1,23 @@
 ﻿using Prism.Mvvm;
+using System;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using THE_LITER_KIOSK.Common;
+using THE_LITER_KIOSK.DataBase.Models;
+using TheLiter.Core.DBManager;
 using TheLiter.Core.Order.Model;
 
 namespace TheLiter.Core.Order.ViewModel
 {
-    public class OrderViewModel : BindableBase
+    public class OrderViewModel : MySqlDBConnectionManager, INotifyPropertyChanged
     {
+        private DBManager<SalesModel> salesDBManager = new DBManager<SalesModel>();
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
         #region Properties
         private ObservableCollection<CategoryModel> _categoryItems;
         public ObservableCollection<CategoryModel> CategoryItems
@@ -16,7 +25,8 @@ namespace TheLiter.Core.Order.ViewModel
             get => _categoryItems;
             set
             {
-                SetProperty(ref _categoryItems, value);
+                _categoryItems = value;
+                NotifyPropertyChanged(nameof(CategoryItems));
             }
         }
 
@@ -26,43 +36,67 @@ namespace TheLiter.Core.Order.ViewModel
             get => _menuItems;
             set
             {
-                SetProperty(ref _menuItems, value);
+                _menuItems = value;
+                NotifyPropertyChanged(nameof(MenuItems));
             }
-        }
-
-        private MenuModel _selectedMenu;
-        public MenuModel SelectedMenu
-        {
-            get => _selectedMenu;
-            set => SetProperty(ref _selectedMenu, value);
         }
 
         private ObservableCollection<MenuModel> _orderedMenuItems;
         public ObservableCollection<MenuModel> OrderedMenuItems
         {
             get => _orderedMenuItems;
-            set => SetProperty(ref _orderedMenuItems, value);
+            set 
+            {
+                _orderedMenuItems = value; 
+                NotifyPropertyChanged(nameof(OrderedMenuItems)); 
+            }
         }
 
         private int _orderTotalPrice = 0;
         public int OrderTotalPrice
         {
             get => _orderTotalPrice;
-            set => SetProperty(ref _orderTotalPrice, value);
+            set
+            {
+                _orderTotalPrice = value;
+                NotifyPropertyChanged(nameof(OrderTotalPrice));
+            }
         }
+
+        private string _qrCode;
+        public string QrCode
+        {
+            get => _qrCode;
+            set
+            {
+                _qrCode = value;
+                NotifyPropertyChanged(nameof(QrCode));
+            }
+        }
+
+        #region Sales
+        public DateTime PayTime { get; set; }
+        public string PayType { get; set; }
+        public int TableIdx { get; set; }
+        public string MemberId { get; set; }
+        #endregion
         #endregion
 
+        #region Constructor
         public OrderViewModel()
         {
             InitVariables();
         }
+        #endregion
 
+        #region Init
         private void InitVariables()
         {
             CategoryItems = new ObservableCollection<CategoryModel>();
             MenuItems = new ObservableCollection<MenuModel>();
             OrderedMenuItems = new ObservableCollection<MenuModel>();
         }
+        #endregion
 
         public void LoadOrderData()
         {
@@ -630,7 +664,76 @@ namespace TheLiter.Core.Order.ViewModel
 
         public bool IsOrderedMenuListValid()
         {
-            return (OrderedMenuItems.Count > 0) ? true : false;
+            return (OrderedMenuItems != null && OrderedMenuItems.Count > 0) ? true : false;
+        }
+
+        #region DataBase
+        public async void SaveSalesInformation(DateTime payTime, string payType, int? tableIdx, string memberId)
+        {
+            if (IsOrderedMenuListValid() && tableIdx != null)
+            {
+                try
+                {
+                    using (var db = GetConnection())
+                    {
+                        db.Open();
+
+                        for (int i = 0; i < OrderedMenuItems.Count; i++)
+                        {
+                            var salesModel = new SalesModel();
+                            salesModel.Category = OrderedMenuItems[i].MenuCategory.ToString();
+                            salesModel.Name = OrderedMenuItems[i].Name;
+                            salesModel.Count = OrderedMenuItems[i].Count;
+                            salesModel.Price = OrderedMenuItems[i].TotalPrice;
+                            salesModel.PayTime = payTime;
+                            salesModel.PayType = payType;
+                            salesModel.TableIdx = (int)tableIdx;
+                            salesModel.MemberId = memberId;
+
+                            string insertSql = @"
+    INSERT INTO sales_tb(
+        menu_category,
+        menu_name,
+        count,
+        price,
+        payTime,
+        payType,
+        tableIdx,
+        member_id
+    
+    )
+    VALUES(
+        @Category,
+        @Name,
+        @Count,
+        @Price,
+        @PayTime,
+        @PayType,
+        @TableIdx,
+        @MemberId
+    );";
+                            if (await salesDBManager.InsertAsync(db, insertSql, salesModel) == 1)
+                            {
+                                Debug.WriteLine("SUCCESS SAVE SALES INFORMATION");
+                            }
+                            else
+                            {
+                                Debug.WriteLine("FAILURE SAVE SALES INFORMATION");
+                            }
+                        }
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.Write("SAVE SALE INFORMATION ERROR : " + e.Message);
+                }
+            }
+        }
+        #endregion
+
+        public void NotifyPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

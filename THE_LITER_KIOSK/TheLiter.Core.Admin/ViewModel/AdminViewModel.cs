@@ -17,12 +17,6 @@ namespace TheLiter.Core.Admin.ViewModel
     {
         private DBManager<MeasureModel> measureDBManager = new DBManager<MeasureModel>();
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void NotifyPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
         #region Properties
         private DateTime _startTime;
         public DateTime StartTime
@@ -178,5 +172,11 @@ VALUES(
             }
         }
         #endregion
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        public void NotifyPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

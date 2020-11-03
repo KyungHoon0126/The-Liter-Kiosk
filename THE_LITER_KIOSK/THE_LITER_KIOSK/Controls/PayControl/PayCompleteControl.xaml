@@ -17,19 +17,24 @@
     
     <Grid Background="White">
         <Grid.RowDefinitions>
+            <RowDefinition Height="1.5*"/>
+            <RowDefinition Height="1.5*"/>
             <RowDefinition Height="2*"/>
             <RowDefinition Height="2*"/>
-            <RowDefinition Height="3*"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
-            <StackPanel Orientation="Horizontal" VerticalAlignment="Bottom" HorizontalAlignment="Center">
-                <TextBlock Text="결제되었습니다."/>
-                <TextBlock Text="{Binding OrderTotalPrice, StringFormat=총 금액 : \{0:N0\}원}"/>
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"> 
+                <TextBlock Text="{Binding MemberName, StringFormat=회원명 : {0}}"/>
+                <TextBlock Text="{Binding QrCode, StringFormat=인식된 카드번호 : {0}}"/>
             </StackPanel>
         </Grid>
 
         <Grid Grid.Row="1">
+            <TextBlock Text="{Binding OrderTotalPrice, StringFormat=총 금액 : \{0:N0\} 결제 되었습니다.}"/>
+        </Grid>
+
+        <Grid Grid.Row="2">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
                 <!--TODO : 주문번호 추가하기-->
                 <!--<TextBlock Text="{Binding OrderIdx, StringFormat={}주문번호 : {0}}"

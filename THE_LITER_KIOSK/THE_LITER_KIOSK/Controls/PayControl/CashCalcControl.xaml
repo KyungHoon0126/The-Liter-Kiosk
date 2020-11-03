@@ -5,7 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:THE_LITER_KIOSK.Controls.PayControl"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="800"
+             KeyDown="CustomControlModel_KeyDown">
 
     <Grid Background="White">
         <Grid.RowDefinitions>
@@ -31,55 +32,28 @@
                     </StackPanel.Resources>
 
                     <TextBlock Text="{Binding OrderTotalPrice, StringFormat=총 금액 : \{0:N0\}원}"/>
-                    
-                    <!--TODO : 카드 번호 추가-->
-                    <TextBlock Text="인식된 카드번호 : 001230456"/>
-                    <!--<TextBlock Text="{Binding CardNumber, StringFormat={}인식된 카드 번호 : {0}}"/>-->
 
-                     <!--TODO : 회원 정보 추가-->
-                    <TextBlock Text="회원명 : 홍길동"/>
-                    <!--<TextBlock Text="{Binding MemberName, StringFormat={}회원명 : {0}}"/>-->
+                    <TextBox x:Name="tbCardNumber"
+                             FontSize="30"
+                             Focusable="True"/>
                 </StackPanel>
             </StackPanel>
         </Grid>
 
         <Grid Grid.Row="1">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-
-            <Grid Grid.Column="0">
-                <Button x:Name="btnTablePrev"
-                        Margin="10"
-                        Content="이전" 
-                        Background="#008575"
-                        HorizontalAlignment="Right"
-                        Style="{DynamicResource btnCommonStyle}"
-                        Click="btnTablePrev_Click">
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="10"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
-            </Grid>
-
-            <Grid Grid.Column="1">
-                <Button x:Name="btnCashCalcOk"
-                        Margin="10"
-                        Content="확인" 
-                        Background="#008575"
-                        HorizontalAlignment="Left"
-                        Style="{DynamicResource btnCommonStyle}"
-                        Click="btnCashCalcOk_Click">
-                    <Button.Resources>
-                        <Style TargetType="Border">
-                            <Setter Property="CornerRadius" Value="10"/>
-                        </Style>
-                    </Button.Resources>
-                </Button>
-            </Grid>
+            <Button x:Name="btnTablePrev"
+                    Margin="10"
+                    Content="이전" 
+                    Background="#008575"
+                    Style="{DynamicResource btnCommonStyle}"
+                    HorizontalAlignment="Left"
+                    Click="btnTablePrev_Click">
+                <Button.Resources>
+                    <Style TargetType="Border">
+                        <Setter Property="CornerRadius" Value="10"/>
+                    </Style>
+                </Button.Resources>
+            </Button>
         </Grid>
     </Grid>
 </base:CustomControlModel>

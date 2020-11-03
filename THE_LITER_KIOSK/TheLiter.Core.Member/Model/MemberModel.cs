@@ -40,6 +40,13 @@ namespace TheLiter.Core.Member.Model
             set => SetProperty(ref _pw, value);
         }
 
+        private string _name;
+        public string Name
+        {
+            get => _name;
+            set => SetProperty(ref _name, value);
+        }
+
         public object Clone()
         {
             return new MemberModel()
@@ -48,7 +55,8 @@ namespace TheLiter.Core.Member.Model
                 QrCode = this.QrCode,
                 BarCode = this.BarCode,
                 Id = this.Id,
-                Pw = this.Pw
+                Pw = this.Pw,
+                Name = this.Name
             };
         }
     }

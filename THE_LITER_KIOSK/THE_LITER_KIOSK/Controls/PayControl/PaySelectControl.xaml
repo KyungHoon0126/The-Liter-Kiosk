@@ -75,7 +75,7 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid>
-                                            <TextBlock Text="{Binding TotalPrice, StringFormat=\{0:N0\}원}"
+                                            <TextBlock Text="{Binding OrderTotalPrice, StringFormat=\{0:N0\}원}"
                                                        Margin="5"/>
                                         </Grid>
                                     </DataTemplate>
