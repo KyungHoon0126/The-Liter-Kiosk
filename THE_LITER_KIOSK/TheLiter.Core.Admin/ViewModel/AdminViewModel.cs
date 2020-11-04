@@ -9,6 +9,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using TheLiter.Core.Admin.Database;
+using TheLiter.Core.Admin.Model;
 using TheLiter.Core.DBManager;
 
 namespace TheLiter.Core.Admin.ViewModel
@@ -16,6 +17,7 @@ namespace TheLiter.Core.Admin.ViewModel
     public class AdminViewModel : MySqlDBConnectionManager, INotifyPropertyChanged
     {
         private DBManager<MeasureModel> measureDBManager = new DBManager<MeasureModel>();
+        private DBManager<SalesModel> salesDBManager = new DBManager<SalesModel>();
 
         #region Properties
         private DateTime _startTime;
@@ -37,6 +39,17 @@ namespace TheLiter.Core.Admin.ViewModel
             {
                 _operationTime = value;
                 NotifyPropertyChanged(nameof(OperationTime));
+            }
+        }
+
+        private TimeSpan _totalOperationTime;
+        public TimeSpan TotalOperationTime
+        {
+            get => _totalOperationTime;
+            set
+            {
+                _totalOperationTime = value;
+                NotifyPropertyChanged(nameof(TotalOperationTime));
             }
         }
 
@@ -128,6 +141,8 @@ FROM
                     if (measureModel != null && measureModel.Idx != 0)
                     {
                         measureModel.TotalUsageTime += OperationTime;
+                        TotalOperationTime = measureModel.TotalUsageTime;
+
                         string updateSql = $@"
 UPDATE
     measure_tb
@@ -148,6 +163,8 @@ WHERE
                     else
                     {
                         measureModel.TotalUsageTime = OperationTime;
+                        TotalOperationTime = measureModel.TotalUsageTime;
+
                         string insertSql = @"
 INSERT INTO measure_tb(
     totalUsageTime
@@ -169,6 +186,30 @@ VALUES(
             catch (Exception e)
             {
                 Debug.WriteLine("SAVE PROGRAM TOTAL USAGE TIME ERROR : " + e.Message);
+            }
+        }
+
+        // 매출 정보
+        public async void GetAllSalesInformation()
+        {
+            try
+            {
+                List<SalesModel> sales = new List<SalesModel>();
+
+                using (var db = GetConnection())
+                {
+                    string selectSql = @"
+SELECT
+    *
+FROM
+    sales_tb
+";
+                    sales = await salesDBManager.GetListAsync(db, selectSql, "");
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Write("GET ALL SALES INFORMATION : " + e.Message);
             }
         }
         #endregion

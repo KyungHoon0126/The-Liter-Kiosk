@@ -41,6 +41,7 @@ namespace THE_LITER_KIOSK.Controls.PayControl
                 App.orderData.InitData();
                 App.uIStateManager.SwitchCustomControl(CustomControlType.HOME);
                 App.cnt = 0;
+                App.placeData.tableViewModel.SelectedTable = null;
             }
         }
     }

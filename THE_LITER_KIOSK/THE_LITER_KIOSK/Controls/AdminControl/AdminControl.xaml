@@ -41,7 +41,7 @@
 
                 <Grid Grid.Column="0">
                     <TextBlock Margin="10"
-                               Text="{Binding OperationTime, Mode=TwoWay, StringFormat=프로그램 구동 시간 : \{0:\\ hh\\시\\간\\ mm\\분\\ ss\\초\}}"
+                               Text="{Binding TotalOperationTime, Mode=TwoWay, StringFormat=프로그램 구동 시간 : \{0:\\ hh\\시\\간\\ mm\\분\\ ss\\초\}}"
                                FontSize="30"
                                FontFamily="AppleSDGothicNeoSB00"
                                VerticalAlignment="Center"
@@ -56,7 +56,8 @@
                             VerticalAlignment="Center" HorizontalAlignment="Right"
                             FontSize="20" Foreground="White" FontFamily="AppleSDGothicNeoSB00"
                             Style="{StaticResource MaterialDesignFloatingActionAccentButton}"
-                            Click="btnReload_Click"/>
+                            Click="btnReload_Click"
+                            Visibility="Collapsed"/>
                 </Grid>
             </Grid>
 

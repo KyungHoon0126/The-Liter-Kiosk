@@ -25,6 +25,7 @@ namespace THE_LITER_KIOSK.Controls.TableControl
         #region UserControl Transition
         private void btnTablePrev_Click(object sender, RoutedEventArgs e)
         {
+            App.placeData.tableViewModel.SelectedTable = null;
             App.uIStateManager.SwitchCustomControl(CustomControlType.PLACE);
         }
 

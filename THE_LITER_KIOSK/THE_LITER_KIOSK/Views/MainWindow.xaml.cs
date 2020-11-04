@@ -47,6 +47,7 @@ namespace THE_LITER_KIOSK
         {
             App.orderData.LoadData();
             App.placeData.LoadTableData();
+            App.adminData.adminViewModel.GetAllSalesInformation();
         }
 
         private void SetCustomControls()
@@ -101,6 +102,7 @@ namespace THE_LITER_KIOSK
                 if (e.Key == Key.F2 && App.uIStateManager.customCtrlStack.Peek() == CtrlHome)
                 {
                     App.adminData.SynchronizationOperationTime();
+                    App.adminData.adminViewModel.SaveProgramTotalUsageTime();
                     App.uIStateManager.SwitchCustomControl(CustomControlType.ADMIN);
                 }
             }
