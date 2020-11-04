@@ -13,11 +13,13 @@ namespace THE_LITER_KIOSK
     {
         DispatcherTimer dispatcherTimer;
 
+        #region Constructor
         public MainWindow()
         {
             InitializeComponent();
             Loaded += MainWindow_Loaded;
         }
+        #endregion
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
@@ -40,6 +42,7 @@ namespace THE_LITER_KIOSK
             tbClock.Text = DateTime.Now.ToString("tt H시 mm분 ss초 dddd");
         }
 
+        #region Init
         private void LoadData()
         {
             App.orderData.LoadData();
@@ -65,6 +68,7 @@ namespace THE_LITER_KIOSK
         {
             App.uIStateManager.PushCustomCtrl(CtrlLogin);
         }
+        #endregion
 
         private void btnHome_Click(object sender, RoutedEventArgs e)
         {

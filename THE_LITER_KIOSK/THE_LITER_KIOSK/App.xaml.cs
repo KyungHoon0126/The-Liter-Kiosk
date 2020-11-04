@@ -21,6 +21,8 @@ namespace THE_LITER_KIOSK
         public static AdminData adminData = new AdminData();
         public static MemberData memberData = new MemberData();
 
+        public static int cnt = 0;
+
         public App()
         {
             Setting.Load();

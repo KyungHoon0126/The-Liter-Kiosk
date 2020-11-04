@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using THE_LITER_KIOSK.DataBase.Models;
 using THE_LITER_KIOSK.UIManager;
@@ -34,11 +35,11 @@ namespace THE_LITER_KIOSK.Controls.PayControl
 
         private void webcam_QrDecoded(object sender, string e)
         {
-            if (App.orderData.orderViewModel.QrCode != null)
+            if (App.cnt >= 1)
             {
                 return;
             }
-            
+
             App.orderData.orderViewModel.QrCode = e;
 
             if (App.memberData.memberViewModel.QrCode == App.orderData.orderViewModel.QrCode)
@@ -50,13 +51,17 @@ namespace THE_LITER_KIOSK.Controls.PayControl
 
                 if (selectedTable != null)
                 {
-                    App.orderData.orderViewModel.SaveSalesInformation(payTime, paymentType, selectedTable.TableIdx, memberId);
+                    ClearQrCode();
+                    SaveSalesInformation(payTime, paymentType, selectedTable.TableIdx, memberId);
+                    App.cnt++;
                     App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE);
                     OnCompletePayByCash?.Invoke();
                 }
                 else
                 {
-                    App.orderData.orderViewModel.SaveSalesInformation(payTime, paymentType, null, memberId);
+                    ClearQrCode();
+                    SaveSalesInformation(payTime, paymentType, null, memberId);
+                    App.cnt++;
                     App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE);
                     OnCompletePayByCash?.Invoke();
                 }
@@ -65,10 +70,19 @@ namespace THE_LITER_KIOSK.Controls.PayControl
             {
                 MessageBox.Show("결제 정보가 일치하지 않습니다");
                 tbRecog.Text = string.Empty;
-                App.orderData.orderViewModel.QrCode = null;
+                ClearQrCode();
                 qcWebcam.CameraIndex = 0;
-                return;
             }
+        }
+
+        private void SaveSalesInformation(DateTime payTime, string paymentType, int? tableIdx, string memberId)
+        {
+            App.orderData.orderViewModel.SaveSalesInformation(payTime, paymentType, tableIdx, memberId);
+        }
+
+        private void ClearQrCode()
+        {
+            App.orderData.orderViewModel.QrCode = string.Empty;
         }
     }
 }

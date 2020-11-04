@@ -26,12 +26,12 @@
         <Grid Grid.Row="0">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"> 
                 <TextBlock x:Name="tbMemberName" Text="{Binding Name, StringFormat=회원명 : {0}}"/>
-                <TextBlock x:Name="tbMemberBarCode" Text="{Binding BarCode, StringFormat=인식된 카드번호 : {0}}"/>
+                <TextBlock x:Name="tbMemberBarCode" Text="{Binding QrCode, StringFormat=인식된 카드번호 : {0}}"/>
             </StackPanel>
         </Grid>
 
         <Grid Grid.Row="1">
-            <TextBlock Text="{Binding OrderTotalPrice, StringFormat=총 금액 : \{0:N0\} 결제 되었습니다.}"
+            <TextBlock Text="{Binding OrderTotalPrice, StringFormat=총 금액 : \{0:N0\}원 결제 되었습니다.}"
                        VerticalAlignment="Center" HorizontalAlignment="Center"/>
         </Grid>
 

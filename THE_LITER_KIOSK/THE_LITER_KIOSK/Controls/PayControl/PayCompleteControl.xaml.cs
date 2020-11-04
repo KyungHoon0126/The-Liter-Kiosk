@@ -40,6 +40,7 @@ namespace THE_LITER_KIOSK.Controls.PayControl
                 remainTime = 10;
                 App.orderData.InitData();
                 App.uIStateManager.SwitchCustomControl(CustomControlType.HOME);
+                App.cnt = 0;
             }
         }
     }
