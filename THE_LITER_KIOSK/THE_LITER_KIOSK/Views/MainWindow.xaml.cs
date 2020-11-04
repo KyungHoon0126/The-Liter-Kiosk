@@ -110,6 +110,10 @@ namespace THE_LITER_KIOSK
                 CtrlLogin.Visibility = Visibility.Collapsed;
                 App.uIStateManager.SwitchCustomControl(CustomControlType.HOME);
             }
+            else
+            {
+                MessageBox.Show("로그인에 실패하셨습니다.");
+            }
         }
 
         private void CtrlPayCash_OnCompletePayByCash()

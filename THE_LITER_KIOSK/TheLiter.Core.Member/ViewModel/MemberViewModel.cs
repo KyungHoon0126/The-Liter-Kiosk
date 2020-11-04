@@ -209,9 +209,11 @@ AND
             catch (Exception e)
             {
                 Debug.WriteLine("LOGIN ERROR : " + e.Message);
+                SendOnLoginResultRecievedEvent(false);
+                return;
             }
 
-            if (member != null)
+            if (member.Name != null)
             {
                 SendOnLoginResultRecievedEvent(true);
             }
