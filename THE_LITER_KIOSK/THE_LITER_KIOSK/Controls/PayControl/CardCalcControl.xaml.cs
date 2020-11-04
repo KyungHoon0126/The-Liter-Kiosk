@@ -10,6 +10,9 @@ namespace THE_LITER_KIOSK.Controls.PayControl
     /// </summary>
     public partial class CardCalcControl : CustomControlModel
     {
+        public delegate void OnCompletePayByCashHandler();
+        public event OnCompletePayByCashHandler OnCompletePayByCash;
+
         public CardCalcControl()
         {
             InitializeComponent();
@@ -18,7 +21,7 @@ namespace THE_LITER_KIOSK.Controls.PayControl
 
         private void CardCalcControl_Loaded(object sender, RoutedEventArgs e)
         {
-            webcam.CameraIndex = 0;
+            qcWebcam.CameraIndex = 0;
             this.DataContext = App.orderData.orderViewModel;
         }
 
@@ -31,30 +34,40 @@ namespace THE_LITER_KIOSK.Controls.PayControl
 
         private void webcam_QrDecoded(object sender, string e)
         {
-            var qrCode = App.orderData.orderViewModel.QrCode;
-            if (qrCode != null)
+            if (App.orderData.orderViewModel.QrCode != null)
             {
                 return;
             }
+            
+            App.orderData.orderViewModel.QrCode = e;
 
-            qrCode = e;
-
-            var selectedTable = App.placeData.tableViewModel.SelectedTable;
-            var memberId = App.memberData.memberViewModel.Id;
-            var payTime = DateTime.Now;
-            var paymentType = PaymentType.CARD.ToString();
-
-            if (selectedTable != null)
+            if (App.memberData.memberViewModel.QrCode == App.orderData.orderViewModel.QrCode)
             {
-                // 매장 식사
-                App.orderData.orderViewModel.SaveSalesInformation(payTime, paymentType, selectedTable.TableIdx, memberId);
-                App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE);
+                var selectedTable = App.placeData.tableViewModel.SelectedTable;
+                var memberId = App.memberData.memberViewModel.Id;
+                var payTime = DateTime.Now;
+                var paymentType = PaymentType.CARD.ToString();
+
+                if (selectedTable != null)
+                {
+                    App.orderData.orderViewModel.SaveSalesInformation(payTime, paymentType, selectedTable.TableIdx, memberId);
+                    App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE);
+                    OnCompletePayByCash?.Invoke();
+                }
+                else
+                {
+                    App.orderData.orderViewModel.SaveSalesInformation(payTime, paymentType, null, memberId);
+                    App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE);
+                    OnCompletePayByCash?.Invoke();
+                }
             }
             else
             {
-                // 포장 주문
-                App.orderData.orderViewModel.SaveSalesInformation(payTime, paymentType, null, memberId);
-                App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE); 
+                MessageBox.Show("결제 정보가 일치하지 않습니다");
+                tbRecog.Text = string.Empty;
+                App.orderData.orderViewModel.QrCode = null;
+                qcWebcam.CameraIndex = 0;
+                return;
             }
         }
     }

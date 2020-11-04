@@ -22,6 +22,9 @@ namespace THE_LITER_KIOSK.Controls.PayControl
         private void PayCompleteControl_Loaded(object sender, RoutedEventArgs e)
         {
             this.DataContext = App.orderData.orderViewModel;
+            tbMemberName.DataContext = App.memberData.memberViewModel;
+            tbMemberBarCode.DataContext = App.memberData.memberViewModel;
+
             dispatcherTimer = new DispatcherTimer();
             dispatcherTimer.Tick += new EventHandler(CompletePayByCashTimer_Tick);
             dispatcherTimer.Interval = new TimeSpan(0, 0, 1);

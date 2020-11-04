@@ -35,7 +35,7 @@
         </Grid>
 
         <Grid Grid.Row="1">
-            <qrcode:KQRWebCam x:Name="webcam" 
+            <qrcode:KQRWebCam x:Name="qcWebcam" 
                               Margin="12" 
                               QrDecoded="webcam_QrDecoded" />
             <TextBox x:Name="tbRecog" 

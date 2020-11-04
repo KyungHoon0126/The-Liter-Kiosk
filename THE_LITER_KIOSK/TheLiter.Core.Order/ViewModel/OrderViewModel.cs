@@ -74,12 +74,16 @@ namespace TheLiter.Core.Order.ViewModel
             }
         }
 
-        #region Sales
-        public DateTime PayTime { get; set; }
-        public string PayType { get; set; }
-        public int TableIdx { get; set; }
-        public string MemberId { get; set; }
-        #endregion
+        private string _barCode;
+        public string BarCode
+        {
+            get => _barCode;
+            set
+            {
+                _barCode = value;
+                NotifyPropertyChanged(nameof(BarCode));
+            }
+        }
         #endregion
 
         #region Constructor
@@ -670,7 +674,7 @@ namespace TheLiter.Core.Order.ViewModel
         #region DataBase
         public async void SaveSalesInformation(DateTime payTime, string payType, int? tableIdx, string memberId)
         {
-            if (IsOrderedMenuListValid() && tableIdx != null)
+            if (IsOrderedMenuListValid())
             {
                 try
                 {
@@ -687,31 +691,31 @@ namespace TheLiter.Core.Order.ViewModel
                             salesModel.Price = OrderedMenuItems[i].TotalPrice;
                             salesModel.PayTime = payTime;
                             salesModel.PayType = payType;
-                            salesModel.TableIdx = (int)tableIdx;
+                            if (tableIdx == null) salesModel.TableIdx = -1;
+                            else salesModel.TableIdx = (int)tableIdx;
                             salesModel.MemberId = memberId;
 
                             string insertSql = @"
-    INSERT INTO sales_tb(
-        menu_category,
-        menu_name,
-        count,
-        price,
-        payTime,
-        payType,
-        tableIdx,
-        member_id
-    
-    )
-    VALUES(
-        @Category,
-        @Name,
-        @Count,
-        @Price,
-        @PayTime,
-        @PayType,
-        @TableIdx,
-        @MemberId
-    );";
+INSERT INTO sales_tb(
+    menu_category,
+    menu_name,
+    count,
+    price,
+    payTime,
+    payType,
+    tableIdx,
+    member_id
+)
+VALUES(
+    @Category,
+    @Name,
+    @Count,
+    @Price,
+    @PayTime,
+    @PayType,
+    @TableIdx,
+    @MemberId
+);";
                             if (await salesDBManager.InsertAsync(db, insertSql, salesModel) == 1)
                             {
                                 Debug.WriteLine("SUCCESS SAVE SALES INFORMATION");

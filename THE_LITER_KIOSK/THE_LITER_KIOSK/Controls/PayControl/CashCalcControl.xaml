@@ -35,7 +35,9 @@
 
                     <TextBox x:Name="tbCardNumber"
                              FontSize="30"
-                             Focusable="True"/>
+                             Focusable="True"
+                             HorizontalContentAlignment="Center"
+                             VerticalAlignment="Center"/>
                 </StackPanel>
             </StackPanel>
         </Grid>

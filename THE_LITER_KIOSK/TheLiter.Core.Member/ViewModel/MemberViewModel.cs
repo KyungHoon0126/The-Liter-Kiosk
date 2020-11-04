@@ -232,7 +232,37 @@ AND
         #endregion
 
         #region DataBase
-        
+        internal async void GetMemberData()
+        {
+            try
+            {
+                using (var db = GetConnection())
+                {
+                    db.Open();
+
+                    string selectSql = $@"
+SELECT
+    *
+FROM
+    member_tb
+WHERE
+    id = '{Id}'
+";
+                    var member = await memberDBManager.GetSingleDataAsync(db, selectSql, "");
+
+                    if (member != null)
+                    {
+                        Name = member.Name;
+                        QrCode = member.QrCode;
+                        BarCode = member.BarCode;
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Write("GET MEMBER DATA ERROR : " + e.Message);
+            }
+        }
         #endregion
 
         private void SendOnLoginResultRecievedEvent(bool success)

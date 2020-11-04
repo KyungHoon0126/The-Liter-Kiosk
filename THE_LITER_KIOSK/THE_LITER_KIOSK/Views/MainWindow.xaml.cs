@@ -109,6 +109,7 @@ namespace THE_LITER_KIOSK
                 MessageBox.Show("로그인에 성공하셨습니다!");
                 CtrlLogin.Visibility = Visibility.Collapsed;
                 App.uIStateManager.SwitchCustomControl(CustomControlType.HOME);
+                App.memberData.GetMemberData();
             }
             else
             {
@@ -116,7 +117,7 @@ namespace THE_LITER_KIOSK
             }
         }
 
-        private void CtrlPayCash_OnCompletePayByCash()
+        private void CtrlPay_OnCompletePay()
         {
             CtrlPayComplete.dispatcherTimer.Start();
         }

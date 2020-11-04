@@ -1,7 +1,7 @@
-﻿using System.Diagnostics;
+﻿using System;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
+using THE_LITER_KIOSK.DataBase.Models;
 using THE_LITER_KIOSK.UIManager;
 
 namespace THE_LITER_KIOSK.Controls.PayControl
@@ -37,10 +37,21 @@ namespace THE_LITER_KIOSK.Controls.PayControl
         {
             if (e.Key == Key.Return)
             {
-                tbCardNumber.Text += e.Key;
+                App.orderData.orderViewModel.BarCode = tbCardNumber.Text;
             }
-            Debug.WriteLine(tbCardNumber.Text);
-            OnCompletePayByCash?.Invoke();
+
+            if (App.memberData.memberViewModel.BarCode == App.orderData.orderViewModel.BarCode)
+            {
+                App.orderData.orderViewModel.SaveSalesInformation(DateTime.Now, PaymentType.CASH.ToString(), null, App.memberData.memberViewModel.Id);
+                App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE);
+                OnCompletePayByCash?.Invoke();
+            }
+            else
+            {
+                MessageBox.Show("결제 정보가 일치하지 않습니다");
+                tbCardNumber.Text = string.Empty;
+                return;
+            }
         }
     }
 }
