@@ -120,6 +120,25 @@ namespace THE_LITER_KIOSK
         private void CtrlPay_OnCompletePay()
         {
             CtrlPayComplete.dispatcherTimer.Start();
+
+            var selectedTable = App.placeData.tableViewModel.SelectedTable;
+            if (selectedTable != null)
+            {
+                selectedTable.DispatcherTimer = new DispatcherTimer();
+                selectedTable.DispatcherTimer.Interval = TimeSpan.FromSeconds(1);
+                selectedTable.DispatcherTimer.Tick += selectedTable.DispatcherTimer_Tick;
+                selectedTable.DispatcherTimer.Start();
+
+                if (selectedTable.IsUsed)
+                {
+                    MessageBox.Show("이미 사용중인 테이블 입니다.");
+                    return;
+                }
+                else
+                {
+                    selectedTable.IsUsed = true;
+                }
+            }
         }
 
         private void Window_Closed(object sender, EventArgs e)

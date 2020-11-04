@@ -16,15 +16,14 @@
     
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="8*" />
-            <RowDefinition Height="2*" />
+            <RowDefinition Height="8.5*" />
+            <RowDefinition Height="1.5*" />
         </Grid.RowDefinitions>
         
         <Grid Grid.Row="0">
-            <ListView x:Name="lvTableList"
+            <ListView x:Name="lvTableList" Margin="10"
                       ItemsSource="{Binding TableItems}"
                       SelectedItem="{Binding SelectedTable}"
-                      SelectionChanged="lvTableList_SelectionChanged"
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled">
 
                 <ListView.ItemsPanel>
@@ -36,29 +35,31 @@
                 <ListView.ItemContainerStyle>
                     <Style TargetType="ListViewItem">
                         <Setter Property="HorizontalContentAlignment" Value="Center"/>
-                        <Setter Property="Focusable" Value="{Binding IsUsed, Converter={StaticResource IsUsedToFocusableConverter} }" />
+                        <Setter Property="VerticalContentAlignment" Value="Center"/>
+                        <Setter Property="Focusable" Value="{Binding IsUsed, Converter={StaticResource IsUsedToFocusableConverter}}"/>
                     </Style>
                 </ListView.ItemContainerStyle>
                 
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <StackPanel Width="640" Height="240"  Background="{Binding IsUsed, Converter={StaticResource BackgroundColorConverter}}">
-                            <TextBlock Text="{Binding TableIdx, StringFormat={}{0}번}"
-                                       FontSize="30"
-                                       FontWeight="Bold"
-                                       />
-                            <!-- <TextBlock Text="{Binding TotalPrice, StringFormat={}{0}원}"
-                               FontSize="30" /> -->
-                            <TextBlock x:Name="tbRemainTime"
-                                       Text="{Binding RemainTime}"
-                                       FontSize="30"
-                                       Focusable="False"/>
-                        </StackPanel>
+                        <Border BorderBrush="Black" BorderThickness="1">
+                            <StackPanel Width="640" Height="240" Background="{Binding IsUsed, Converter={StaticResource BackgroundColorConverter}}">
+                                <TextBlock Text="{Binding TableIdx, StringFormat={}{0}번 테이블}"
+                                           FontSize="30"
+                                           FontWeight="Bold"
+                                           HorizontalAlignment="Center"
+                                           Margin="0,80,0,0"/>
+                                <TextBlock x:Name="tbRemainTime"
+                                           Text="{Binding RemainTime}"
+                                           FontSize="30"
+                                           HorizontalAlignment="Center"/>
+                            </StackPanel>
+                        </Border>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>
         </Grid>
-        
+
         <Grid Grid.Row="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="*" />
@@ -87,8 +88,7 @@
 
             <Grid Grid.Column="1">
                 <Button Content="다음"
-                        Width="120"
-                        Height="70"
+                        Width="120" Height="70"
                         HorizontalAlignment="Right"
                         Margin="0 0 20 0"
                         Background="#7f7f7f"
@@ -99,6 +99,5 @@
                         Click="btnMoveToPay_Click"/>
             </Grid>
         </Grid>
-     
     </Grid>
 </base:CustomControlModel>
