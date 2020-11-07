@@ -139,8 +139,8 @@
         </Grid>
         <loadin:LoadingIndicator x:Name="progressRing" SpeedRatio="2"
                                  Foreground="RoyalBlue"
+                                 IsActive="{Binding IsActive}"
                                  Grid.ColumnSpan="3"
-                                 Style="{DynamicResource LoadingIndicatorArcsStyle}"
-                                 IsActive="{Binding }"/>
+                                 Style="{DynamicResource LoadingIndicatorArcsStyle}"/>
     </Grid>
 </base:CustomControlModel>

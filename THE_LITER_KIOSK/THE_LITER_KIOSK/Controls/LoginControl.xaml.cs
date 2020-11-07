@@ -24,14 +24,14 @@ namespace THE_LITER_KIOSK.Controls
             Loaded += LoginControl_Loaded;
         }
 
-        private void LoginControl_Loaded(object sender, RoutedEventArgs e)
+        private async void LoginControl_Loaded(object sender, RoutedEventArgs e)
         {
-            CheckAutoLogin();
+            await CheckAutoLogin();
             App.memberData.memberViewModel.OnLoginResultRecieved += MemberViewModel_OnLoginResultRecieved;
             this.DataContext = App.memberData.memberViewModel;
         }
 
-        private void CheckAutoLogin()
+        private async Task CheckAutoLogin()
         {
             string id = Setting.GetUserId();
             isAutoLogin = Setting.IsAutoLogin;
@@ -66,10 +66,7 @@ namespace THE_LITER_KIOSK.Controls
 
             SetUserData(App.memberData.memberViewModel.Id, App.memberData.memberViewModel.Pw);
 
-            if (isAutoLogin == true)
-            {
-                Setting.IsAutoLogin = true;
-            }
+            if (isAutoLogin == true) Setting.IsAutoLogin = true;
 
             LoginResultRecieved?.Invoke(this, success);
         }
@@ -77,13 +74,9 @@ namespace THE_LITER_KIOSK.Controls
         private void SetUserData(string id, string pw)
         {
             if (isAutoLogin)
-            {
                 Setting.SaveUserdata(id, pw);
-            }
             else
-            {
                 Setting.SaveUserData(id);
-            }
 
             Setting.IsAutoLogin = isAutoLogin;
             Setting.Save();
@@ -92,33 +85,30 @@ namespace THE_LITER_KIOSK.Controls
         private void tb_TextChanged(object sender, RoutedEventArgs e)
         {
             if (!CheckyEmpty())
-            {
                 btnLogin.IsEnabled = true;
-            }
             else
-            {
                 btnLogin.IsEnabled = false;
-            }
         }
 
         private bool CheckyEmpty()
         {
-            string id = tbId.Text.Trim();
-            string pw = pbPw.Password.Trim();
-
-            if (string.IsNullOrEmpty(id) || string.IsNullOrEmpty(pw))
-            {
+            if (string.IsNullOrEmpty(tbId.Text.Trim()) || string.IsNullOrEmpty(pbPw.Password.Trim()))
                 return true;
-            }
-            return false;
+            else 
+                return false;
         }
 
         private void UserControl_KeyDown(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return && btnLogin.IsEnabled)
-            {
-                App.memberData.Login();
-            }
+            if (e.Key == Key.Return && btnLogin.IsEnabled) App.memberData.Login();
+        }
+
+        private void CbAutologin_Checked(object sender, EventArgs e)
+        {
+            if ((sender as CheckBox).IsChecked ?? false)
+                isAutoLogin = true;
+            else
+                isAutoLogin = false;
         }
 
         #region UserControl Transition
@@ -127,20 +117,6 @@ namespace THE_LITER_KIOSK.Controls
             App.uIStateManager.SwitchCustomControl(CustomControlType.SIGNUP);
         }
         #endregion
-
-        private void CbAutologin_Checked(object sender, EventArgs e)
-        {
-            CheckBox cb = sender as CheckBox;
-
-            if (cb.IsChecked ?? false)
-            {
-                isAutoLogin = true;
-            }
-            else
-            {
-                isAutoLogin = false;
-            }
-        }
     }
 
     #region PasswordBoxMonitor

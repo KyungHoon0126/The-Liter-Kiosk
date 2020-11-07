@@ -2,6 +2,7 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using TheLiter.Core.DBManager;
 using TheLiter.Core.Member.Model;
@@ -94,6 +95,17 @@ namespace TheLiter.Core.Member.ViewModel
                 NotifyPropertyChanged(nameof(BtnEnabled));
             }
         }
+
+        private bool _isActive = false;
+        public bool IsActive
+        {
+            get => _isActive;
+            set
+            {
+                _isActive = value;
+                NotifyPropertyChanged(nameof(IsActive));
+            }
+        }
         #endregion
 
         #region Command
@@ -181,6 +193,8 @@ VALUES(
         internal async void OnLogin()
         {
             BtnEnabled = false;
+            IsActive = true;
+
             var member = new MemberModel();
 
             try
@@ -195,7 +209,7 @@ VALUES(
 SELECT
     *
 FROM
-     member_tb
+    member_tb
 WHERE
     id = '{Id}'
 AND
@@ -210,19 +224,19 @@ AND
             {
                 Debug.WriteLine("LOGIN ERROR : " + e.Message);
                 SendOnLoginResultRecievedEvent(false);
-                return;
             }
 
-            if (member.Name != null)
-            {
-                SendOnLoginResultRecievedEvent(true);
-            }
-            else
+            if (member.Name == null)
             {
                 SendOnLoginResultRecievedEvent(false);
             }
+            else
+            {
+                SendOnLoginResultRecievedEvent(true);
+            }
 
             BtnEnabled = true;
+            IsActive = false;
         }
 
         private bool CanLogin()

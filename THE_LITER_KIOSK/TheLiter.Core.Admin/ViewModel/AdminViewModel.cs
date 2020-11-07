@@ -53,12 +53,24 @@ namespace TheLiter.Core.Admin.ViewModel
             }
         }
 
+        private List<SalesModel> _salesItems;
+        public List<SalesModel> SalesItems
+        {
+            get => _salesItems;
+            set
+            {
+                _salesItems = value;
+                NotifyPropertyChanged(nameof(SalesItems));
+            }
+        }
+
         public SeriesCollection SeriesCollection { get; set; }
+        public Func<ChartPoint, string> PointLabel { get; set; }
         #endregion
 
         public AdminViewModel()
         {
-
+            SalesItems = new List<SalesModel>();
         }
 
         public void SynchronizationOperationTime()
@@ -68,6 +80,7 @@ namespace TheLiter.Core.Admin.ViewModel
 
         public void LoadChartDatas()
         {
+            // Doughnut Chart
             SeriesCollection = new SeriesCollection
             {
                 new PieSeries
@@ -89,6 +102,9 @@ namespace TheLiter.Core.Admin.ViewModel
                     DataLabels = true 
                 }
             };
+
+            // Pie Chart
+            PointLabel = chartPoint => string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation);
         }
 
         // TODO : 리펙토링
@@ -189,7 +205,6 @@ VALUES(
             }
         }
 
-        // 매출 정보
         public async void GetAllSalesInformation()
         {
             try
@@ -205,6 +220,7 @@ FROM
     sales_tb
 ";
                     sales = await salesDBManager.GetListAsync(db, selectSql, "");
+                    if (sales != null) SalesItems = sales;
                 }
             }
             catch (Exception e)

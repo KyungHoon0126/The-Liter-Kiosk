@@ -169,6 +169,7 @@
     <Compile Include="Converters\BackgroundColorConverter.cs" />
     <Compile Include="Converters\IsUsedToFocusableConverter.cs" />
     <Compile Include="Converters\MenuCategoryToKoreanConverter.cs" />
+    <Compile Include="Converters\TableIdxToNameConverter.cs" />
     <Compile Include="UIStateManager\UIStateManager.cs" />
     <Compile Include="UIStateManager\CustomControlType.cs" />
     <Compile Include="UIStateManager\CustomControlModel.cs" />

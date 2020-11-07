@@ -5,8 +5,13 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:THE_LITER_KIOSK.Controls.AdminControl"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:converter="clr-namespace:THE_LITER_KIOSK.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <converter:TableIdxToNameConverter x:Key="TableIdxToNameConverter"/>
+    </UserControl.Resources>
     
     <Grid Background="White">
         <Grid.ColumnDefinitions>
@@ -15,16 +20,38 @@
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0">
-            <lvc:PieChart x:Name="pcGenderRatio" Margin="10" Series="{Binding SeriesCollection}"
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <Grid Grid.Row="0">
+                <lvc:PieChart x:Name="pcGenderRatio" Margin="10" Series="{Binding SeriesCollection}"
                           Width="700"
-                          LegendLocation="Right" InnerRadius="200" StartingRotationAngle="180">
-                <lvc:PieChart.ChartLegend>
-                    <lvc:DefaultLegend BulletSize="20"/>
-                </lvc:PieChart.ChartLegend>
-                <lvc:PieChart.DataTooltip>
-                    <lvc:DefaultTooltip BulletSize="20"/>
-                </lvc:PieChart.DataTooltip>
-            </lvc:PieChart>
+                          LegendLocation="Right" InnerRadius="100" StartingRotationAngle="180">
+                    <lvc:PieChart.ChartLegend>
+                        <lvc:DefaultLegend BulletSize="20"/>
+                    </lvc:PieChart.ChartLegend>
+                    <lvc:PieChart.DataTooltip>
+                        <lvc:DefaultTooltip BulletSize="20"/>
+                    </lvc:PieChart.DataTooltip>
+                </lvc:PieChart>
+            </Grid>
+
+            <Grid Grid.Row="1">
+                <lvc:PieChart LegendLocation="Bottom" Hoverable="False" DataTooltip="{x:Null}">
+                    <lvc:PieChart.Series>
+                        <lvc:PieSeries Title="Maria" Values="3" DataLabels="True"
+                               LabelPoint="{Binding PointLabel}"/>
+                        <lvc:PieSeries Title="Charles" Values="4" DataLabels="True" 
+                               LabelPoint="{Binding PointLabel}"/>
+                        <lvc:PieSeries Title="Frida" Values="6" DataLabels="True" 
+                               LabelPoint="{Binding PointLabel}"/>
+                        <lvc:PieSeries Title="Frederic" Values="2" DataLabels="True" 
+                               LabelPoint="{Binding PointLabel}"/>
+                    </lvc:PieChart.Series>
+                </lvc:PieChart>
+            </Grid>
         </Grid>
 
         <Grid Grid.Column="1">
@@ -62,7 +89,31 @@
             </Grid>
 
             <Grid Grid.Row="1">
-
+                <DataGrid x:Name="dgSalesStat" Margin="5"
+                          ItemsSource="{Binding SalesItems}"
+                          HorizontalAlignment="Center"
+                          AutoGenerateColumns="False">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="주문 번호"
+                                            Binding="{Binding Idx}"/>
+                        <DataGridTextColumn Header="카테고리"
+                                            Binding="{Binding Category}"/>
+                        <DataGridTextColumn Header="메뉴"
+                                            Binding="{Binding Name}"/>
+                        <DataGridTextColumn Header="수량"
+                                            Binding="{Binding Count, StringFormat={}{0}개}"/>
+                        <DataGridTextColumn Header="가격"
+                                            Binding="{Binding Price, StringFormat=\{0:N0\}원}"/>
+                        <DataGridTextColumn Header="결제 시간"
+                                            Binding="{Binding PayTime, StringFormat={}{0:yyyy년 MM월 dd일 a\\t h시 mm분 tt}}"/>
+                        <DataGridTextColumn Header="결제 수단"
+                                            Binding="{Binding PayType}"/>
+                        <DataGridTextColumn Header="테이블 번호"
+                                            Binding="{Binding TableIdx, Converter={StaticResource TableIdxToNameConverter}}"/>
+                        <DataGridTextColumn Header="회원 아이디"
+                                            Binding="{Binding MemberId}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
             </Grid>
         </Grid>
     </Grid>

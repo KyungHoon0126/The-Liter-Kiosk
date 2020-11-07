@@ -5,18 +5,25 @@ namespace TheLiter.Core.Admin.Model
 {
     public class SalesModel : BindableBase
     {
-        private string _category;
-        public string Category
+        private int _idx;
+        public int Idx
         {
-            get => _category;
-            set => SetProperty(ref _category, value);
+            get => _idx;
+            set => SetProperty(ref _idx, value);
         }
 
-        private string _name;
+        private string menu_category;
+        public string Category
+        {
+            get => menu_category;
+            set => SetProperty(ref menu_category, value);
+        }
+
+        private string menu_name;
         public string Name
         {
-            get => _name;
-            set => SetProperty(ref _name, value);
+            get => menu_name;
+            set => SetProperty(ref menu_name, value);
         }
 
         private int _count;
@@ -54,11 +61,11 @@ namespace TheLiter.Core.Admin.Model
             set => SetProperty(ref _tableIdx, value);
         }
 
-        private string _memberId;
+        private string member_id;
         public string MemberId
         {
-            get => _memberId;
-            set => SetProperty(ref _memberId, value);
+            get => member_id;
+            set => SetProperty(ref member_id, value);
         }
     }
 }
