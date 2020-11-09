@@ -76,6 +76,9 @@
     <Reference Include="MySql.Data, Version=8.0.22.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.8.0.22\lib\net452\MySql.Data.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="Prism, Version=7.2.0.1422, Culture=neutral, PublicKeyToken=40ee6c3a2184dc59, processorArchitecture=MSIL">
       <HintPath>..\packages\Prism.Core.7.2.0.1422\lib\net45\Prism.dll</HintPath>
     </Reference>
@@ -170,6 +173,7 @@
     <Compile Include="Converters\IsUsedToFocusableConverter.cs" />
     <Compile Include="Converters\MenuCategoryToKoreanConverter.cs" />
     <Compile Include="Converters\TableIdxToNameConverter.cs" />
+    <Compile Include="Service\TcpClient.cs" />
     <Compile Include="UIStateManager\UIStateManager.cs" />
     <Compile Include="UIStateManager\CustomControlType.cs" />
     <Compile Include="UIStateManager\CustomControlModel.cs" />
