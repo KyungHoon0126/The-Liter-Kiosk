@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using TheLiter.Core.Admin.Database;
 using TheLiter.Core.Admin.Model;
 using TheLiter.Core.DBManager;
+using TheLiter.Core.Order.Model;
 
 namespace TheLiter.Core.Admin.ViewModel
 {
@@ -19,37 +20,30 @@ namespace TheLiter.Core.Admin.ViewModel
         private DBManager<MeasureModel> measureDBManager = new DBManager<MeasureModel>();
         private DBManager<SalesModel> salesDBManager = new DBManager<SalesModel>();
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
         #region Properties
-        private DateTime _startTime;
-        public DateTime StartTime
+        delegate Tuple<TimeSpan, int> ReturnEmptyDelegate();
+
+        private string _operationTimeDesc;
+        public string OperationTimeDesc
         {
-            get => _startTime;
+            get => _operationTimeDesc;
             set
             {
-                _startTime = value;
-                NotifyPropertyChanged(nameof(StartTime));
+                _operationTimeDesc = value;
+                NotifyPropertyChanged(nameof(OperationTimeDesc));
             }
         }
 
-        private TimeSpan _operationTime;
-        public TimeSpan OperationTime
+        private DateTime _operationTime;
+        public DateTime OperationTime
         {
             get => _operationTime;
             set
             {
                 _operationTime = value;
                 NotifyPropertyChanged(nameof(OperationTime));
-            }
-        }
-
-        private TimeSpan _totalOperationTime;
-        public TimeSpan TotalOperationTime
-        {
-            get => _totalOperationTime;
-            set
-            {
-                _totalOperationTime = value;
-                NotifyPropertyChanged(nameof(TotalOperationTime));
             }
         }
 
@@ -64,53 +58,93 @@ namespace TheLiter.Core.Admin.ViewModel
             }
         }
 
-        public SeriesCollection SeriesCollection { get; set; }
-        public Func<ChartPoint, string> PointLabel { get; set; }
+        private SeriesCollection _salesByCategorySeriesCollection;
+        public SeriesCollection SalesByCategorySeriesCollection 
+        {
+            get => _salesByCategorySeriesCollection;
+            set
+            {
+                _salesByCategorySeriesCollection = value;
+                NotifyPropertyChanged(nameof(SalesByCategorySeriesCollection));
+            }
+        }
+
+        private SeriesCollection _salesByMenuSeriesCollection;
+        public SeriesCollection SalesByMenuSeriesCollection
+        {
+            get => _salesByMenuSeriesCollection;
+            set
+            {
+                _salesByMenuSeriesCollection = value;
+                NotifyPropertyChanged(nameof(SalesByMenuSeriesCollection));
+            }
+        }
         #endregion
 
+        #region Constructor
         public AdminViewModel()
         {
             SalesItems = new List<SalesModel>();
         }
+        #endregion
 
-        public void SynchronizationOperationTime()
+        #region Chart
+        public void LoadSalesByMenuDatas()
         {
-            OperationTime = DateTime.Now.Subtract(StartTime);
-        }
-
-        public void LoadChartDatas()
-        {
-            // Doughnut Chart
-            SeriesCollection = new SeriesCollection
+            SalesByMenuSeriesCollection = new SeriesCollection();
+            for (int i = 0; i < SalesItems.Count; i++)
             {
-                new PieSeries
+                SalesByMenuSeriesCollection.Add(new PieSeries()
                 {
-                    Title = "블루베리 요거트",
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(30) },
-                    DataLabels = true
-                },
-                new PieSeries
-                {
-                    Title = "자바칩 프라페",
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(40) },
-                    DataLabels = true
-                },
-                new PieSeries
-                {
-                    Title = "S1 Soda",
-                    Values = new ChartValues<ObservableValue> { new ObservableValue(30) },
-                    DataLabels = true 
-                }
-            };
-
-            // Pie Chart
-            PointLabel = chartPoint => string.Format("{0} ({1:P})", chartPoint.Y, chartPoint.Participation);
+                    Title = SalesItems[i].Name,
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(Convert.ToDouble(SalesItems[i].Price)) },
+                    DataLabels = false
+                });
+            }
         }
 
-        // TODO : 리펙토링
-        #region Database
-        private async Task<MeasureModel> GetProgramTotalUsageTime()
+        public void LoadSalesByCategory()
         {
+            SalesByCategorySeriesCollection = new SeriesCollection();
+            for (int i = 0; i < CategoryModel.EnumItems.Count; i++)
+            {
+                var menuByCategoryItems = SalesItems.Where(x => x.Category == CategoryModel.EnumItems[i].ToString()).ToList();
+                double menuByCategoryTotalPrice = 0;
+
+                menuByCategoryItems.ForEach(x =>
+                {
+                    menuByCategoryTotalPrice += Convert.ToDouble(x.Price);
+                });
+
+                SalesByCategorySeriesCollection.Add(new PieSeries()
+                {
+                    Title = CategoryModel.EnumItems[i].ToString(),
+                    Values = new ChartValues<ObservableValue> { new ObservableValue(menuByCategoryTotalPrice) },
+                    DataLabels = true
+                });
+            }
+        }
+        #endregion
+
+        #region Program OperationTime 
+        public async void SynchronizationOpertaionTime()
+        {
+            var measureItem = await GetProgramTotalUsageTime();
+            if (measureItem.ToString() != "00:00:00")
+            {
+                OperationTime = OperationTime.Add(measureItem.Item1);
+            }
+        }
+
+        public void IncreaseOperationTime()
+        {
+            OperationTime = OperationTime.AddSeconds(1);
+        }
+
+        public async Task<Tuple<TimeSpan, int>> GetProgramTotalUsageTime()
+        {
+            ReturnEmptyDelegate method = () => { return new Tuple<TimeSpan, int>(TimeSpan.Parse("00:00:00"), -1); };
+
             try
             {
                 var measureItems = new List<MeasureModel>();
@@ -118,7 +152,6 @@ namespace TheLiter.Core.Admin.ViewModel
                 using (IDbConnection db = GetConnection())
                 {
                     db.Open();
-
 
                     string selectSql = @"
 SELECT
@@ -130,17 +163,18 @@ FROM
                 }
 
                 var todayMeasureItem =  measureItems.Where(x => x.MeasureDate.ToString("yyyy-MM-dd") == DateTime.Now.ToString("yyyy-MM-dd")).FirstOrDefault();
+                
                 if (todayMeasureItem != null)
-                    return todayMeasureItem;
+                    return new Tuple<TimeSpan, int>(todayMeasureItem.TotalUsageTime, todayMeasureItem.Idx);
                 else
-                    return new MeasureModel();
+                    return method();
             }
             catch (Exception e)
             {
                 Debug.WriteLine("GET PROGRAM TOTAL USAGE TIME ERROR : " + e.Message);
             }
 
-            return new MeasureModel();
+            return method();
         }
 
         public async void SaveProgramTotalUsageTime()
@@ -152,12 +186,12 @@ FROM
                     db.Open();
 
                     var measureModel = new MeasureModel();
-                    measureModel = await GetProgramTotalUsageTime();
+                    var measure = await GetProgramTotalUsageTime();
+                    measureModel.TotalUsageTime = measure.Item1;
                     
-                    if (measureModel != null && measureModel.Idx != 0)
+                    if (measureModel.TotalUsageTime.ToString() != "00:00:00" && measureModel.Idx != -1)
                     {
-                        measureModel.TotalUsageTime += OperationTime;
-                        TotalOperationTime = measureModel.TotalUsageTime;
+                        measureModel.TotalUsageTime = TimeSpan.Parse(OperationTimeDesc);
 
                         string updateSql = $@"
 UPDATE
@@ -165,21 +199,16 @@ UPDATE
 SET
     totalUsageTime = '{measureModel.TotalUsageTime}'
 WHERE
-    idx = '{measureModel.Idx}'
+    idx = '{measure.Item2}'
 ;";
                         if (await measureDBManager.UpdateAsync(db, updateSql, measureModel) == 1)
-                        {
                             Debug.WriteLine("SUCCESS UPDATE PROGRAM TOTAL USAGE TIME");
-                        }
                         else
-                        {
                             Debug.WriteLine("FAILURE UPDATE PROGRAM TOTAL USAGE TIME");
-                        }
                     }
                     else
                     {
-                        measureModel.TotalUsageTime = OperationTime;
-                        TotalOperationTime = measureModel.TotalUsageTime;
+                        measureModel.TotalUsageTime += TimeSpan.Parse(OperationTimeDesc);
 
                         string insertSql = @"
 INSERT INTO measure_tb(
@@ -189,13 +218,9 @@ VALUES(
     @totalUsageTime
 );";
                         if (await measureDBManager.InsertAsync(db, insertSql, measureModel) == 1)
-                        {
                             Debug.WriteLine("SUCCESS SAVE PROGRAM TOTAL USAGE TIME");
-                        }
                         else
-                        {
                             Debug.WriteLine("FAILURE SAVE PROGRAM TOTAL USAGE TIME");
-                        }
                     }
                 }
             }
@@ -230,7 +255,6 @@ FROM
         }
         #endregion
 
-        public event PropertyChangedEventHandler PropertyChanged;
         public void NotifyPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));

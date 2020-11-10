@@ -77,6 +77,10 @@
       <Project>{6ec64a35-cb63-4c73-a201-65be762fbe6c}</Project>
       <Name>TheLiter.Core.DBManager</Name>
     </ProjectReference>
+    <ProjectReference Include="..\TheLiter.Core.Order\TheLiter.Core.Order.csproj">
+      <Project>{1EBD103B-9FBB-4D72-8823-A0F82D30AF20}</Project>
+      <Name>TheLiter.Core.Order</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

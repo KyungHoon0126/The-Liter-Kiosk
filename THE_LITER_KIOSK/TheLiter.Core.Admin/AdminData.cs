@@ -8,12 +8,8 @@ namespace TheLiter.Core.Admin
 
         public void LoadData()
         {
-            adminViewModel.LoadChartDatas();
-        }
-
-        public void SynchronizationOperationTime()
-        {
-            adminViewModel.SynchronizationOperationTime();
+            adminViewModel.LoadSalesByMenuDatas();
+            adminViewModel.LoadSalesByCategory();
         }
     }
 }

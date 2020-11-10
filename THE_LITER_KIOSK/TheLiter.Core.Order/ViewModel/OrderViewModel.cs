@@ -1,5 +1,4 @@
-﻿using Prism.Mvvm;
-using System;
+﻿using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -629,6 +628,11 @@ namespace TheLiter.Core.Order.ViewModel
             OrderTotalPrice = 0;
         }
 
+        public bool IsOrderedMenuListValid()
+        {
+            return (OrderedMenuItems != null && OrderedMenuItems.Count > 0) ? true : false;
+        }
+
         public void AddOrderedMenuItems(MenuModel selectedMenu)
         {
             OrderedMenuItems.Add(selectedMenu);
@@ -666,9 +670,9 @@ namespace TheLiter.Core.Order.ViewModel
             OrderedMenuItems.Remove(selectedMenu);
         }
 
-        public bool IsOrderedMenuListValid()
+        public void ClearQrCode()
         {
-            return (OrderedMenuItems != null && OrderedMenuItems.Count > 0) ? true : false;
+            QrCode = string.Empty;
         }
 
         #region DataBase
@@ -717,13 +721,9 @@ VALUES(
     @MemberId
 );";
                             if (await salesDBManager.InsertAsync(db, insertSql, salesModel) == 1)
-                            {
                                 Debug.WriteLine("SUCCESS SAVE SALES INFORMATION");
-                            }
                             else
-                            {
                                 Debug.WriteLine("FAILURE SAVE SALES INFORMATION");
-                            }
                         }
                     }
                 }

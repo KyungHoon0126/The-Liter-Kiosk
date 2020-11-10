@@ -1,4 +1,6 @@
-﻿using System.Windows;
+﻿using System;
+using System.Windows;
+using System.Windows.Threading;
 using THE_LITER_KIOSK.UIManager;
 
 namespace THE_LITER_KIOSK.Controls.AdminControl
@@ -18,11 +20,16 @@ namespace THE_LITER_KIOSK.Controls.AdminControl
         {
             App.adminData.LoadData();
             this.DataContext = App.adminData.adminViewModel;
+            DispatcherTimer programOperationTimer = new DispatcherTimer();
+            programOperationTimer.Interval = TimeSpan.FromSeconds(1);
+            programOperationTimer.Tick += ProgramOperationTimer_Tick;
+            programOperationTimer.Start();
         }
 
-        private void btnReload_Click(object sender, RoutedEventArgs e)
+        private void ProgramOperationTimer_Tick(object sender, EventArgs e)
         {
-            App.adminData.SynchronizationOperationTime();
+            var admin = App.adminData.adminViewModel;
+            admin.OperationTimeDesc = (admin.OperationTime - new DateTime(0001, 01, 01, 00, 00, 00)).ToString();
         }
     }
 }

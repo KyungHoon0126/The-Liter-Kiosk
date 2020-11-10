@@ -8,7 +8,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-
     <Grid Background="White">
         <Grid.RowDefinitions>
             <RowDefinition Height="7*"/>
@@ -35,7 +34,6 @@
                     </EventTrigger>
                 </MediaElement.Triggers>
             </MediaElement>
-                          
         </Grid>
 
         <Grid Grid.Row="1">
@@ -49,12 +47,12 @@
                            VerticalAlignment="Center"
                            HorizontalAlignment="Center"
                            FontSize="46">
+                        
                         <Run FontSize="36" Text="국내최초 전 메뉴 1L"/>
-                        <LineBreak/>
+                            <LineBreak/>
                         <Run FontWeight="Bold" Text="커피전문점 "/>
                         <Run Foreground="#FFC72626" FontWeight="Bold" Text="더리터"/>
-                        <LineBreak/>
-                        <Run/>
+                            <LineBreak/>
                 </TextBlock>
             </Grid>
 

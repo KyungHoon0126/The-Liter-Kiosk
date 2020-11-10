@@ -1,11 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
 using System.Windows.Threading;
 using THE_LITER_KIOSK.UIManager;
 using TheLiter.Core.Order.Model;
@@ -24,33 +23,77 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private CollectionViewSource _collectionViewSource = new CollectionViewSource();
-        public CollectionViewSource CollectionViewSource
+
+        private int itemPerPage = 9;
+        private List<MenuModel> menuList;
+        private List<MenuModel> _currentMenuList;
+        private List<MenuModel> CurrentMenuList
         {
-            get => _collectionViewSource;
+            get => _currentMenuList;
             set
             {
-                _collectionViewSource = value;
-                NotifyPropertyChanged(nameof(CollectionViewSource));
+                _currentMenuList = value;
+                _currentPageIdx = 1;
+
+                paging();
+
+                btnPreviousMenu.IsEnabled = false;
+                if (CurrentMenuList.Count > itemPerPage)
+                {
+                    btnNextMenu.IsEnabled = true;
+                }
+                else
+                {
+                    btnNextMenu.IsEnabled = false;
+                }
             }
         }
 
-        private ObservableCollection<MenuModel> _menus = new ObservableCollection<MenuModel>();
-        public ObservableCollection<MenuModel> Menus
+
+        private ObservableCollection<MenuModel> _pagingMenuList;
+        private ObservableCollection<MenuModel> pagingMenuList
         {
-            get => _menus;
+            get { return _pagingMenuList; }
+            set { _pagingMenuList = value; lvMenuList.ItemsSource = _pagingMenuList; }
+        }
+
+        private int _currentPageIdx = 1;
+        private int currentPageIdx
+        {
+            get => _currentPageIdx;
             set
             {
-                _menus = value;
-                NotifyPropertyChanged(nameof(Menus));
+                _currentPageIdx = value;
+                btnPreviousMenu.IsEnabled = false;
+                btnNextMenu.IsEnabled = false;
+
+                paging();
+
+                if (currentPageIdx > 1)
+                {
+                    btnPreviousMenu.IsEnabled = true;
+                }
+                if (CurrentMenuList.Count - (currentPageIdx * itemPerPage) > 0)
+                {
+                    btnNextMenu.IsEnabled = true;
+                }
             }
         }
 
-        //CollectionViewSource CollectionViewSource = new CollectionViewSource();
-        //ObservableCollection<TheLiter.Core.Order.Model.Menu> Menus = new ObservableCollection<TheLiter.Core.Order.Model.Menu>();
-        int currentPageIdx = 0;
-        int itemPerPage = 12;
-        int totalPage = 0;
+        private void paging()
+        {
+            if (CurrentMenuList.Count - (currentPageIdx * itemPerPage - itemPerPage) < itemPerPage && CurrentMenuList.Count - (currentPageIdx * itemPerPage - itemPerPage) > 0)
+            {
+                pagingMenuList = new ObservableCollection<MenuModel>(CurrentMenuList.GetRange(
+                    currentPageIdx * itemPerPage - itemPerPage,
+                    CurrentMenuList.Count - (currentPageIdx * itemPerPage - itemPerPage)).ToList());
+            }
+            else if (CurrentMenuList.Count - (currentPageIdx * itemPerPage - itemPerPage) >= itemPerPage)
+            {
+                pagingMenuList = new ObservableCollection<MenuModel>(CurrentMenuList.GetRange(
+                    currentPageIdx * itemPerPage - itemPerPage, itemPerPage).ToList());
+            }
+        }
         #endregion
 
         public OrderControl()
@@ -73,51 +116,11 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
                 //}
 
                 // #2
-                Menus = App.orderData.orderViewModel.MenuItems;
+                // Menus = App.orderData.orderViewModel.MenuItems;
             }));
 
             lvCategory.SelectedIndex = 0;
-            // SetMenuPage();   
         }
-
-        #region MenuItemsPage
-        private void SetMenuPage()
-        {
-            if (lvMenuList.Items.Count > 0)
-            {
-                // App.orderData.orderViewModel.MenuItems.Clear();
-                //lvMenuList.ClearValue(ItemsControl.ItemsSourceProperty);
-            }
-
-            int itemCnt = Menus.Count;
-            totalPage = (itemCnt / itemPerPage);
-            if (itemCnt % itemPerPage != 0) 
-            {
-                totalPage += 1;
-            }
-
-            CollectionViewSource.Source = Menus;
-            CollectionViewSource.Filter += CollectionViewSource_Filter;
-            this.lvMenuList.DataContext = CollectionViewSource;
-            CollectionViewSource.View.Refresh();
-        }
-
-        private void CollectionViewSource_Filter(object sender, FilterEventArgs e)
-        {
-            int idx = Menus.IndexOf((MenuModel)e.Item);
-
-            if (idx >= itemPerPage * currentPageIdx && idx < itemPerPage * (currentPageIdx + 1))
-            {
-                e.Accepted = true;
-                Debug.WriteLine(((MenuModel)e.Item).Name + e.Accepted);
-            }
-            else
-            {
-                e.Accepted = false;
-                Debug.WriteLine(((MenuModel)e.Item).Name + e.Accepted);
-            }    
-        }
-        #endregion
 
         private void lvCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
@@ -129,41 +132,23 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
             // TODO : ALL, THELITERSPECIAL 선택 시 페이징 기능 추가.
             if (category == ECategory.ALL)
             {
-                SetMenuPage();
-                // lvMenuList.ItemsSource = App.orderData.orderViewModel.MenuItems;
+                lvMenuList.ItemsSource = App.orderData.orderViewModel.MenuItems;
             }
             else
             {
-                //lvMenuList.ItemsSource = App.orderData.orderViewModel.MenuItems.Where(x => x.MenuCategory == category);
-                lvMenuList.ItemsSource = Menus.Where(x => x.MenuCategory == category);
+                lvMenuList.ItemsSource = App.orderData.orderViewModel.MenuItems.Where(x => x.MenuCategory == category);
             }
         }
 
-        #region MenuItemsPage
         private void btnPreviousMenu_Click(object sender, RoutedEventArgs e)
         {
-            if (currentPageIdx > 0)
-            {
-                currentPageIdx--;
-                CollectionViewSource.View.Refresh();
-                return;
-            }
-
             MessageBox.Show("첫 페이지 입니다.");
         }
 
         private void btnNextMenu_Click(object sender, RoutedEventArgs e)
         {
-            if (currentPageIdx < totalPage - 1)
-            {
-                currentPageIdx++;
-                CollectionViewSource.View.Refresh();
-                return;
-            }
-
             MessageBox.Show("마지막 페이지 입니다.");
         }
-        #endregion
 
         private void lvMenuList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {

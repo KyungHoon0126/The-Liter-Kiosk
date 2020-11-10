@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
-using System.Runtime.InteropServices;
-using Newtonsoft.Json.Linq;
 
 namespace THE_LITER_KIOSK.Service
 {
-    class TcpClient
+    public class TcpClient
     {
         public class StateObject
         {

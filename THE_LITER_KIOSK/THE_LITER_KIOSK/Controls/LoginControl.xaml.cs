@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -24,14 +23,15 @@ namespace THE_LITER_KIOSK.Controls
             Loaded += LoginControl_Loaded;
         }
 
-        private async void LoginControl_Loaded(object sender, RoutedEventArgs e)
+        private void LoginControl_Loaded(object sender, RoutedEventArgs e)
         {
-            await CheckAutoLogin();
+            CheckAutoLogin();
             App.memberData.memberViewModel.OnLoginResultRecieved += MemberViewModel_OnLoginResultRecieved;
             this.DataContext = App.memberData.memberViewModel;
         }
 
-        private async Task CheckAutoLogin()
+        // TODO : 자동로그인 할 때, Id, Pw 읽어오고 delegate & event 연결이 안됨.
+        private void CheckAutoLogin()
         {
             string id = Setting.GetUserId();
             isAutoLogin = Setting.IsAutoLogin;

@@ -17,7 +17,7 @@ namespace THE_LITER_KIOSK.Controls.PayControl
         public CashCalcControl()
         {
             InitializeComponent();
-            tbCardNumber.Focus();
+            tbCardNumber.Focus(); // TODO : Focus가 안됨.
             Loaded += CashCalcControl_Loaded;
         }
 
@@ -26,13 +26,7 @@ namespace THE_LITER_KIOSK.Controls.PayControl
             this.DataContext = App.orderData.orderViewModel;
         }
 
-        #region UserControl Transition
-        private void btnTablePrev_Click(object sender, RoutedEventArgs e)
-        {
-            App.uIStateManager.SwitchCustomControl(CustomControlType.PAY);
-        }
-        #endregion
-
+        // TODO : BarCode 값이 읽어졌는데, 다시 해보니까 안됨.
         private void CustomControlModel_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.Key == Key.Return)
@@ -53,5 +47,12 @@ namespace THE_LITER_KIOSK.Controls.PayControl
                 return;
             }
         }
+
+        #region UserControl Transition
+        private void btnTablePrev_Click(object sender, RoutedEventArgs e)
+        {
+            App.uIStateManager.SwitchCustomControl(CustomControlType.PAY);
+        }
+        #endregion
     }
 }

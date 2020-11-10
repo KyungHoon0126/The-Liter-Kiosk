@@ -70,7 +70,7 @@
                 <PlaceCtrl:PlaceControl x:Name="CtrlPlace" Visibility="Collapsed" />
                 <PayCtrl:PaySelectionControl x:Name="CtrlPaySelect" Visibility="Collapsed"/>
                 <PayCtrl:CashCalcControl x:Name="CtrlPayCash" Visibility="Collapsed" OnCompletePayByCash="CtrlPay_OnCompletePay"/>
-                <PayCtrl:CardCalcControl x:Name="CtrlPayCard" Visibility="Collapsed" OnCompletePayByCash="CtrlPay_OnCompletePay"/>
+                <PayCtrl:CardCalcControl x:Name="CtrlPayCard" Visibility="Collapsed" OnCompletePayByCard="CtrlPay_OnCompletePay"/>
                 <PayCtrl:PayCompleteControl x:Name="CtrlPayComplete" Visibility="Collapsed"/>
             </Grid>
         </Grid>

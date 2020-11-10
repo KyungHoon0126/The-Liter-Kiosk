@@ -1,4 +1,6 @@
 ﻿using Prism.Mvvm;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace TheLiter.Core.Order.Model
 {
@@ -25,6 +27,11 @@ namespace TheLiter.Core.Order.Model
         {
             get => _categoryName;
             set => SetProperty(ref _categoryName, value);
+        }
+
+        public static List<string> EnumItems
+        {
+            get => ECategory.GetNames(typeof(ECategory)).ToList();
         }
         #endregion
     }

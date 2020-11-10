@@ -25,6 +25,12 @@ namespace THE_LITER_KIOSK
 
         public App()
         {
+            DispatcherUnhandledException += (s, e) =>
+            {
+                MessageBox.Show("An unhandled exception just occured : " + e.Exception, "예외 발생", MessageBoxButton.OK, MessageBoxImage.Error);
+                e.Handled = true; 
+            };
+
             Setting.Load();
         }
     }

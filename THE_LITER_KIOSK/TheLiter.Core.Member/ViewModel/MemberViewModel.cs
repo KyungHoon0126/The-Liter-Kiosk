@@ -2,7 +2,6 @@
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Threading.Tasks;
 using System.Windows.Input;
 using TheLiter.Core.DBManager;
 using TheLiter.Core.Member.Model;
@@ -226,7 +225,7 @@ AND
                 SendOnLoginResultRecievedEvent(false);
             }
 
-            if (member.Name == null)
+            if (member == null)
             {
                 SendOnLoginResultRecievedEvent(false);
             }

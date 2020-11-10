@@ -1,7 +1,9 @@
 ﻿using Prism.Mvvm;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Threading.Tasks;
+using System.Windows.Threading;
 using TheLiter.Core.Order.Model;
 using TheLiter.Core.Order.ViewModel;
 using TheLitter.Core.Place.Model;
@@ -102,6 +104,18 @@ namespace TheLitter.Core.Place.ViewModel
                 });
                 #endregion
             });
+        }
+
+        public void RunPayCompleteTimer()
+        {
+            if (SelectedTable != null)
+            {
+                SelectedTable.DispatcherTimer = new DispatcherTimer();
+                SelectedTable.DispatcherTimer.Interval = TimeSpan.FromSeconds(1);
+                SelectedTable.DispatcherTimer.Tick += SelectedTable.DispatcherTimer_Tick;
+                SelectedTable.DispatcherTimer.Start();
+                SelectedTable.IsUsed = true;
+            }
         }
     }
 }

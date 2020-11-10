@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows;
 using THE_LITER_KIOSK.DataBase.Models;
 using THE_LITER_KIOSK.UIManager;
@@ -11,8 +10,8 @@ namespace THE_LITER_KIOSK.Controls.PayControl
     /// </summary>
     public partial class CardCalcControl : CustomControlModel
     {
-        public delegate void OnCompletePayByCashHandler();
-        public event OnCompletePayByCashHandler OnCompletePayByCash;
+        public delegate void OnCompletePayByCardHandler();
+        public event OnCompletePayByCardHandler OnCompletePayByCard;
 
         public CardCalcControl()
         {
@@ -25,13 +24,6 @@ namespace THE_LITER_KIOSK.Controls.PayControl
             qcWebcam.CameraIndex = 0;
             this.DataContext = App.orderData.orderViewModel;
         }
-
-        #region UserControl Transition
-        private void btnTablePrev_Click(object sender, RoutedEventArgs e)
-        {
-            App.uIStateManager.SwitchCustomControl(CustomControlType.PAY);
-        }
-        #endregion
 
         private void webcam_QrDecoded(object sender, string e)
         {
@@ -55,7 +47,7 @@ namespace THE_LITER_KIOSK.Controls.PayControl
                     SaveSalesInformation(payTime, paymentType, selectedTable.TableIdx, memberId);
                     App.cnt++;
                     App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE);
-                    OnCompletePayByCash?.Invoke();
+                    OnCompletePayByCard?.Invoke();
                 }
                 else
                 {
@@ -63,7 +55,7 @@ namespace THE_LITER_KIOSK.Controls.PayControl
                     SaveSalesInformation(payTime, paymentType, null, memberId);
                     App.cnt++;
                     App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE);
-                    OnCompletePayByCash?.Invoke();
+                    OnCompletePayByCard?.Invoke();
                 }
             }
             else
@@ -82,7 +74,14 @@ namespace THE_LITER_KIOSK.Controls.PayControl
 
         private void ClearQrCode()
         {
-            App.orderData.orderViewModel.QrCode = string.Empty;
+            App.orderData.orderViewModel.ClearQrCode();
         }
+
+        #region UserControl Transition
+        private void btnTablePrev_Click(object sender, RoutedEventArgs e)
+        {
+            App.uIStateManager.SwitchCustomControl(CustomControlType.PAY);
+        }
+        #endregion
     }
 }

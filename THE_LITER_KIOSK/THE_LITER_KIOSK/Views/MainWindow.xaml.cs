@@ -34,11 +34,12 @@ namespace THE_LITER_KIOSK
             SetCustomControls();
             SetStartCustomControl();
 
-            App.adminData.adminViewModel.StartTime = DateTime.Now;
+            App.adminData.adminViewModel.SynchronizationOpertaionTime();
         }
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
         {
+            App.adminData.adminViewModel.IncreaseOperationTime();
             tbClock.Text = DateTime.Now.ToString("tt H시 mm분 ss초 dddd");
         }
 
@@ -79,13 +80,13 @@ namespace THE_LITER_KIOSK
                 switch (result)
                 {
                     case MessageBoxResult.Yes:
-                        MoveOrderToHome();
-                        break;
+                         MoveOrderToHome();
+                         break;
                     case MessageBoxResult.No:
-                        return;
+                         return;
                 }
             }
-            
+
             MoveOrderToHome();
         }
 
@@ -97,14 +98,10 @@ namespace THE_LITER_KIOSK
 
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
-            if (App.uIStateManager.customCtrlStack.Count > 0)
+            if (App.uIStateManager.customCtrlStack.Count > 0 && e.Key == Key.F2 && App.uIStateManager.customCtrlStack.Peek() == CtrlHome)
             {
-                if (e.Key == Key.F2 && App.uIStateManager.customCtrlStack.Peek() == CtrlHome)
-                {
-                    App.adminData.SynchronizationOperationTime();
-                    App.adminData.adminViewModel.SaveProgramTotalUsageTime();
-                    App.uIStateManager.SwitchCustomControl(CustomControlType.ADMIN);
-                }
+                App.adminData.LoadData();
+                App.uIStateManager.SwitchCustomControl(CustomControlType.ADMIN);
             }
         }
 
@@ -126,7 +123,9 @@ namespace THE_LITER_KIOSK
         private void CtrlPay_OnCompletePay()
         {
             CtrlPayComplete.dispatcherTimer.Start();
+            App.placeData.tableViewModel.RunPayCompleteTimer();
 
+#if false   // TODO : RunPayCompleteTimer 잘되면 아래 코드는 지울 것.
             var selectedTable = App.placeData.tableViewModel.SelectedTable;
             if (selectedTable != null)
             {
@@ -136,11 +135,11 @@ namespace THE_LITER_KIOSK
                 selectedTable.DispatcherTimer.Start();
                 selectedTable.IsUsed = true;
             }
+#endif
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            App.adminData.SynchronizationOperationTime();
             App.adminData.adminViewModel.SaveProgramTotalUsageTime();
         }
     }
