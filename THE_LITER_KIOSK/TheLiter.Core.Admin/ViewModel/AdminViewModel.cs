@@ -91,6 +91,8 @@ namespace TheLiter.Core.Admin.ViewModel
         #region Chart
         public void LoadSalesByMenuDatas()
         {
+            SyncGetAllSalesInformation();
+
             SalesByMenuSeriesCollection = new SeriesCollection();
             for (int i = 0; i < SalesItems.Count; i++)
             {
@@ -105,6 +107,8 @@ namespace TheLiter.Core.Admin.ViewModel
 
         public void LoadSalesByCategory()
         {
+            SyncGetAllSalesInformation();
+
             SalesByCategorySeriesCollection = new SeriesCollection();
             for (int i = 0; i < CategoryModel.EnumItems.Count; i++)
             {
@@ -123,6 +127,16 @@ namespace TheLiter.Core.Admin.ViewModel
                     DataLabels = true
                 });
             }
+        }
+
+        private void SyncGetAllSalesInformation()
+        {
+            if (SalesItems.Count > 0)
+            {
+                SalesItems.Clear();
+            }
+
+            GetAllSalesInformation();
         }
         #endregion
 

@@ -21,6 +21,7 @@ namespace THE_LITER_KIOSK.Controls.HomeControl
 
         private void btnAdmin_Click(object sender, RoutedEventArgs e)
         {
+            App.adminData.LoadData();
             App.uIStateManager.SwitchCustomControl(CustomControlType.ADMIN);
         }
         #endregion
