@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Net.Sockets;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -109,10 +112,32 @@ namespace THE_LITER_KIOSK
         {
             if (success)
             {
-                MessageBox.Show("로그인에 성공하셨습니다!");
+               // MessageBox.Show("로그인에 성공하셨습니다!");
                 CtrlLogin.Visibility = Visibility.Collapsed;
-                App.uIStateManager.SwitchCustomControl(CustomControlType.HOME);
                 App.memberData.GetMemberData();
+                if (App.tcpClient.CheckServerState())
+                {
+                    App.uIStateManager.SwitchCustomControl(CustomControlType.HOME);
+
+                    new Thread(() =>
+                    {
+                        App.tcpClient.StartClient(App.memberData.memberViewModel.Id);
+
+                    }).Start();
+                } else
+                {
+                    MessageBoxResult result = MessageBox.Show("서버 연결이 안된채로 수행하시겠습니까?", "Login", MessageBoxButton.YesNo);
+                    switch (result)
+                    {
+                        case MessageBoxResult.Yes:
+                            MoveOrderToHome();
+                            break;
+                        case MessageBoxResult.No:
+                            this.Close();
+                            break;
+                    }
+                }
+               
             }
             else
             {
