@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Common\ComDef.cs" />
+    <Compile Include="DataBase\Model\ReceiptModel.cs" />
     <Compile Include="DataBase\Model\SalesModel.cs" />
     <Compile Include="Model\MenuModel.cs" />
     <Compile Include="OrderData.cs" />

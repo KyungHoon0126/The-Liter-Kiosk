@@ -66,5 +66,12 @@ namespace THE_LITER_KIOSK.DataBase.Models
             get => _memberId;
             set => SetProperty(ref _memberId, value);
         }
+
+        private int _receiptIdx;
+        public int ReceiptIdx
+        {
+            get => _receiptIdx;
+            set => SetProperty(ref _receiptIdx, value);
+        }
     }
 }

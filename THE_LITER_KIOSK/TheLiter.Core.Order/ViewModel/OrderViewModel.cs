@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -7,6 +8,7 @@ using System.Threading.Tasks;
 using THE_LITER_KIOSK.Common;
 using THE_LITER_KIOSK.DataBase.Models;
 using TheLiter.Core.DBManager;
+using TheLiter.Core.Order.DataBase.Model;
 using TheLiter.Core.Order.Model;
 
 namespace TheLiter.Core.Order.ViewModel
@@ -14,6 +16,7 @@ namespace TheLiter.Core.Order.ViewModel
     public class OrderViewModel : MySqlDBConnectionManager, INotifyPropertyChanged
     {
         private DBManager<SalesModel> salesDBManager = new DBManager<SalesModel>();
+        private DBManager<ReceiptModel> receiptDBManager = new DBManager<ReceiptModel>();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -81,6 +84,17 @@ namespace TheLiter.Core.Order.ViewModel
             {
                 _barCode = value;
                 NotifyPropertyChanged(nameof(BarCode));
+            }
+        }
+
+        private int _receiptIdx;
+        public int ReceiptIdx
+        {
+            get => _receiptIdx;
+            set
+            {
+                _receiptIdx = value;
+                NotifyPropertyChanged(nameof(ReceiptIdx));
             }
         }
         #endregion
@@ -682,6 +696,11 @@ namespace TheLiter.Core.Order.ViewModel
             {
                 try
                 {
+                    GetReceiptIdx();
+
+                    // 주문번호 저장 추가
+                    SaveReceiptIdx();
+
                     using (var db = GetConnection())
                     {
                         db.Open();
@@ -698,6 +717,7 @@ namespace TheLiter.Core.Order.ViewModel
                             if (tableIdx == null) salesModel.TableIdx = -1;
                             else salesModel.TableIdx = (int)tableIdx;
                             salesModel.MemberId = memberId;
+                            salesModel.ReceiptIdx = ReceiptIdx; 
 
                             string insertSql = @"
 INSERT INTO sales_tb(
@@ -708,7 +728,8 @@ INSERT INTO sales_tb(
     payTime,
     payType,
     tableIdx,
-    member_id
+    member_id,
+    receipt_idx
 )
 VALUES(
     @Category,
@@ -718,7 +739,8 @@ VALUES(
     @PayTime,
     @PayType,
     @TableIdx,
-    @MemberId
+    @MemberId,
+    @ReceiptIdx
 );";
                             if (await salesDBManager.InsertAsync(db, insertSql, salesModel) == 1)
                                 Debug.WriteLine("SUCCESS SAVE SALES INFORMATION");
@@ -731,6 +753,53 @@ VALUES(
                 {
                     Debug.Write("SAVE SALE INFORMATION ERROR : " + e.Message);
                 }
+            }
+        }
+
+        private async void SaveReceiptIdx()
+        {
+            try
+            {
+                using(var db = GetConnection())
+                {
+                    db.Open();
+
+                    string insertSql = @"
+INSERT INTO 
+;";
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("SAVE RECEIPT IDX ERROR : " + e.Message);
+            }
+        }
+
+        private async void GetReceiptIdx()
+        {
+            try
+            {
+                using (var db = GetConnection())
+                {
+                    db.Open();
+
+                    string selectSql = @"
+SELECT
+    *
+FROM
+    receipt_tb
+ORDER BY 
+    receipt_idx DESC LIMIT 1
+;";
+
+                    var receiptItem = await receiptDBManager.GetSingleDataAsync(db, selectSql, "");
+                    // TODO : 결제 완료에서 주문번호 표기 오류 고치기
+                    ReceiptIdx = receiptItem.ReceiptIdx + 1;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Write("GET RECEIPT IDX ERROR : " + e.Message);
             }
         }
         #endregion

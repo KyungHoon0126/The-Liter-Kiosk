@@ -37,14 +37,8 @@
 
         <Grid Grid.Row="2">
             <StackPanel HorizontalAlignment="Center" VerticalAlignment="Top">
-                <!--TODO : 주문번호 추가하기-->
-                <!--<TextBlock Text="{Binding OrderIdx, StringFormat={}주문번호 : {0}}"
-                           VerticalAlignment="Center"
-                           FontSize="30"
-                           FontFamily="AppleSDGothicNeoSB00"/>-->
-                <TextBlock Text="주문번호 : 123" HorizontalAlignment="Center"/>
-
-                <TextBlock x:Name="tbTimer" HorizontalAlignment="Center"/>
+                <TextBlock Text="{Binding ReceiptIdx, StringFormat={}주문번호 : {0}}"/>
+                <TextBlock x:Name="tbTimer"/>
             </StackPanel>
         </Grid>
     </Grid>

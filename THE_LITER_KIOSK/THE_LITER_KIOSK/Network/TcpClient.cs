@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
@@ -11,13 +12,9 @@ namespace THE_LITER_KIOSK.Service
     {
         public class StateObject
         {
-            //Client Socket.
             public Socket workSocket = null;
-            //Size of receive buffer
             public const int BufferSize = 4600;
-            //Recieve buffer
             public byte[] buffer = new byte[BufferSize];
-            //Recive data string.
             public StringBuilder sb = new StringBuilder();
         }
 
@@ -25,6 +22,7 @@ namespace THE_LITER_KIOSK.Service
         {
             // The port number fro the remote device
             private const int port = 80;
+            private const string ip = "10.80.162.152";
 
             // ManualResetEvent instances signal completion.
             private static ManualResetEvent connectDone =
@@ -42,10 +40,10 @@ namespace THE_LITER_KIOSK.Service
                 var json = new JObject();
                 var array = new JObject();
                 var obj = new JArray();
-                array.Add("Name", "아무거나");
-                array.Add("Count", 10000);
-                array.Add("Price", 1000000000);
-                obj.Add(array);
+                /* array.Add("Name", "");
+                array.Add("Count", "");
+                array.Add("Price", ""); */
+                // obj.Add();
                 // List
                 /* for (int i = 0; i < List.lenght; i++)
                 {
@@ -54,41 +52,37 @@ namespace THE_LITER_KIOSK.Service
                     array.Add(jObject);
                 }*/
 
-                json.Add("MSGType", 2);
+                json.Add("MSGType", 1);
                 json.Add("Id", 2106);
-                json.Add("ShopName", "asdfgjgdsdfghjklasdfghjkasdfghj");
-                json.Add("Content", "content");
-                json.Add("OrderNumber", "001");
+                json.Add("ShopName", "");
+                json.Add("Content", "?");
+                json.Add("OrderNumber", "");
                 json.Add("Menus", obj);
 
                 try
                 {
+                    //IPHostEntry iPHostEntry = Dns.GetHostEntry(ip);
+                    //Debug.WriteLine(iPHostEntry);
+                    //IPAddress ipAdress = iPHostEntry.AddressList[0];
+                    //IPEndPoint remoteEp = new IPEndPoint(ipAdress, port);
 
-                    // Estalish the remote endpoint for the socket.
-                    // The name of the remote device is "host.contoso.com".
-                    IPHostEntry iPHostEntry = Dns.GetHostEntry("10.80.162.152");
-                    IPAddress ipAdress = iPHostEntry.AddressList[0];
-                    IPEndPoint remoteEp = new IPEndPoint(ipAdress, port);
-
-                    // Create a TCP/IP socket.
-                    Socket client = new Socket(ipAdress.AddressFamily,
+                    Socket client = new Socket(AddressFamily.InterNetwork,
                         SocketType.Stream, ProtocolType.Tcp);
 
-                    // Connect to the remote endpoint.
-                    client.BeginConnect(remoteEp,
+                    //client.BeginConnect(remoteEp,
+                    //new AsyncCallback(ConnectCallback), client);
+
+                    client.BeginConnect("10.80.162.152", 80,
                     new AsyncCallback(ConnectCallback), client);
                     connectDone.WaitOne();
 
-                    // Send test data to the remote device.
                     Send(client, json.ToString());
                     Console.WriteLine(json.ToString());
                     sendDone.WaitOne();
 
-                    // Receive the response from the remote device
                     Receive(client);
                     receiveDone.WaitOne();
 
-                    //Write the respones to the console.
                     Console.WriteLine("RES receive : {0}", response);
 
                     //Release the socket
@@ -101,6 +95,7 @@ namespace THE_LITER_KIOSK.Service
                 {
                     Console.WriteLine(e.ToString());
                     Console.WriteLine(json.ToString());
+                    Debug.WriteLine(e.Message);
                 }
             }
 
@@ -225,6 +220,12 @@ namespace THE_LITER_KIOSK.Service
                     Console.WriteLine(e.ToString());
                 }
             }
+            public static int Main(string[] args)
+            {
+                StartClient();
+                return 0;
+            }
         }
+
     }
 }
