@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -690,6 +689,60 @@ namespace TheLiter.Core.Order.ViewModel
         }
 
         #region DataBase
+        private async void GetReceiptIdx()
+        {
+            try
+            {
+                using (var db = GetConnection())
+                {
+                    db.Open();
+
+                    string selectSql = @"
+SELECT
+    *
+FROM
+    receipt_tb
+ORDER BY 
+    receipt_idx DESC LIMIT 1
+;";
+
+                    var receiptItem = await receiptDBManager.GetSingleDataAsync(db, selectSql, "");
+                    ReceiptIdx = receiptItem.ReceiptIdx + 1;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Write("GET RECEIPT IDX ERROR : " + e.Message);
+            }
+        }
+
+        private async void SaveReceiptIdx()
+        {
+            try
+            {
+                using (var db = GetConnection())
+                {
+                    db.Open();
+
+                    string insertSql = @"
+INSERT INTO receipt_tb(
+    receipt_idx
+)
+VALUES(
+    @Receipt_idx
+);";
+                    if (await receiptDBManager.InsertAsync(db, insertSql, ReceiptIdx) == 1)
+                        Debug.WriteLine("SUCCESS SAVE RECEIPT IDX");
+                    else
+                        Debug.WriteLine("FAILURE SAVE RECEIPT IDX");
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("SAVE RECEIPT IDX ERROR : " + e.Message);
+            }
+        }
+
         public async void SaveSalesInformation(DateTime payTime, string payType, int? tableIdx, string memberId)
         {
             if (IsOrderedMenuListValid())
@@ -697,8 +750,6 @@ namespace TheLiter.Core.Order.ViewModel
                 try
                 {
                     GetReceiptIdx();
-
-                    // 주문번호 저장 추가
                     SaveReceiptIdx();
 
                     using (var db = GetConnection())
@@ -753,53 +804,6 @@ VALUES(
                 {
                     Debug.Write("SAVE SALE INFORMATION ERROR : " + e.Message);
                 }
-            }
-        }
-
-        private async void SaveReceiptIdx()
-        {
-            try
-            {
-                using(var db = GetConnection())
-                {
-                    db.Open();
-
-                    string insertSql = @"
-INSERT INTO 
-;";
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine("SAVE RECEIPT IDX ERROR : " + e.Message);
-            }
-        }
-
-        private async void GetReceiptIdx()
-        {
-            try
-            {
-                using (var db = GetConnection())
-                {
-                    db.Open();
-
-                    string selectSql = @"
-SELECT
-    *
-FROM
-    receipt_tb
-ORDER BY 
-    receipt_idx DESC LIMIT 1
-;";
-
-                    var receiptItem = await receiptDBManager.GetSingleDataAsync(db, selectSql, "");
-                    // TODO : 결제 완료에서 주문번호 표기 오류 고치기
-                    ReceiptIdx = receiptItem.ReceiptIdx + 1;
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.Write("GET RECEIPT IDX ERROR : " + e.Message);
             }
         }
         #endregion

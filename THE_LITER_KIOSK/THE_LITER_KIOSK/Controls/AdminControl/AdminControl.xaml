@@ -1,16 +1,31 @@
-﻿<base:CustomControlModel  xmlns:base="clr-namespace:THE_LITER_KIOSK.UIManager" x:Class="THE_LITER_KIOSK.Controls.AdminControl.AdminControl"
+﻿<base:CustomControlModel xmlns:base="clr-namespace:THE_LITER_KIOSK.UIManager" x:Class="THE_LITER_KIOSK.Controls.AdminControl.AdminControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:THE_LITER_KIOSK.Controls.AdminControl"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
              xmlns:converter="clr-namespace:THE_LITER_KIOSK.Converters"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
     <UserControl.Resources>
         <converter:TableIdxToNameConverter x:Key="TableIdxToNameConverter"/>
+
+        <CollectionViewSource x:Key="cvsSales" Source="{Binding SalesItems}"
+                              Filter="CollectionViewSource_Filter">
+            <CollectionViewSource.SortDescriptions>
+                <scm:SortDescription PropertyName="Sales.ReceiptIdx"/>
+                <scm:SortDescription PropertyName="Sales.Category"/>
+                <scm:SortDescription PropertyName="Sales.Name"/>
+                <scm:SortDescription PropertyName="Sales.Count"/>
+                <scm:SortDescription PropertyName="Sales.Price"/>
+                <scm:SortDescription PropertyName="Sales.PayTime"/>
+                <scm:SortDescription PropertyName="Sales.PayType"/>
+                <scm:SortDescription PropertyName="Sales.TableIdx"/>
+            </CollectionViewSource.SortDescriptions>
+        </CollectionViewSource>
     </UserControl.Resources>
     
     <Grid Background="White">
@@ -28,7 +43,6 @@
             <Grid Grid.Row="0">
                 <lvc:PieChart x:Name="pcSalesByCategory" Margin="10" 
                               Series="{Binding SalesByCategorySeriesCollection}"
-                              Width="700"
                               LegendLocation="Right" InnerRadius="100" StartingRotationAngle="180">
                     
                     <!--<lvc:PieChart.ChartLegend>
@@ -74,12 +88,13 @@
 
             <Grid Grid.Row="1">
                 <DataGrid x:Name="dgSalesStat" Margin="5"
-                          ItemsSource="{Binding SalesItems}"
+                          ItemsSource="{Binding cvsSales}"
                           HorizontalAlignment="Center"
                           AutoGenerateColumns="False">
+
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="주문 번호"
-                                            Binding="{Binding Idx}"/>
+                                            Binding="{Binding ReceiptIdx}"/>
                         <DataGridTextColumn Header="카테고리"
                                             Binding="{Binding Category}"/>
                         <DataGridTextColumn Header="메뉴"

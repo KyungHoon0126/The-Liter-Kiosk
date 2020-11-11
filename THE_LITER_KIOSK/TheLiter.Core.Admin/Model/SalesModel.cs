@@ -12,6 +12,13 @@ namespace TheLiter.Core.Admin.Model
             set => SetProperty(ref _idx, value);
         }
 
+        private int receipt_idx;
+        public int ReceiptIdx
+        {
+            get => receipt_idx;
+            set => SetProperty(ref receipt_idx, value);
+        }
+
         private string menu_category;
         public string Category
         {

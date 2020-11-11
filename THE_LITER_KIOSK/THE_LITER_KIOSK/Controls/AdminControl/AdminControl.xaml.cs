@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Windows;
+using System.Windows.Data;
 using System.Windows.Threading;
 using THE_LITER_KIOSK.UIManager;
+using TheLiter.Core.Admin.Model;
 
 namespace THE_LITER_KIOSK.Controls.AdminControl
 {
@@ -30,6 +32,18 @@ namespace THE_LITER_KIOSK.Controls.AdminControl
         {
             var admin = App.adminData.adminViewModel;
             admin.OperationTimeDesc = (admin.OperationTime - new DateTime(0001, 01, 01, 00, 00, 00)).ToString();
+        }
+         
+        private void CollectionViewSource_Filter(object sender, FilterEventArgs e)
+        {
+            try
+            {
+                
+            }
+            catch (Exception error)
+            {
+
+            }
         }
     }
 }
