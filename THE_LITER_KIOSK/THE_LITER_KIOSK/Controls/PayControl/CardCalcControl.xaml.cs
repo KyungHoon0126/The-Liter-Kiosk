@@ -27,7 +27,7 @@ namespace THE_LITER_KIOSK.Controls.PayControl
 
         private void webcam_QrDecoded(object sender, string e)
         {
-            if (App.cnt >= 1)
+            if (App.qrIndex >= 1)
             {
                 return;
             }
@@ -43,9 +43,10 @@ namespace THE_LITER_KIOSK.Controls.PayControl
 
                 if (selectedTable != null)
                 {
+                    selectedTable.PayTime = payTime.ToString();
                     ClearQrCode();
                     SaveSalesInformation(payTime, paymentType, selectedTable.TableIdx, memberId);
-                    App.cnt++;
+                    App.qrIndex++;
                     App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE);
                     OnCompletePayByCard?.Invoke();
                 }
@@ -53,7 +54,7 @@ namespace THE_LITER_KIOSK.Controls.PayControl
                 {
                     ClearQrCode();
                     SaveSalesInformation(payTime, paymentType, null, memberId);
-                    App.cnt++;
+                    App.qrIndex++;
                     App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE);
                     OnCompletePayByCard?.Invoke();
                 }

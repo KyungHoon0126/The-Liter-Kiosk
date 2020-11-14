@@ -79,14 +79,32 @@ namespace TheLiter.Core.Admin.ViewModel
                 NotifyPropertyChanged(nameof(SalesByMenuSeriesCollection));
             }
         }
+
+        private List<string> _cbSaleFilter;
+        public List<string> CbSaleFilter
+        {
+            get => _cbSaleFilter;
+            set
+            {
+                _cbSaleFilter = value;
+                NotifyPropertyChanged(nameof(CbSaleFilter));
+            }
+        }
         #endregion
 
         #region Constructor
         public AdminViewModel()
         {
-            SalesItems = new List<SalesModel>();
+            InitVariables();
+            LoadCbSalesFilter();
         }
         #endregion
+
+        private void InitVariables()
+        {
+            SalesItems = new List<SalesModel>();
+            CbSaleFilter = new List<string>();
+        }
 
         #region Chart
         public void LoadSalesByMenuDatas()
@@ -176,7 +194,7 @@ FROM
                     measureItems = await measureDBManager.GetListAsync(db, selectSql, "");
                 }
 
-                var todayMeasureItem =  measureItems.Where(x => x.MeasureDate == DateTime.Today).FirstOrDefault();
+                var todayMeasureItem =  measureItems.Where(x => x.MeasureDate.ToString("yyyy-MM-dd") == DateTime.Now.ToString("yyyy-MM-dd")).FirstOrDefault();
                 
                 if (todayMeasureItem != null)
                     return new Tuple<TimeSpan, int>(todayMeasureItem.TotalUsageTime, todayMeasureItem.Idx);
@@ -268,6 +286,11 @@ FROM
             }
         }
         #endregion
+
+        private void LoadCbSalesFilter()
+        {
+            CbSaleFilter.Add("");
+        }
 
         public void NotifyPropertyChanged(string propertyName)
         {

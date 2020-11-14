@@ -132,7 +132,7 @@ namespace THE_LITER_KIOSK
                             MoveOrderToHome();
                             break;
                         case MessageBoxResult.No:
-                            this.Close();
+                            App.uIStateManager.SwitchCustomControl(CustomControlType.LOGIN);
                             break;
                     }
                 }

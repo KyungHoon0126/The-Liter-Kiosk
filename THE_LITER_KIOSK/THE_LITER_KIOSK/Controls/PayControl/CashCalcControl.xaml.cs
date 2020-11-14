@@ -36,16 +36,42 @@ namespace THE_LITER_KIOSK.Controls.PayControl
 
             if (App.memberData.memberViewModel.BarCode == App.orderData.orderViewModel.BarCode)
             {
-                App.orderData.orderViewModel.SaveSalesInformation(DateTime.Now, PaymentType.CASH.ToString(), null, App.memberData.memberViewModel.Id);
-                App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE);
-                OnCompletePayByCash?.Invoke();
+                var selectedTable = App.placeData.tableViewModel.SelectedTable;
+                var memberId = App.memberData.memberViewModel.Id;
+                var payTime = DateTime.Now;
+                var paymentType = PaymentType.CASH.ToString();
+
+                if (selectedTable != null)
+                {
+                    selectedTable.PayTime = payTime.ToString();
+                    ClearBarCode();
+                    SaveSalesInformation(payTime, paymentType, selectedTable.TableIdx, memberId);
+                    OnCompletePayByCash?.Invoke();
+                }
+                else
+                {
+                    ClearBarCode();
+                    SaveSalesInformation(payTime, paymentType, null, memberId);
+                    App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE);
+                    OnCompletePayByCash?.Invoke();
+                }
             }
             else
             {
                 MessageBox.Show("결제 정보가 일치하지 않습니다");
                 tbCardNumber.Text = string.Empty;
-                return;
+                ClearBarCode();
             }
+        }
+
+        private void SaveSalesInformation(DateTime payTime, string paymentType, int? tableIdx, string memberId)
+        {
+            App.orderData.orderViewModel.SaveSalesInformation(payTime, paymentType, tableIdx, memberId);
+        }
+
+        private void ClearBarCode()
+        {
+            App.orderData.orderViewModel.ClearBarCode();
         }
 
         #region UserControl Transition

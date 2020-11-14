@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Threading;
@@ -36,14 +37,9 @@ namespace THE_LITER_KIOSK.Controls.AdminControl
          
         private void CollectionViewSource_Filter(object sender, FilterEventArgs e)
         {
-            try
-            {
-                
-            }
-            catch (Exception error)
-            {
+            SalesModel sale = e.Item as SalesModel;
 
-            }
+            
         }
     }
 }

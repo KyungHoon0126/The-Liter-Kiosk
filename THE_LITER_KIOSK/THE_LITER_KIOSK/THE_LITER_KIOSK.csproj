@@ -170,6 +170,7 @@
       <DependentUpon>TableControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\BackgroundColorConverter.cs" />
+    <Compile Include="Converters\PayTimeToVisibilityConverter.cs" />
     <Compile Include="Converters\IsUsedToFocusableConverter.cs" />
     <Compile Include="Converters\MenuCategoryToKoreanConverter.cs" />
     <Compile Include="Converters\TableIdxToNameConverter.cs" />

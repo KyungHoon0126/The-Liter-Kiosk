@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
 using THE_LITER_KIOSK.UIManager;
@@ -40,7 +41,7 @@ namespace THE_LITER_KIOSK.Controls.PayControl
                 remainTime = 10;
                 App.orderData.InitData();
                 App.uIStateManager.SwitchCustomControl(CustomControlType.HOME);
-                App.cnt = 0;
+                App.qrIndex = 0;                
                 App.placeData.tableViewModel.SelectedTable = null;
             }
         }

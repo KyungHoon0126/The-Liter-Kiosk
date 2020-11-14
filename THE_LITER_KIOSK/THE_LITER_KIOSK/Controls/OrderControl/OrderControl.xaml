@@ -75,7 +75,6 @@
                 </ListView>
             </Grid>
 
-            <!--ItemsSource="{Binding MenuItems}"-->
             <Grid Grid.Row="1" Margin="5">
                 <ListView x:Name="lvMenuList"
                           ItemsSource="{Binding PagingMenuList}"
@@ -85,7 +84,6 @@
                           ScrollViewer.HorizontalScrollBarVisibility="Disabled">
                     <ListView.ItemsPanel>
                         <ItemsPanelTemplate>
-                            <!--<WrapPanel/>-->
                             <UniformGrid Columns="3" Rows="4"/>
                         </ItemsPanelTemplate>
                     </ListView.ItemsPanel>

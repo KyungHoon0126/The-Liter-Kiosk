@@ -11,7 +11,8 @@
 
     <base:CustomControlModel.Resources>
         <converter:BackgroundColorConverter x:Key="BackgroundColorConverter"/>
-        <converter:IsUsedToFocusableConverter x:Key="IsUsedToFocusableConverter" />
+        <converter:IsUsedToFocusableConverter x:Key="IsUsedToFocusableConverter"/>
+        <converter:PayTimeToVisibilityConverter x:Key="PayTimeToVisibilityConverter"/>
     </base:CustomControlModel.Resources>
     
     <Grid Background="White">
@@ -51,6 +52,10 @@
                                            Margin="0,80,0,0"/>
                                 <TextBlock x:Name="tbRemainTime"
                                            Text="{Binding RemainTime}"
+                                           FontSize="30"
+                                           HorizontalAlignment="Center"/>
+                                <TextBlock x:Name="tbPayTime"
+                                           Text="{Binding PayTime, Converter={StaticResource PayTimeToVisibilityConverter}}"
                                            FontSize="30"
                                            HorizontalAlignment="Center"/>
                             </StackPanel>

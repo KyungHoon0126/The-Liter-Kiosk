@@ -123,58 +123,10 @@ namespace TheLiter.Core.Order.ViewModel
         }
 
         public int itemPerPage = 9;
-
-        private List<MenuModel> _menuList;
-        public List<MenuModel> MenuList
-        {
-            get => _menuList;
-            set 
-            {
-                _menuList = value;
-                NotifyPropertyChanged(nameof(MenuList)); 
-            }
-        }
-
-        private List<MenuModel> _currentMenuList;
-        public List<MenuModel> CurrentMenuList
-        {
-            get => _currentMenuList;
-            set
-            {
-                _currentMenuList = value;
-                _currentPageIdx = 1;
-
-                PagingMenuItems();
-
-                PreviousBtnIsEnabled = false;
-                if (CurrentMenuList.Count > itemPerPage)
-                {
-                    NextBtnIsEnabled = true;
-                }
-                else
-                {
-                    NextBtnIsEnabled = false;
-                }
-
-                NotifyPropertyChanged(nameof(CurrentMenuList));
-            }
-        }
-
-
-        private ObservableCollection<MenuModel> _pagingMenuList;
-        public ObservableCollection<MenuModel> PagingMenuList
-        {
-            get => _pagingMenuList;
-            set 
-            {
-                _pagingMenuList = value;
-                NotifyPropertyChanged(nameof(PagingMenuList)); 
-            }
-        }
-
+        
         private int _currentPageIdx = 1;
         public int CurrentPageIdx
-        {   
+        {
             get => _currentPageIdx;
             set
             {
@@ -185,15 +137,46 @@ namespace TheLiter.Core.Order.ViewModel
                 PagingMenuItems();
 
                 if (CurrentPageIdx > 1)
-                {
                     PreviousBtnIsEnabled = true;
-                }
                 if (CurrentMenuList.Count - (CurrentPageIdx * itemPerPage) > 0)
-                {
                     NextBtnIsEnabled = true;
-                }
+            }
+        }
 
-                NotifyPropertyChanged(nameof(CurrentPageIdx));
+        private List<MenuModel> _menuList;
+        public List<MenuModel> MenuList
+        {
+            get => _menuList;
+            set { _menuList = value; }
+        }
+
+        private List<MenuModel> _currentMenuList;
+        public List<MenuModel> CurrentMenuList
+        {
+            get => _currentMenuList;
+            set
+            {
+                _currentPageIdx = 1;
+                _currentMenuList = value;
+                PreviousBtnIsEnabled = false;
+
+                PagingMenuItems();
+
+                if (CurrentMenuList.Count > itemPerPage)
+                    NextBtnIsEnabled = true;
+                else
+                    NextBtnIsEnabled = false;
+            }
+        }
+
+        private ObservableCollection<MenuModel> _pagingMenuList;
+        public ObservableCollection<MenuModel> PagingMenuList
+        {
+            get => _pagingMenuList;
+            set 
+            {
+                _pagingMenuList = value;
+                NotifyPropertyChanged(nameof(PagingMenuList)); 
             }
         }
         #endregion
@@ -749,17 +732,31 @@ namespace TheLiter.Core.Order.ViewModel
 
         private void PagingMenuItems()
         {
-            if (CurrentMenuList.Count - (CurrentPageIdx * itemPerPage - itemPerPage) < itemPerPage && CurrentMenuList.Count - (CurrentPageIdx * itemPerPage - itemPerPage) > 0)
+            int remainCurMenusCnt = GetRemainCurMenusCnt();
+
+            if (remainCurMenusCnt > 0 && remainCurMenusCnt < itemPerPage)
             {
-                PagingMenuList = new ObservableCollection<MenuModel>(CurrentMenuList.GetRange(
-                    CurrentPageIdx * itemPerPage - itemPerPage,
-                    CurrentMenuList.Count - (CurrentPageIdx * itemPerPage - itemPerPage)).ToList());
+                PagingMenuList = ExtractMenuItems(GetRemainCurMenusCnt());
             }
-            else if (CurrentMenuList.Count - (CurrentPageIdx * itemPerPage - itemPerPage) >= itemPerPage)
+            else if (remainCurMenusCnt >= itemPerPage)
             {
-                PagingMenuList = new ObservableCollection<MenuModel>(CurrentMenuList.GetRange(
-                    CurrentPageIdx * itemPerPage - itemPerPage, itemPerPage).ToList());
+                PagingMenuList = ExtractMenuItems(itemPerPage);
             }
+        }
+
+        private int GetRemainCurMenusCnt()
+        {
+            return CurrentMenuList.Count - GetCurrentMenusCnt();
+        }
+
+        private int GetCurrentMenusCnt()
+        {
+            return CurrentPageIdx * itemPerPage - itemPerPage;
+        }
+
+        private ObservableCollection<MenuModel> ExtractMenuItems(int itemPerPage)
+        {
+            return new ObservableCollection<MenuModel>(CurrentMenuList.GetRange(GetCurrentMenusCnt(), itemPerPage).ToList());
         }
 
         private void IncreasePageIdx()
@@ -834,6 +831,11 @@ namespace TheLiter.Core.Order.ViewModel
         public void ClearQrCode()
         {
             QrCode = string.Empty;
+        }
+
+        public void ClearBarCode()
+        {
+            BarCode = string.Empty;
         }
 
         #region DataBase

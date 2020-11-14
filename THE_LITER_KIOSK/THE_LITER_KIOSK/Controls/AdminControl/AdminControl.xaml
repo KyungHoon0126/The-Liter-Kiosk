@@ -91,7 +91,10 @@
                 <DataGrid x:Name="dgSalesStat" Margin="5"
                           ItemsSource="{Binding SalesItems}"
                           HorizontalAlignment="Center"
-                          AutoGenerateColumns="False">
+                          AutoGenerateColumns="False"
+                          AreRowDetailsFrozen="False"
+                          CanUserAddRows="False"
+                          CanUserResizeRows="False">
 
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="주문 번호"

@@ -26,13 +26,9 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
         private void lvCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var path = App.orderData.orderViewModel;
-
             path.CurrentPageIdx = 1;
-            if (lvCategory.SelectedIndex == -1)
-            {
-                return;
-            }
-            else if (lvCategory.SelectedIndex == 0)
+
+            if (lvCategory.SelectedIndex == 0)
             {
                 path.CurrentMenuList = App.orderData.orderViewModel.MenuList;
             }

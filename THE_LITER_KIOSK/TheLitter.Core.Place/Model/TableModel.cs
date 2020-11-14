@@ -1,8 +1,6 @@
 ﻿using Prism.Mvvm;
 using System;
-using System.Collections.Generic;
 using System.Windows.Threading;
-using TheLiter.Core.Order.Model;
 
 namespace TheLitter.Core.Place.Model
 {
@@ -21,6 +19,7 @@ namespace TheLitter.Core.Place.Model
             {
                 (sender as DispatcherTimer).Stop();
                 RemainTime = string.Empty;
+                PayTime = string.Empty;
                 LeftTime = 60;
                 IsUsed = false;
             }
@@ -40,8 +39,8 @@ namespace TheLitter.Core.Place.Model
             set => SetProperty(ref _totalPrice, value);
         }
 
-        private DateTime _payTime;
-        public DateTime PayTime
+        private string _payTime;
+        public string PayTime
         {
             get => _payTime;
             set => SetProperty(ref _payTime, value);
