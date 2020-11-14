@@ -1,9 +1,12 @@
-﻿using System;
+﻿using Prism.Commands;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Windows.Input;
 using THE_LITER_KIOSK.Common;
 using THE_LITER_KIOSK.DataBase.Models;
 using TheLiter.Core.DBManager;
@@ -96,12 +99,115 @@ namespace TheLiter.Core.Order.ViewModel
                 NotifyPropertyChanged(nameof(ReceiptIdx));
             }
         }
+        
+        private bool _previousBtnIsEnabled = false;
+        public bool PreviousBtnIsEnabled 
+        {
+            get => _previousBtnIsEnabled;
+            set
+            {
+                _previousBtnIsEnabled = value;
+                NotifyPropertyChanged(nameof(PreviousBtnIsEnabled)); 
+            }
+        }
+
+        private bool _nextBtnIsEnabled = false;
+        public bool NextBtnIsEnabled 
+        {
+            get => _nextBtnIsEnabled;
+            set 
+            {
+                _nextBtnIsEnabled = value; 
+                NotifyPropertyChanged(nameof(NextBtnIsEnabled)); 
+            }
+        }
+
+        public int itemPerPage = 9;
+
+        private List<MenuModel> _menuList;
+        public List<MenuModel> MenuList
+        {
+            get => _menuList;
+            set 
+            {
+                _menuList = value;
+                NotifyPropertyChanged(nameof(MenuList)); 
+            }
+        }
+
+        private List<MenuModel> _currentMenuList;
+        public List<MenuModel> CurrentMenuList
+        {
+            get => _currentMenuList;
+            set
+            {
+                _currentMenuList = value;
+                _currentPageIdx = 1;
+
+                PagingMenuItems();
+
+                PreviousBtnIsEnabled = false;
+                if (CurrentMenuList.Count > itemPerPage)
+                {
+                    NextBtnIsEnabled = true;
+                }
+                else
+                {
+                    NextBtnIsEnabled = false;
+                }
+
+                NotifyPropertyChanged(nameof(CurrentMenuList));
+            }
+        }
+
+
+        private ObservableCollection<MenuModel> _pagingMenuList;
+        public ObservableCollection<MenuModel> PagingMenuList
+        {
+            get => _pagingMenuList;
+            set 
+            {
+                _pagingMenuList = value;
+                NotifyPropertyChanged(nameof(PagingMenuList)); 
+            }
+        }
+
+        private int _currentPageIdx = 1;
+        public int CurrentPageIdx
+        {   
+            get => _currentPageIdx;
+            set
+            {
+                _currentPageIdx = value;
+                PreviousBtnIsEnabled = false;
+                NextBtnIsEnabled = false;
+
+                PagingMenuItems();
+
+                if (CurrentPageIdx > 1)
+                {
+                    PreviousBtnIsEnabled = true;
+                }
+                if (CurrentMenuList.Count - (CurrentPageIdx * itemPerPage) > 0)
+                {
+                    NextBtnIsEnabled = true;
+                }
+
+                NotifyPropertyChanged(nameof(CurrentPageIdx));
+            }
+        }
+        #endregion
+
+        #region Commands
+        public ICommand PreviousMenuCommand { get; set; }
+        public ICommand NextMenuCommand { get; set; }
         #endregion
 
         #region Constructor
         public OrderViewModel()
         {
             InitVariables();
+            InitCommands();
         }
         #endregion
 
@@ -112,9 +218,21 @@ namespace TheLiter.Core.Order.ViewModel
             MenuItems = new ObservableCollection<MenuModel>();
             OrderedMenuItems = new ObservableCollection<MenuModel>();
         }
+
+        private void InitCommands()
+        {
+            PreviousMenuCommand = new DelegateCommand(IncreasePageIdx);
+            NextMenuCommand = new DelegateCommand(DecreasePageIdx);
+        }
+
+        internal void SetPagingMenuItems()
+        {
+            MenuList = MenuItems.ToList();
+            CurrentMenuList = MenuList;
+        }
         #endregion
 
-        public void LoadOrderData()
+        internal void LoadOrderData()
         {
             Parallel.Invoke(
                             async () =>
@@ -629,7 +747,32 @@ namespace TheLiter.Core.Order.ViewModel
             });
         }
 
-        public void ClearMenuData()
+        private void PagingMenuItems()
+        {
+            if (CurrentMenuList.Count - (CurrentPageIdx * itemPerPage - itemPerPage) < itemPerPage && CurrentMenuList.Count - (CurrentPageIdx * itemPerPage - itemPerPage) > 0)
+            {
+                PagingMenuList = new ObservableCollection<MenuModel>(CurrentMenuList.GetRange(
+                    CurrentPageIdx * itemPerPage - itemPerPage,
+                    CurrentMenuList.Count - (CurrentPageIdx * itemPerPage - itemPerPage)).ToList());
+            }
+            else if (CurrentMenuList.Count - (CurrentPageIdx * itemPerPage - itemPerPage) >= itemPerPage)
+            {
+                PagingMenuList = new ObservableCollection<MenuModel>(CurrentMenuList.GetRange(
+                    CurrentPageIdx * itemPerPage - itemPerPage, itemPerPage).ToList());
+            }
+        }
+
+        private void IncreasePageIdx()
+        {
+            CurrentPageIdx--;
+        }
+
+        private void DecreasePageIdx()
+        {
+            CurrentPageIdx++;
+        }
+
+        internal void ClearMenuItems()
         {
             for (int i = 0; i < OrderedMenuItems.Count; i++)
             {
@@ -641,9 +784,14 @@ namespace TheLiter.Core.Order.ViewModel
             OrderTotalPrice = 0;
         }
 
-        public bool IsOrderedMenuListValid()
+        public bool IsOrderedMenuItemsValid()
         {
             return (OrderedMenuItems != null && OrderedMenuItems.Count > 0) ? true : false;
+        }
+
+        public bool IsQuantityValid(MenuModel selectedMenu)
+        {
+            return (selectedMenu.Count == 1) ? true : false;
         }
 
         public void AddOrderedMenuItems(MenuModel selectedMenu)
@@ -745,7 +893,7 @@ VALUES(
 
         public async void SaveSalesInformation(DateTime payTime, string payType, int? tableIdx, string memberId)
         {
-            if (IsOrderedMenuListValid())
+            if (IsOrderedMenuItemsValid())
             {
                 try
                 {

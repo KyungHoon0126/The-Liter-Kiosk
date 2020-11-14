@@ -78,7 +78,7 @@
             <!--ItemsSource="{Binding MenuItems}"-->
             <Grid Grid.Row="1" Margin="5">
                 <ListView x:Name="lvMenuList"
-                          ItemsSource="{Binding MenuItems}"
+                          ItemsSource="{Binding PagingMenuList}"
                           SelectedItem="{Binding SelectedMenu}"
                           HorizontalAlignment="Center"
                           SelectionChanged="lvMenuList_SelectionChanged"
@@ -147,7 +147,8 @@
                             BorderBrush="Transparent"
                             FontSize="20"
                             FontWeight="SemiBold"
-                            Click="btnPreviousMenu_Click">
+                            IsEnabled="{Binding PreviousBtnIsEnabled}"
+                            Command="{Binding PreviousMenuCommand}">
                         <Button.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="20"/>
@@ -167,7 +168,8 @@
                             BorderBrush="Transparent"
                             FontSize="20"
                             FontWeight="SemiBold"
-                            Click="btnNextMenu_Click">
+                            IsEnabled="{Binding NextBtnIsEnabled}"
+                            Command="{Binding NextMenuCommand}">
                         <Button.Resources>
                             <Style TargetType="Border">
                                 <Setter Property="CornerRadius" Value="20"/>

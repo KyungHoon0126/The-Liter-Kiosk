@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Net.Sockets;
 using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -52,6 +50,7 @@ namespace THE_LITER_KIOSK
             App.orderData.LoadData();
             App.placeData.LoadTableData();
             App.adminData.adminViewModel.GetAllSalesInformation();
+            App.orderData.SetPagingMenuItems();
         }
 
         private void SetCustomControls()
@@ -77,7 +76,7 @@ namespace THE_LITER_KIOSK
 
         private void btnHome_Click(object sender, RoutedEventArgs e)
         {
-            if (App.orderData.orderViewModel.IsOrderedMenuListValid())
+            if (App.orderData.orderViewModel.IsOrderedMenuItemsValid())
             {
                 MessageBoxResult result = MessageBox.Show("주문을 취소하시겠습니까?", "Order", MessageBoxButton.YesNo);
                 switch (result)
@@ -112,19 +111,19 @@ namespace THE_LITER_KIOSK
         {
             if (success)
             {
-               // MessageBox.Show("로그인에 성공하셨습니다!");
                 CtrlLogin.Visibility = Visibility.Collapsed;
                 App.memberData.GetMemberData();
                 if (App.tcpClient.CheckServerState())
                 {
                     App.uIStateManager.SwitchCustomControl(CustomControlType.HOME);
 
+                    // 경훈 : Socket이 계속 연결되어 있어야 하므로, 새로운 Thread로 처리.
                     new Thread(() =>
                     {
                         App.tcpClient.StartClient(App.memberData.memberViewModel.Id);
-
                     }).Start();
-                } else
+                }
+                else
                 {
                     MessageBoxResult result = MessageBox.Show("서버 연결이 안된채로 수행하시겠습니까?", "Login", MessageBoxButton.YesNo);
                     switch (result)
@@ -137,11 +136,6 @@ namespace THE_LITER_KIOSK
                             break;
                     }
                 }
-               
-            }
-            else
-            {
-                MessageBox.Show("로그인에 실패하셨습니다.");
             }
         }
 
@@ -149,18 +143,6 @@ namespace THE_LITER_KIOSK
         {
             CtrlPayComplete.dispatcherTimer.Start();
             App.placeData.tableViewModel.RunPayCompleteTimer();
-
-#if false   // TODO : RunPayCompleteTimer 잘되면 아래 코드는 지울 것.
-            var selectedTable = App.placeData.tableViewModel.SelectedTable;
-            if (selectedTable != null)
-            {
-                selectedTable.DispatcherTimer = new DispatcherTimer();
-                selectedTable.DispatcherTimer.Interval = TimeSpan.FromSeconds(1);
-                selectedTable.DispatcherTimer.Tick += selectedTable.DispatcherTimer_Tick;
-                selectedTable.DispatcherTimer.Start();
-                selectedTable.IsUsed = true;
-            }
-#endif
         }
 
         private void Window_Closed(object sender, EventArgs e)

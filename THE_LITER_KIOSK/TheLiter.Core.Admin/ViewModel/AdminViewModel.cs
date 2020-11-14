@@ -176,7 +176,7 @@ FROM
                     measureItems = await measureDBManager.GetListAsync(db, selectSql, "");
                 }
 
-                var todayMeasureItem =  measureItems.Where(x => x.MeasureDate.ToString("yyyy-MM-dd") == DateTime.Now.ToString("yyyy-MM-dd")).FirstOrDefault();
+                var todayMeasureItem =  measureItems.Where(x => x.MeasureDate == DateTime.Today).FirstOrDefault();
                 
                 if (todayMeasureItem != null)
                     return new Tuple<TimeSpan, int>(todayMeasureItem.TotalUsageTime, todayMeasureItem.Idx);
