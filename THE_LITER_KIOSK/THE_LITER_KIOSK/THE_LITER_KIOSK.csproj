@@ -177,9 +177,11 @@
     <Compile Include="Converters\IsUsedToFocusableConverter.cs" />
     <Compile Include="Converters\MenuCategoryToKoreanConverter.cs" />
     <Compile Include="Converters\TableIdxToNameConverter.cs" />
+    <Compile Include="Network\Model\EMessageType.cs" />
     <Compile Include="Network\Model\StateObjectModel.cs" />
     <Compile Include="Network\TcpClient.cs" />
     <Compile Include="Network\Model\TcpModel.cs" />
+    <Compile Include="Network\TcpHelper.cs" />
     <Compile Include="UIStateManager\UIStateManager.cs" />
     <Compile Include="UIStateManager\CustomControlType.cs" />
     <Compile Include="UIStateManager\CustomControlModel.cs" />

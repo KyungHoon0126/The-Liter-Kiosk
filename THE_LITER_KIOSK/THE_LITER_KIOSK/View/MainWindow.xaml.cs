@@ -1,10 +1,13 @@
 ﻿using System;
+using Newtonsoft.Json.Linq;
 using System.Net.Sockets;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using THE_LITER_KIOSK.Network;
 using THE_LITER_KIOSK.UIManager;
+using System.Collections.Generic;
 
 namespace THE_LITER_KIOSK
 {
@@ -37,6 +40,8 @@ namespace THE_LITER_KIOSK
             SetStartCustomControl();
 
             App.adminData.adminViewModel.SynchronizationOpertaionTime();
+            
+            TcpHelper.InitializeClient();
         }
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
@@ -129,7 +134,16 @@ namespace THE_LITER_KIOSK
                     // 경훈: Socket이 계속 연결되어 있어야 하므로, 새로운 Thread로 처리.
                     new Thread(() =>
                     {
-                        App.tcpClient.StartClient(App.memberData.memberViewModel.Id);
+                        TcpModel tcpModel = new TcpModel();
+                        List<MenuModel> menuItems = new List<MenuModel>();
+                        tcpModel.MessageType = 0;
+                        tcpModel.Id = App.memberData.memberViewModel.Id;
+                        tcpModel.ShopName = "";
+                        tcpModel.Content = "";
+                        tcpModel.OrderNumber = "";
+                        tcpModel.MenuItems = menuItems;
+
+                        App.tcpClient.StartClient(tcpModel);
                     }).Start();
                 }
                 else
