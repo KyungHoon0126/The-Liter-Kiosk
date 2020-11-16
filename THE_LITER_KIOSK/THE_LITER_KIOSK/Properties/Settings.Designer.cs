@@ -61,7 +61,7 @@ namespace THE_LITER_KIOSK.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [global::System.Configuration.DefaultSettingValueAttribute("10.80.162.152")]
         public string serverUrl {
             get {
                 return ((string)(this["serverUrl"]));

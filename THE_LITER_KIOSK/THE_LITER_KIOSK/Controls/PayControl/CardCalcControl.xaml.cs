@@ -13,6 +13,8 @@ namespace THE_LITER_KIOSK.Controls.PayControl
         public delegate void OnCompletePayByCardHandler();
         public event OnCompletePayByCardHandler OnCompletePayByCard;
 
+        delegate void SetPayByCardDelegate(int? tableIdx);
+
         public CardCalcControl()
         {
             InitializeComponent();
@@ -27,36 +29,32 @@ namespace THE_LITER_KIOSK.Controls.PayControl
 
         private void webcam_QrDecoded(object sender, string e)
         {
-            if (App.qrIndex >= 1)
-            {
-                return;
-            }
+            if (App.qrIndex >= 1) return;
 
             App.orderData.orderViewModel.QrCode = e;
 
-            if (App.memberData.memberViewModel.QrCode == App.orderData.orderViewModel.QrCode)
+            if (App.memberData.memberViewModel.QrCode == e)
             {
                 var selectedTable = App.placeData.tableViewModel.SelectedTable;
-                var memberId = App.memberData.memberViewModel.Id;
                 var payTime = DateTime.Now;
-                var paymentType = PaymentType.CARD.ToString();
+
+                SetPayByCardDelegate setDel = (tableIdx) =>
+                {
+                    ClearQrCode();
+                    SaveSalesInformation(payTime, PaymentType.CARD.ToString(), tableIdx, App.memberData.memberViewModel.Id);
+                    App.qrIndex++;
+                    App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE);
+                    OnCompletePayByCard?.Invoke();
+                };
 
                 if (selectedTable != null)
                 {
                     selectedTable.PayTime = payTime.ToString();
-                    ClearQrCode();
-                    SaveSalesInformation(payTime, paymentType, selectedTable.TableIdx, memberId);
-                    App.qrIndex++;
-                    App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE);
-                    OnCompletePayByCard?.Invoke();
+                    setDel(selectedTable.TableIdx);
                 }
                 else
                 {
-                    ClearQrCode();
-                    SaveSalesInformation(payTime, paymentType, null, memberId);
-                    App.qrIndex++;
-                    App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE);
-                    OnCompletePayByCard?.Invoke();
+                    setDel(null);
                 }
             }
             else

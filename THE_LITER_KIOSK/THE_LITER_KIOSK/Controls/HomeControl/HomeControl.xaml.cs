@@ -16,6 +16,7 @@ namespace THE_LITER_KIOSK.Controls.HomeControl
         #region UserControl Transition
         private void btnOrder_Click(object sender, RoutedEventArgs e)
         {
+            App.orderData.orderViewModel.IsEnabledOrderAndClearAllMenuItemBtn();
             App.uIStateManager.SwitchCustomControl(CustomControlType.ORDER);
         }
 

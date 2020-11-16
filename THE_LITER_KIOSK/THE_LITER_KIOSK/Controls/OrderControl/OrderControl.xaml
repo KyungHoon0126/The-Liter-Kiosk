@@ -297,6 +297,7 @@
                             HorizontalAlignment="Right"
                             FontWeight="SemiBold"
                             Background="#404040"
+                            IsEnabled="{Binding ClearAllMenuItemBtnIsEnabled}"
                             Style="{DynamicResource btnCommonStyle}"
                             Click="btnClearOrderList_Click">
                         <Button.Resources>
@@ -329,6 +330,7 @@
                             Margin="5"
                             Content="주문하기"
                             Background="#008575"
+                            IsEnabled="{Binding OrderBtnIsEnabled}"
                             Style="{DynamicResource btnCommonStyle}"
                             Click="btnOrder_Click">
                         <Button.Resources>

@@ -113,6 +113,7 @@ namespace THE_LITER_KIOSK
             {
                 CtrlLogin.Visibility = Visibility.Collapsed;
                 App.memberData.GetMemberData();
+
                 if (App.tcpClient.CheckServerState())
                 {
                     App.uIStateManager.SwitchCustomControl(CustomControlType.HOME);
@@ -129,11 +130,11 @@ namespace THE_LITER_KIOSK
                     switch (result)
                     {
                         case MessageBoxResult.Yes:
-                            MoveOrderToHome();
-                            break;
+                             MoveOrderToHome();
+                             break;
                         case MessageBoxResult.No:
-                            App.uIStateManager.SwitchCustomControl(CustomControlType.LOGIN);
-                            break;
+                             App.uIStateManager.SwitchCustomControl(CustomControlType.LOGIN);
+                             break;
                     }
                 }
             }
@@ -141,7 +142,7 @@ namespace THE_LITER_KIOSK
 
         private void CtrlPay_OnCompletePay()
         {
-            CtrlPayComplete.dispatcherTimer.Start();
+            CtrlPayComplete.payCompleteTimer.Start();
             App.placeData.tableViewModel.RunPayCompleteTimer();
         }
 

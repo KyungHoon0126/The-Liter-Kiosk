@@ -126,7 +126,7 @@ namespace TheLiter.Core.Member.ViewModel
             LoginCommand = new DelegateCommand(OnLogin, CanLogin).ObservesProperty(() => Pw);
         }
 
-        private void ClearSignUpData()
+        public void ClearSignUpData()
         {
             Id = string.Empty;
             Pw = string.Empty;

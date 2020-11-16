@@ -179,6 +179,28 @@ namespace TheLiter.Core.Order.ViewModel
                 NotifyPropertyChanged(nameof(PagingMenuList)); 
             }
         }
+
+        private bool _orderBtnIsEnabled = false;
+        public bool OrderBtnIsEnabled
+        {
+            get => _orderBtnIsEnabled;
+            set
+            {
+                _orderBtnIsEnabled = value;
+                NotifyPropertyChanged(nameof(OrderBtnIsEnabled));
+            }
+        }
+
+        private bool _clearAllMenuItemBtnIsEnabled = false;
+        public bool ClearAllMenuItemBtnIsEnabled
+        {
+            get => _clearAllMenuItemBtnIsEnabled;
+            set
+            {
+                _clearAllMenuItemBtnIsEnabled = value;
+                NotifyPropertyChanged(nameof(ClearAllMenuItemBtnIsEnabled));
+            }
+        }
         #endregion
 
         #region Commands
@@ -730,6 +752,20 @@ namespace TheLiter.Core.Order.ViewModel
             });
         }
 
+        public void IsEnabledOrderAndClearAllMenuItemBtn()
+        {
+            if (IsOrderedMenuItemsValid())
+            {
+                OrderBtnIsEnabled = true;
+                ClearAllMenuItemBtnIsEnabled = true;
+            }
+            else
+            {
+                OrderBtnIsEnabled = false;
+                ClearAllMenuItemBtnIsEnabled = false;
+            }
+        }
+
         private void PagingMenuItems()
         {
             int remainCurMenusCnt = GetRemainCurMenusCnt();
@@ -821,11 +857,13 @@ namespace TheLiter.Core.Order.ViewModel
             }
             selectedMenu.TotalPrice = 0;
             RemoveSelectedMenu(selectedMenu);
+            IsEnabledOrderAndClearAllMenuItemBtn();
         }
 
         public void RemoveSelectedMenu(MenuModel selectedMenu)
         { 
             OrderedMenuItems.Remove(selectedMenu);
+            IsEnabledOrderAndClearAllMenuItemBtn();
         }
 
         public void ClearQrCode()

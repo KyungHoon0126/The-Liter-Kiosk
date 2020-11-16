@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Threading;
@@ -23,12 +22,13 @@ namespace THE_LITER_KIOSK.Controls.AdminControl
         {
             App.adminData.LoadData();
             this.DataContext = App.adminData.adminViewModel;
+
             DispatcherTimer programOperationTimer = new DispatcherTimer();
             programOperationTimer.Interval = TimeSpan.FromSeconds(1);
             programOperationTimer.Tick += ProgramOperationTimer_Tick;
             programOperationTimer.Start();
         }
-
+            
         private void ProgramOperationTimer_Tick(object sender, EventArgs e)
         {
             var admin = App.adminData.adminViewModel;

@@ -3,6 +3,10 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:THE_LITER_KIOSK"
              StartupUri="View/MainWindow.xaml">
+    
+    <!--xmlns:vm="clr-namespace:TheLiter.Core.Member;assembly=TheLiter.Core.Member"-->
+    <!--xmlns:vm="clr-namespace:TheLiter.Core.Member.ViewModel;assembly=TheLiter.Core.Member"-->
+    
     <Application.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -13,7 +17,7 @@
 
                 <ResourceDictionary Source="ResourceDictionaries/CtrlOrderBtnStyle.xaml"/>
                 <ResourceDictionary Source="ResourceDictionaries/TbWaterMarkStyle.xaml"/>
-                
+
                 <ResourceDictionary Source="pack://application:,,,/LoadingIndicators.WPF;component/Colors.xaml"/>
                 <ResourceDictionary Source="pack://application:,,,/LoadingIndicators.WPF;component/Styles.xaml"/>
             </ResourceDictionary.MergedDictionaries>
@@ -24,7 +28,9 @@
             <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListViewItem}}">
                 <Setter Property="FontFamily" Value="AppleSDGothicNeoSB00"/>
             </Style>
+
+            <!--<vm:MemberData x:Key="vmMember"/>-->
+            <!--<vm:MemberViewModel x:Key="vmMember"/>-->
         </ResourceDictionary>
-        
     </Application.Resources>
 </Application>

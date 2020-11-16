@@ -27,7 +27,7 @@
                                 <Storyboard>
                                     <MediaTimeline Source="Assets/Video/TheLiterVideo.mp4"
                                                    Storyboard.TargetName="media"
-                                                   RepeatBehavior="Forever" />
+                                                   RepeatBehavior="Forever"/>
                                 </Storyboard>
                             </BeginStoryboard>
                         </EventTrigger.Actions>
@@ -65,12 +65,41 @@
                         VerticalAlignment="Top"
                         FocusVisualStyle="{x:Null}"
                         Click="btnOrder_Click">
-                    <TextBlock FontSize="16px">주문하기</TextBlock>
+
+                    <Button.Content>
+                        <TextBlock FontSize="16px">주문하기</TextBlock>      
+                    </Button.Content>
+                   
                     <Button.Resources>
                         <Style TargetType="Border">
                             <Setter Property="CornerRadius" Value="5"/>
                         </Style>
                     </Button.Resources>
+
+                    <Button.ToolTip>
+                        <StackPanel>
+                            <TextBlock Margin="0,0,0,5"
+                                       FontSize="14" 
+                                       FontWeight="Bold"
+                                       Text="&quot;더&quot; 리터 키오스크 &quot;더	&quot; 쉽게 주문하는 방법"/>
+                            <TextBlock>
+                                더 리터 키오스크 무인판매기 입니다.
+                                <LineBreak/>
+                                주문을 원하시면 눌러주세요.
+                            </TextBlock>
+                            <Border BorderBrush="Silver"
+                                    BorderThickness="0,1,0,0"
+                                    Margin="0,8"/>
+                            <WrapPanel>
+                                <Image Margin="0,0,5,0"
+                                       Height="30" Width="30"
+                                       Source="/Assets/Logo/TheLiterLogo.png"/>
+                                <TextBlock FontStyle="Italic"
+                                           Text="주문화면에서 다양한 더 리터 메뉴들을 만나보세요!"
+                                           VerticalAlignment="Center"/>
+                            </WrapPanel>
+                        </StackPanel>
+                    </Button.ToolTip>
                 </Button>
 
                 <Button x:Name="btnAdmin"

@@ -23,7 +23,7 @@ namespace TheLiter.Core.Admin.ViewModel
         public event PropertyChangedEventHandler PropertyChanged;
 
         #region Properties
-        delegate Tuple<TimeSpan, int> ReturnEmptyDelegate();
+        delegate Tuple<TimeSpan, int> ReturnEmptyValueDelegate();
 
         private string _operationTimeDesc;
         public string OperationTimeDesc
@@ -100,11 +100,21 @@ namespace TheLiter.Core.Admin.ViewModel
         }
         #endregion
 
+        #region Init
         private void InitVariables()
         {
             SalesItems = new List<SalesModel>();
             CbSaleFilter = new List<string>();
         }
+
+        private void LoadCbSalesFilter()
+        {
+            CbSaleFilter.Add("좌석 별 메뉴들 판매 수 / 총액");
+            CbSaleFilter.Add("좌석 별 각 카테고리 판매수 / 총액");
+            CbSaleFilter.Add("일별 총 매출액");
+            CbSaleFilter.Add("하루 중 시간대 별 총 매출액");
+        }
+        #endregion
 
         #region Chart
         public void LoadSalesByMenuDatas()
@@ -175,7 +185,7 @@ namespace TheLiter.Core.Admin.ViewModel
 
         public async Task<Tuple<TimeSpan, int>> GetProgramTotalUsageTime()
         {
-            ReturnEmptyDelegate method = () => { return new Tuple<TimeSpan, int>(TimeSpan.Parse("00:00:00"), -1); };
+            ReturnEmptyValueDelegate method = () => { return new Tuple<TimeSpan, int>(TimeSpan.Parse("00:00:00"), -1); };
 
             try
             {
@@ -286,11 +296,6 @@ FROM
             }
         }
         #endregion
-
-        private void LoadCbSalesFilter()
-        {
-            CbSaleFilter.Add("");
-        }
 
         public void NotifyPropertyChanged(string propertyName)
         {

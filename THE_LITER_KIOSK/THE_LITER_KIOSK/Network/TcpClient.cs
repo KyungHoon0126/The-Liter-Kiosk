@@ -1,198 +1,151 @@
-﻿using MySql.Data.MySqlClient.Memcached;
-using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
-using System.Net;
-using System.Net.Http.Headers;
 using System.Net.Sockets;
-using System.Runtime.Remoting;
 using System.Text;
 using System.Threading;
+using THE_LITER_KIOSK.Network.Model;
 
 namespace THE_LITER_KIOSK.Network
 {
     public class TcpClient
     {
-        public class StateObject
+        private const string ip = "10.80.162.152";
+        private const int port = 80;
+
+        private static ManualResetEvent connectDone =
+            new ManualResetEvent(false);
+        private static ManualResetEvent sendDone =
+            new ManualResetEvent(false);
+        private static ManualResetEvent receiveDone =
+            new ManualResetEvent(false);
+            
+        private static string response = string.Empty;
+
+
+        public void StartClient(string id)
         {
-            public Socket workSocket = null;
-            public const int BufferSize = 4600;
-            public byte[] buffer = new byte[BufferSize];
-            public StringBuilder sb = new StringBuilder();
+#if true
+            var json = new JObject();
+            var obj = new JArray();
+
+            json.Add("MSGType", 0);
+            json.Add("Id", id);
+            json.Add("ShopName", "");
+            json.Add("Content", "?");
+            json.Add("OrderNumber", "");
+            json.Add("Menus", obj);
+#endif
+
+            try {
+
+                Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+                client.BeginConnect(ip, port, new AsyncCallback(ConnectCallback), client);
+                connectDone.WaitOne();
+
+                Debug.WriteLine(client.Connected);
+                
+                Send(client, json.ToString());
+                sendDone.WaitOne();
+
+                Receive(client);
+                receiveDone.WaitOne();
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("START CLIENT ERROR : " + e.Message);
+            }
         }
 
-        
-            private const int port = 80;
-            private const string ip = "100.80.162.152";
-        
-            private static ManualResetEvent connectDone =
-                new ManualResetEvent(false);
-            private static ManualResetEvent sendDone =
-                new ManualResetEvent(false);
-            private static ManualResetEvent receiveDone =
-                new ManualResetEvent(false);
-            
-            private static String response = String.Empty;
-
-            public void StartClient(string id)
+        private void ConnectCallback(IAsyncResult ar)
+        {
+            try
             {
-
-                var json = new JObject();
-                var obj = new JArray();
-
-                json.Add("MSGType", 0);
-                json.Add("Id", id);
-                json.Add("ShopName", "");
-                json.Add("Content", "?");
-                json.Add("OrderNumber", "");
-                json.Add("Menus", obj);
-
-                try {
-
-                    Socket client = new Socket(AddressFamily.InterNetwork,
-                        SocketType.Stream, ProtocolType.Tcp);
-                    
-                    client.BeginConnect(ip, port,
-                    new AsyncCallback(ConnectCallback), client);
-                    connectDone.WaitOne();
-                    Debug.WriteLine(client.Connected);
-                    Send(client, json.ToString());
+                Socket client = (Socket)ar.AsyncState;
+                client.EndConnect(ar);
                 
-                    sendDone.WaitOne();
-
-                    Receive(client);
-                    receiveDone.WaitOne();
-
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.ToString());
-                    Debug.WriteLine(e.Message);
-                }
+                Debug.WriteLine("Socket connected to {0}", client.RemoteEndPoint.ToString());
+                
+                connectDone.Set();
             }
-
-            private static void ConnectCallback(IAsyncResult ar)
+            catch (Exception e)
             {
-                try
-                {
-                    Socket client = (Socket)ar.AsyncState;
-
-                    client.EndConnect(ar);
-
-                    Console.WriteLine("Socket connected to {0}",
-                        client.RemoteEndPoint.ToString());
-
-                    connectDone.Set();
-
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.ToString());
-                }
+                Debug.WriteLine("CONNECT CALL BACK ERROR : " +  e.Message);
             }
+        }
 
-            private static void Receive(Socket client)
+        private void Receive(Socket client)
+        {
+            try
             {
-                try
-                {
-                    StateObject state = new StateObject();
-                    state.workSocket = client;
-
-                    client.BeginReceive(state.buffer,
-                        0,
-                        StateObject.BufferSize,
-                        0,
-                        new AsyncCallback(ReceiveCallback),
-                        state);
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.ToString());
-                }
+                StateObjectModel state = new StateObjectModel();
+                state.workSocket = client;
+                client.BeginReceive(state.buffer, 0, StateObjectModel.BufferSize, 0, new AsyncCallback(ReceiveCallback), state);
             }
-
-            private static void ReceiveCallback(IAsyncResult ar)
+            catch (Exception e)
             {
-                try
+                Debug.WriteLine("RECEIVE ERROR : " + e.Message);
+            }
+        }
+
+        private void ReceiveCallback(IAsyncResult ar)
+        {
+            try
+            {
+                StateObjectModel state = (StateObjectModel)ar.AsyncState;
+                Socket client = state.workSocket;
+
+                int bytesRead = client.EndReceive(ar);
+
+                if (bytesRead > 0)
                 {
-                    StateObject state = (StateObject)ar.AsyncState;
-                    Socket client = state.workSocket;
-
-                    int bytesRead = client.EndReceive(ar);
-
-                    if (bytesRead > 0)
+                    state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
+                    client.BeginReceive(state.buffer, 0, StateObjectModel.BufferSize, 0, new AsyncCallback(ReceiveCallback), state);
+                }
+                else
+                {
+                    if (state.sb.Length > 1)
                     {
-                        state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
-
-                        client.BeginReceive(state.buffer,
-                            0,
-                            StateObject.BufferSize,
-                            0,
-                            new AsyncCallback(ReceiveCallback),
-                            state);
+                        response = state.sb.ToString();
+                        Debug.WriteLine(response);
                     }
-                    else
-                    {
-                        if (state.sb.Length > 1)
-                        {
-                            response = state.sb.ToString();
-                            Console.WriteLine(response);
-                        }
-                        receiveDone.Set();
-                    }
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.ToString());
+                    receiveDone.Set();
                 }
             }
-
-            private static void Send(Socket client, String data)
+            catch (Exception e)
             {
-                byte[] byteData = Encoding.ASCII.GetBytes(data);
-
-                client.BeginSend(byteData,
-                    0,
-                    byteData.Length,
-                    0,
-                    new AsyncCallback(SendCallback),
-                    client);
+                Debug.WriteLine("RECEIVE CALL BACK ERROR : " + e.Message);
             }
+        }
 
-            private static void SendCallback(IAsyncResult ar)
+        private void Send(Socket client, string data)
+        {
+            byte[] byteData = Encoding.ASCII.GetBytes(data);
+            client.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), client);
+        }
+
+        private void SendCallback(IAsyncResult ar)
+        {
+            try
             {
-                try
-                {
-                    Socket client = (Socket)ar.AsyncState;
-
-                    int bytesSent = client.EndSend(ar);
-                    Console.WriteLine("Sent{0} bytes to server.", bytesSent);
-
-                    sendDone.Set();
-                }
-                catch (Exception e)
-                {
-                    Console.WriteLine(e.ToString());
-                }
+                Socket client = (Socket)ar.AsyncState;
+                int bytesSent = client.EndSend(ar);
+                
+                Debug.WriteLine("Sent{0} bytes to server.", bytesSent);
+                
+                sendDone.Set();
             }
+            catch (Exception e)
+            {
+                Debug.WriteLine("SEND CALL BACK ERROR : " + e.Message);
+            }
+        }
+
         public bool CheckServerState()
         {
-            Socket client = new Socket(AddressFamily.InterNetwork,
-                       SocketType.Stream, ProtocolType.Tcp);
-            client.BeginConnect(ip, port,
-            new AsyncCallback(ConnectCallback), client);
-            Debug.WriteLine(client.Connected);
-            
-            if(client.Connected)
-            {
-                return true;
-            } else
-            {
-                return false;
-            }
-           
+            Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp); 
+            client.BeginConnect(ip, port, new AsyncCallback(ConnectCallback), client);
+            return client.Connected ? true : false;
         }
-        
-
     }
 }

@@ -14,6 +14,8 @@ namespace THE_LITER_KIOSK.Controls.PayControl
         public delegate void OnCompletePayByCashHandler();
         public event OnCompletePayByCashHandler OnCompletePayByCash;
 
+        delegate void SetPayByCashDelegate(int? tableIdx);
+
         public CashCalcControl()
         {
             InitializeComponent();
@@ -37,30 +39,31 @@ namespace THE_LITER_KIOSK.Controls.PayControl
             if (App.memberData.memberViewModel.BarCode == App.orderData.orderViewModel.BarCode)
             {
                 var selectedTable = App.placeData.tableViewModel.SelectedTable;
-                var memberId = App.memberData.memberViewModel.Id;
                 var payTime = DateTime.Now;
-                var paymentType = PaymentType.CASH.ToString();
+
+                SetPayByCashDelegate setDel = (tableIdx) =>
+                {
+                    ClearBarCode();
+                    SaveSalesInformation(payTime, PaymentType.CASH.ToString(), tableIdx, App.memberData.memberViewModel.Id);
+                    App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE);
+                    OnCompletePayByCash?.Invoke();
+                };
 
                 if (selectedTable != null)
                 {
                     selectedTable.PayTime = payTime.ToString();
-                    ClearBarCode();
-                    SaveSalesInformation(payTime, paymentType, selectedTable.TableIdx, memberId);
-                    OnCompletePayByCash?.Invoke();
+                    setDel(selectedTable.TableIdx);
                 }
                 else
                 {
-                    ClearBarCode();
-                    SaveSalesInformation(payTime, paymentType, null, memberId);
-                    App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE);
-                    OnCompletePayByCash?.Invoke();
+                    setDel(null);
                 }
             }
             else
             {
                 MessageBox.Show("결제 정보가 일치하지 않습니다");
-                tbCardNumber.Text = string.Empty;
                 ClearBarCode();
+                tbCardNumber.Text = string.Empty;
             }
         }
 

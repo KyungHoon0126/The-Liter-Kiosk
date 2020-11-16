@@ -43,9 +43,9 @@ namespace THE_LITER_KIOSK.Network
             set => SetProperty(ref _orderNumber, value);
         }
 
-        private List<Network.MenuModel> _menuItems;
+        private List<MenuModel> _menuItems;
         [JsonProperty("Menus")]
-        public List<Network.MenuModel> MenuItems
+        public List<MenuModel> MenuItems
         {
             get => _menuItems;
             set => SetProperty(ref _menuItems, value);

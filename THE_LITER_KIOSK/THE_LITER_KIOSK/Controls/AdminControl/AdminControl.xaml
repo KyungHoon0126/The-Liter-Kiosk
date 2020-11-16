@@ -84,6 +84,9 @@
                            FontFamily="AppleSDGothicNeoSB00"
                            VerticalAlignment="Center"
                            HorizontalAlignment="Right"/>
+
+                <ComboBox ItemsSource="{Binding CbSaleFilter}"
+                          MinWidth="260" FontSize="20"/>
             </Grid>
 
             <Grid Grid.Row="1">

@@ -114,6 +114,7 @@ namespace THE_LITER_KIOSK.Controls
         #region UserControl Transition
         private void btnSignup_Click(object sender, RoutedEventArgs e)
         {
+            App.memberData.memberViewModel.ClearSignUpData();
             App.uIStateManager.SwitchCustomControl(CustomControlType.SIGNUP);
         }
         #endregion

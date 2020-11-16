@@ -139,6 +139,9 @@
     <Compile Include="Controls\AdminControl\AdminControl.xaml.cs">
       <DependentUpon>AdminControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\AdminControl\StatisticsControl.xaml.cs">
+      <DependentUpon>StatisticsControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\HomeControl\HomeControl.xaml.cs">
       <DependentUpon>HomeControl.xaml</DependentUpon>
     </Compile>
@@ -174,6 +177,7 @@
     <Compile Include="Converters\IsUsedToFocusableConverter.cs" />
     <Compile Include="Converters\MenuCategoryToKoreanConverter.cs" />
     <Compile Include="Converters\TableIdxToNameConverter.cs" />
+    <Compile Include="Network\Model\StateObjectModel.cs" />
     <Compile Include="Network\TcpClient.cs" />
     <Compile Include="Network\Model\TcpModel.cs" />
     <Compile Include="UIStateManager\UIStateManager.cs" />
@@ -183,6 +187,10 @@
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\AdminControl\AdminControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\AdminControl\StatisticsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

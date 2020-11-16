@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using System.Windows;
 using System.Windows.Threading;
 using THE_LITER_KIOSK.UIManager;
@@ -11,8 +10,8 @@ namespace THE_LITER_KIOSK.Controls.PayControl
     /// </summary>
     public partial class PayCompleteControl : CustomControlModel
     {
-        public DispatcherTimer dispatcherTimer { get; set; }
-        public int remainTime = 10;
+        public DispatcherTimer payCompleteTimer { get; set; }
+        public int remainTime = 5;
 
         public PayCompleteControl()
         {
@@ -26,23 +25,23 @@ namespace THE_LITER_KIOSK.Controls.PayControl
             tbMemberName.DataContext = App.memberData.memberViewModel;
             tbMemberBarCode.DataContext = App.memberData.memberViewModel;
 
-            dispatcherTimer = new DispatcherTimer();
-            dispatcherTimer.Tick += new EventHandler(CompletePayByCashTimer_Tick);
-            dispatcherTimer.Interval = new TimeSpan(0, 0, 1);
+            payCompleteTimer = new DispatcherTimer();
+            payCompleteTimer.Tick += CompletePayTimer_Tick;
+            payCompleteTimer.Interval = new TimeSpan(0, 0, 1);
         }
 
-        private void CompletePayByCashTimer_Tick(object sender, EventArgs e)
+        private void CompletePayTimer_Tick(object sender, EventArgs e)
         {
             tbTimer.Text = string.Format($"{remainTime}초 후에 홈 화면으로 이동합니다.");
             remainTime--;
             if (remainTime < 0)
             {
                 (sender as DispatcherTimer).Stop();
-                remainTime = 10;
+                remainTime = 5;
                 App.orderData.InitData();
-                App.uIStateManager.SwitchCustomControl(CustomControlType.HOME);
-                App.qrIndex = 0;                
+                App.qrIndex = 0;
                 App.placeData.tableViewModel.SelectedTable = null;
+                App.uIStateManager.SwitchCustomControl(CustomControlType.HOME);             
             }
         }
     }

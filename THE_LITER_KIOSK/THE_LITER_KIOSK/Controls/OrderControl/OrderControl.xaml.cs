@@ -26,24 +26,18 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
         private void lvCategory_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var path = App.orderData.orderViewModel;
+
             path.CurrentPageIdx = 1;
 
             if (lvCategory.SelectedIndex == 0)
-            {
-                path.CurrentMenuList = App.orderData.orderViewModel.MenuList;
-            }
+                path.CurrentMenuList = path.MenuList;
             else
-            {
                 path.CurrentMenuList = path.MenuList.Where(x => x.MenuCategory == ((CategoryModel)lvCategory.SelectedItem).ECategory).ToList();
-            }
         }
 
         private void lvMenuList_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (lvMenuList.SelectedItem == null)
-            {
-                return;
-            }
+            if (lvMenuList.SelectedItem == null) return;
 
             MenuModel selectedMenu = (MenuModel)lvMenuList.SelectedItem;
 
@@ -57,22 +51,16 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
                 App.orderData.orderViewModel.AddOrderedMenuItems(selectedMenu);
             }
 
+            App.orderData.orderViewModel.IsEnabledOrderAndClearAllMenuItemBtn();
             lvMenuList.SelectedIndex = -1;
         }
 
         private bool IsDuplicateMenu(MenuModel selectedMenu)
         {
-            for (int i = 0; i < lvOrderList.Items.Count; i++)
-            {
-                if (selectedMenu.Name == (lvOrderList.Items[i] as MenuModel).Name)
-                {
-                    return true;
-                }
-            }
-            return false;
+            return lvOrderList.Items.Cast<MenuModel>().ToList().Where(x => x.Name == selectedMenu.Name).FirstOrDefault() == null ? false : true;
         }
 
-        private void btnAddMenu_Click(object sender, RoutedEventArgs e)     
+        private void btnAddMenu_Click(object sender, RoutedEventArgs e)
         {
             IncreaseMenuCount(ExtractSelectedMenu(sender));
         }
