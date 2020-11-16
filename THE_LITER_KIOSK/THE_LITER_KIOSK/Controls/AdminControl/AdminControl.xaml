@@ -4,123 +4,39 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:THE_LITER_KIOSK.Controls.AdminControl"
-             xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
-             xmlns:converter="clr-namespace:THE_LITER_KIOSK.Converters"
+             xmlns:loadin="clr-namespace:LoadingIndicators.WPF;assembly=LoadingIndicators.WPF"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
 
-    <UserControl.Resources>
-        <converter:TableIdxToNameConverter x:Key="TableIdxToNameConverter"/>
-
-        <CollectionViewSource x:Key="cvsSales" Source="{Binding SalesItems}"
-                              Filter="CollectionViewSource_Filter">
-            <CollectionViewSource.SortDescriptions>
-                <scm:SortDescription PropertyName="Sales.ReceiptIdx"/>
-                <scm:SortDescription PropertyName="Sales.Category"/>
-                <scm:SortDescription PropertyName="Sales.Name"/>
-                <scm:SortDescription PropertyName="Sales.Count"/>
-                <scm:SortDescription PropertyName="Sales.Price"/>
-                <scm:SortDescription PropertyName="Sales.PayTime"/>
-                <scm:SortDescription PropertyName="Sales.PayType"/>
-                <scm:SortDescription PropertyName="Sales.TableIdx"/>
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
-    </UserControl.Resources>
-    
     <Grid Background="White">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="4*"/>
-            <ColumnDefinition Width="6*"/>
-        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="9*"/>
+        </Grid.RowDefinitions>
 
-        <Grid Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-
-            <Grid Grid.Row="0">
-                <lvc:PieChart x:Name="pcSalesByCategory" Margin="10" 
-                              Series="{Binding SalesByCategorySeriesCollection}"
-                              LegendLocation="Right" InnerRadius="100" StartingRotationAngle="180">
-                    
-                    <!--<lvc:PieChart.ChartLegend>
-                        <lvc:DefaultLegend BulletSize="20"/>
-                    </lvc:PieChart.ChartLegend>-->
-                    
-                    <lvc:PieChart.DataTooltip>
-                        <lvc:DefaultTooltip BulletSize="20" SelectionMode="OnlySender"/>
-                    </lvc:PieChart.DataTooltip>
-                </lvc:PieChart>
-            </Grid>
-
-            <Grid Grid.Row="1">
-                <lvc:PieChart Name="pcSalesByMenu" Margin="5"   
-                              Series="{Binding SalesByMenuSeriesCollection}"
-                              Hoverable="True">
-                    
-                    <!--<lvc:PieChart.ChartLegend>
-                        <lvc:DefaultLegend BulletSize="20"/>
-                    </lvc:PieChart.ChartLegend>-->
-                    
-                    <lvc:PieChart.DataTooltip>
-                        <lvc:DefaultTooltip BulletSize="20" SelectionMode="OnlySender"/>
-                    </lvc:PieChart.DataTooltip>
-                </lvc:PieChart>
-            </Grid>
+        <Grid Grid.Row="0">
+            <TextBlock Margin="0,0,60,0"
+                       Text="{Binding OperationTimeDesc, Mode=TwoWay, StringFormat=프로그램 구동 시간 : \{0:\\ hh\\시\\간\\ mm\\분\\ ss\\초\}}"
+                       FontSize="30"
+                       FontFamily="AppleSDGothicNeoSB00"
+                       VerticalAlignment="Center"
+                       HorizontalAlignment="Right"/>
         </Grid>
 
-        <Grid Grid.Column="1">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1*"/>
-                <RowDefinition Height="9*"/>
-            </Grid.RowDefinitions>      
-            
-            <Grid Grid.Row="0">
-                <TextBlock Margin="0,0,60,0"
-                           Text="{Binding OperationTimeDesc, Mode=TwoWay, StringFormat=프로그램 구동 시간 : \{0:\\ hh\\시\\간\\ mm\\분\\ ss\\초\}}"
-                           FontSize="30"
-                           FontFamily="AppleSDGothicNeoSB00"
-                           VerticalAlignment="Center"
-                           HorizontalAlignment="Right"/>
+        <Grid Grid.Row="1">
+            <TabControl>
+                <TabItem Header="회원 리스트">
+                    <local:MemberManagementControl/>
+                </TabItem>
+                
+                <TabItem Header="통계 화면">
+                    <local:StatisticsControl/>
+                </TabItem>
+            </TabControl>
 
-                <ComboBox ItemsSource="{Binding CbSaleFilter}"
-                          MinWidth="260" FontSize="20"/>
-            </Grid>
-
-            <Grid Grid.Row="1">
-                <!--ItemsSource="{Binding cvsSales}"-->
-                <DataGrid x:Name="dgSalesStat" Margin="5"
-                          ItemsSource="{Binding SalesItems}"
-                          HorizontalAlignment="Center"
-                          AutoGenerateColumns="False"
-                          AreRowDetailsFrozen="False"
-                          CanUserAddRows="False"
-                          CanUserResizeRows="False">
-
-                    <DataGrid.Columns>
-                        <DataGridTextColumn Header="주문 번호"
-                                            Binding="{Binding ReceiptIdx}"/>
-                        <DataGridTextColumn Header="카테고리"
-                                            Binding="{Binding Category}"/>
-                        <DataGridTextColumn Header="메뉴"
-                                            Binding="{Binding Name}"/>
-                        <DataGridTextColumn Header="수량"
-                                            Binding="{Binding Count, StringFormat={}{0}개}"/>
-                        <DataGridTextColumn Header="가격"
-                                            Binding="{Binding Price, StringFormat=\{0:N0\}원}"/>
-                        <DataGridTextColumn Header="결제 시간"
-                                            Binding="{Binding PayTime, StringFormat={}{0:yyyy년 MM월 dd일 a\\t h시 mm분 tt}}"/>
-                        <DataGridTextColumn Header="결제 수단"
-                                            Binding="{Binding PayType}"/>
-                        <DataGridTextColumn Header="테이블 번호"
-                                            Binding="{Binding TableIdx, Converter={StaticResource TableIdxToNameConverter}}"/>
-                        <DataGridTextColumn Header="회원 아이디"
-                                            Binding="{Binding MemberId}"/>
-                    </DataGrid.Columns>
-                </DataGrid>
-            </Grid>
+            <loadin:LoadingIndicator x:Name="progressRing" SpeedRatio="2"
+                                     Foreground="RoyalBlue"
+                                     Style="{DynamicResource LoadingIndicatorArcsStyle}"/>
         </Grid>
     </Grid>
 </base:CustomControlModel>

@@ -139,6 +139,9 @@
     <Compile Include="Controls\AdminControl\AdminControl.xaml.cs">
       <DependentUpon>AdminControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\AdminControl\MemberManagementControl.xaml.cs">
+      <DependentUpon>MemberManagementControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\AdminControl\StatisticsControl.xaml.cs">
       <DependentUpon>StatisticsControl.xaml</DependentUpon>
     </Compile>
@@ -189,6 +192,10 @@
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\AdminControl\AdminControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\AdminControl\MemberManagementControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

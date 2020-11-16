@@ -15,5 +15,10 @@ namespace TheLiter.Core.Member
         {
             memberViewModel.GetMemberData();
         }
+
+        public void GetAllMemberData()
+        {
+            memberViewModel.GetAllMemberData();
+        }
     }
 }

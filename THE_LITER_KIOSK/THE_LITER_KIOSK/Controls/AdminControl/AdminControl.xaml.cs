@@ -20,6 +20,8 @@ namespace THE_LITER_KIOSK.Controls.AdminControl
 
         private void AdminControl_Loaded(object sender, RoutedEventArgs e)
         {
+            App.memberData.memberViewModel.CompleteAction += MemberViewModel_CompleteAction;
+
             App.adminData.LoadData();
             this.DataContext = App.adminData.adminViewModel;
 
@@ -28,18 +30,23 @@ namespace THE_LITER_KIOSK.Controls.AdminControl
             programOperationTimer.Tick += ProgramOperationTimer_Tick;
             programOperationTimer.Start();
         }
-            
+
+        private void MemberViewModel_CompleteAction(object sender, bool success)
+        {
+            if (success)
+            {
+                progressRing.IsActive = !success;
+            }
+            else
+            {
+                progressRing.IsActive = !success;
+            }
+        }
+
         private void ProgramOperationTimer_Tick(object sender, EventArgs e)
         {
             var admin = App.adminData.adminViewModel;
             admin.OperationTimeDesc = (admin.OperationTime - new DateTime(0001, 01, 01, 00, 00, 00)).ToString();
-        }
-         
-        private void CollectionViewSource_Filter(object sender, FilterEventArgs e)
-        {
-            SalesModel sale = e.Item as SalesModel;
-
-            
         }
     }
 }

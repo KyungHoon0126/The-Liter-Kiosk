@@ -109,6 +109,7 @@ namespace THE_LITER_KIOSK
             if (App.uIStateManager.customCtrlStack.Count > 0 && e.Key == Key.F2 && App.uIStateManager.customCtrlStack.Peek() == CtrlHome)
             {
                 App.adminData.LoadData();
+                App.memberData.GetAllMemberData();
                 App.uIStateManager.SwitchCustomControl(CustomControlType.ADMIN);
             }
         }
@@ -121,11 +122,11 @@ namespace THE_LITER_KIOSK
                 App.memberData.GetMemberData();
 
 #if true
-                // if (App.tcpClient.CheckServerState())
+                if (App.tcpClient.CheckServerState())
                 // var isConnected = App.tcpClient.CheckServerState();
 #endif
 
-#if true
+#if false
                 if (true)
 #endif
                 {

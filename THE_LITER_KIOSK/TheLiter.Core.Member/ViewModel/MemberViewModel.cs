@@ -1,5 +1,6 @@
 ﻿using Prism.Commands;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Windows.Input;
@@ -14,6 +15,9 @@ namespace TheLiter.Core.Member.ViewModel
 
         public delegate void OnLoginResultRecievedHandler(object sender, bool success);
         public event OnLoginResultRecievedHandler OnLoginResultRecieved;
+
+        public delegate void LoadCompleteEventHandler(object sender, bool success);
+        public event LoadCompleteEventHandler CompleteAction;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -105,6 +109,17 @@ namespace TheLiter.Core.Member.ViewModel
                 NotifyPropertyChanged(nameof(IsActive));
             }
         }
+
+        private List<MemberModel> _memberItems;
+        public List<MemberModel> MemeberItems
+        {
+            get => _memberItems;
+            set
+            {
+                _memberItems = value;
+                NotifyPropertyChanged(nameof(MemeberItems));
+            }
+        }
         #endregion
 
         #region Command
@@ -116,6 +131,7 @@ namespace TheLiter.Core.Member.ViewModel
         public MemberViewModel()
         {
             InitCommands();
+            InitVariables();
         }
         #endregion
 
@@ -124,6 +140,11 @@ namespace TheLiter.Core.Member.ViewModel
         {
             SignUpCommand = new DelegateCommand(OnSignUp, CanSignUp).ObservesProperty(() => BarCode);
             LoginCommand = new DelegateCommand(OnLogin, CanLogin).ObservesProperty(() => Pw);
+        }
+
+        private void InitVariables()
+        {
+            MemeberItems = new List<MemberModel>();
         }
 
         public void ClearSignUpData()
@@ -245,6 +266,33 @@ AND
         #endregion
 
         #region DataBase
+        internal async void GetAllMemberData()
+        {
+            CompleteAction?.Invoke(this, false);
+            
+            try
+            {
+                using (var db = GetConnection())
+                {
+                    db.Open();
+
+                    string selectSql = $@"
+SELECT
+    *
+FROM
+    member_tb
+;";
+                    MemeberItems = await memberDBManager.GetListAsync(db, selectSql, "");
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Write("GET ALL MEMBER DATA : " + e.Message);
+            }
+
+            CompleteAction?.Invoke(this, true);
+        }
+
         internal async void GetMemberData()
         {
             try
