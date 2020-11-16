@@ -23,38 +23,49 @@ namespace THE_LITER_KIOSK.Network
         private static string response = string.Empty;
 
 
-        public void StartClient(string id)
+        public void StartClient(TcpModel tcpModel)
         {
-#if true
-            var json = new JObject();
-            var obj = new JArray();
-
-            json.Add("MSGType", 0);
-            json.Add("Id", id);
-            json.Add("ShopName", "");
-            json.Add("Content", "?");
-            json.Add("OrderNumber", "");
-            json.Add("Menus", obj);
-#endif
-
             try 
             {
-                Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                client.BeginConnect(ip, port, new AsyncCallback(ConnectCallback), client);
-                connectDone.WaitOne();
+                while (true)
+                {
+                    if(tcpModel != null)
+                    {
+                        TcpHelper.SocketClient.BeginConnect(ip, port, new AsyncCallback(ConnectCallback), TcpHelper.SocketClient);
+                        connectDone.WaitOne();
 
-                Debug.WriteLine(client.Connected);
-                
-                Send(client, json.ToString());
-                sendDone.WaitOne();
+                        Debug.WriteLine(TcpHelper.SocketClient.Connected);
 
-                Receive(client);
-                receiveDone.WaitOne();
+                        Send(TcpHelper.SocketClient, SetMsgArgs(tcpModel));
+                        sendDone.WaitOne();
+
+                        Receive(TcpHelper.SocketClient);
+                        receiveDone.WaitOne();
+                    }
+                    tcpModel = null;
+                }
+              
             }
             catch (Exception e)
             {
                 Debug.WriteLine("START CLIENT ERROR : " + e.Message);
             }
+        }
+
+        public string SetMsgArgs(TcpModel tcpModel)
+        {
+            var json = new JObject();
+            var jArray = new JArray();
+
+            json["MSGType"] = tcpModel.MessageType;
+            json["id"] = tcpModel.Id;
+            json["ShopName"] = tcpModel.ShopName;
+            json["Content"] = tcpModel.Content;
+            json["OrderNumber"] = tcpModel.OrderNumber;
+            jArray.Add(tcpModel.MenuItems);
+            json["Menus"] = jArray;
+
+            return json.ToString();
         }
 
         private void ConnectCallback(IAsyncResult ar)
