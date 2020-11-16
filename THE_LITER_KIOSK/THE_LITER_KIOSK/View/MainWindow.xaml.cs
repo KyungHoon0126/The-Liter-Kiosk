@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Sockets;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
@@ -114,11 +115,18 @@ namespace THE_LITER_KIOSK
                 CtrlLogin.Visibility = Visibility.Collapsed;
                 App.memberData.GetMemberData();
 
-                if (App.tcpClient.CheckServerState())
+#if true
+                // if (App.tcpClient.CheckServerState())
+                // var isConnected = App.tcpClient.CheckServerState();
+#endif
+
+#if true
+                if (true)
+#endif
                 {
                     App.uIStateManager.SwitchCustomControl(CustomControlType.HOME);
 
-                    // 경훈 : Socket이 계속 연결되어 있어야 하므로, 새로운 Thread로 처리.
+                    // 경훈: Socket이 계속 연결되어 있어야 하므로, 새로운 Thread로 처리.
                     new Thread(() =>
                     {
                         App.tcpClient.StartClient(App.memberData.memberViewModel.Id);
@@ -130,11 +138,11 @@ namespace THE_LITER_KIOSK
                     switch (result)
                     {
                         case MessageBoxResult.Yes:
-                             MoveOrderToHome();
-                             break;
+                            MoveOrderToHome();
+                            break;
                         case MessageBoxResult.No:
-                             App.uIStateManager.SwitchCustomControl(CustomControlType.LOGIN);
-                             break;
+                            App.uIStateManager.SwitchCustomControl(CustomControlType.LOGIN);
+                            break;
                     }
                 }
             }

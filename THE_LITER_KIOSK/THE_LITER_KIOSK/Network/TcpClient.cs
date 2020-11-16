@@ -37,8 +37,8 @@ namespace THE_LITER_KIOSK.Network
             json.Add("Menus", obj);
 #endif
 
-            try {
-
+            try 
+            {
                 Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 client.BeginConnect(ip, port, new AsyncCallback(ConnectCallback), client);
                 connectDone.WaitOne();
@@ -143,7 +143,7 @@ namespace THE_LITER_KIOSK.Network
 
         public bool CheckServerState()
         {
-            Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp); 
+            Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
             client.BeginConnect(ip, port, new AsyncCallback(ConnectCallback), client);
             return client.Connected ? true : false;
         }
