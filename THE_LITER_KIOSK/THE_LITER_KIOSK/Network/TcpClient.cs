@@ -78,6 +78,7 @@ namespace THE_LITER_KIOSK.Network
                 Debug.WriteLine("Socket connected to {0}", client.RemoteEndPoint.ToString());
                 
                 connectDone.Set();
+
             }
             catch (Exception e)
             {
@@ -154,9 +155,19 @@ namespace THE_LITER_KIOSK.Network
 
         public bool CheckServerState()
         {
+            
+
             Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            client.BeginConnect(ip, port, new AsyncCallback(ConnectCallback), client);
-            return client.Connected ? true : false;
+            try
+            {
+                client.Connect(ip, port);
+                Debug.WriteLine(client.Connected);
+                return client.Connected ? true : false;
+            } catch (Exception e)
+            {
+                return false;
+            }
+            
         }
     }
 }
