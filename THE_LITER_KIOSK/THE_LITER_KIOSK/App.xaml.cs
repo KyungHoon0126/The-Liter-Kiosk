@@ -1,8 +1,5 @@
-﻿using System.Net.Sockets;
-using System.Security.RightsManagement;
-using System.Windows;
+﻿using System.Windows;
 using THE_LITER_KIOSK.Common;
-using THE_LITER_KIOSK.Network;
 using THE_LITER_KIOSK.UIManager;
 using TheLiter.Core.Admin;
 using TheLiter.Core.Member;

@@ -139,8 +139,14 @@
     <Compile Include="Controls\AdminControl\AdminControl.xaml.cs">
       <DependentUpon>AdminControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\AdminControl\MemberManagementControl.xaml.cs">
+    <Compile Include="Controls\AdminControl\Management\MemberManagementControl.xaml.cs">
       <DependentUpon>MemberManagementControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AdminControl\Management\MenuManagementControl.xaml.cs">
+      <DependentUpon>MenuManagementControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\AdminControl\Management\MenuSettingWindow.xaml.cs">
+      <DependentUpon>MenuSettingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\AdminControl\StatisticsControl.xaml.cs">
       <DependentUpon>StatisticsControl.xaml</DependentUpon>
@@ -176,6 +182,7 @@
       <DependentUpon>TableControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\BackgroundColorConverter.cs" />
+    <Compile Include="Converters\IsSoldOutToStringConverter.cs" />
     <Compile Include="Converters\PayTimeToVisibilityConverter.cs" />
     <Compile Include="Converters\IsUsedToFocusableConverter.cs" />
     <Compile Include="Converters\MenuCategoryToKoreanConverter.cs" />
@@ -195,7 +202,15 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\AdminControl\MemberManagementControl.xaml">
+    <Page Include="Controls\AdminControl\Management\MemberManagementControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\AdminControl\Management\MenuManagementControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\AdminControl\Management\MenuSettingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

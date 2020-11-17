@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Threading;
+using THE_LITER_KIOSK.Controls.AdminControl.Management;
 using THE_LITER_KIOSK.UIManager;
 using TheLiter.Core.Admin.Model;
 
@@ -21,7 +22,8 @@ namespace THE_LITER_KIOSK.Controls.AdminControl
         private void AdminControl_Loaded(object sender, RoutedEventArgs e)
         {
             App.memberData.memberViewModel.CompleteAction += MemberViewModel_CompleteAction;
-
+            ctrlMenuManagement.LoadMenuSettingWindow += CtrlMenuManagement_LoadMenuSettingWindow;
+            
             App.adminData.LoadData();
             this.DataContext = App.adminData.adminViewModel;
 
@@ -41,6 +43,12 @@ namespace THE_LITER_KIOSK.Controls.AdminControl
             {
                 progressRing.IsActive = !success;
             }
+        }
+
+        private void CtrlMenuManagement_LoadMenuSettingWindow(object sender, RoutedEventArgs e)
+        {
+            MenuSettingWindow menuSettingWindow = new MenuSettingWindow();
+            menuSettingWindow.ShowDialog();
         }
 
         private void ProgramOperationTimer_Tick(object sender, EventArgs e)

@@ -111,13 +111,13 @@ namespace TheLiter.Core.Member.ViewModel
         }
 
         private List<MemberModel> _memberItems;
-        public List<MemberModel> MemeberItems
+        public List<MemberModel> MemberItems
         {
             get => _memberItems;
             set
             {
                 _memberItems = value;
-                NotifyPropertyChanged(nameof(MemeberItems));
+                NotifyPropertyChanged(nameof(MemberItems));
             }
         }
         #endregion
@@ -144,7 +144,7 @@ namespace TheLiter.Core.Member.ViewModel
 
         private void InitVariables()
         {
-            MemeberItems = new List<MemberModel>();
+            MemberItems = new List<MemberModel>();
         }
 
         public void ClearSignUpData()
@@ -282,7 +282,7 @@ SELECT
 FROM
     member_tb
 ;";
-                    MemeberItems = await memberDBManager.GetListAsync(db, selectSql, "");
+                    MemberItems = await memberDBManager.GetListAsync(db, selectSql, "");
                 }
             }
             catch (Exception e)

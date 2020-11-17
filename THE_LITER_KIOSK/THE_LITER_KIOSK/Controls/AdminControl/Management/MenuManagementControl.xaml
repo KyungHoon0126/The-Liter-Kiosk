@@ -1,0 +1,61 @@
+﻿<UserControl x:Class="THE_LITER_KIOSK.Controls.AdminControl.MenuManagementControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:THE_LITER_KIOSK.Controls.AdminControl"
+             xmlns:converter="clr-namespace:THE_LITER_KIOSK.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+
+    <UserControl.Resources>
+        <converter:IsSoldOutToStringConverter x:Key="IsSoldOutToStringConverter"/>
+    </UserControl.Resources>
+    
+    <Grid Background="White">
+        <ListView x:Name="lvMenuList"
+                  ItemsSource="{Binding AdminMenuItems}"
+                  SelectedItem="{Binding SelectedMenu}"
+                  SelectionChanged="lvMenuList_SelectionChanged">
+
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <UniformGrid  Columns="3"/>
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <Grid Grid.Column="0">
+                            <Image Margin="5"
+                                   Height="140" Width="120"
+                                   Source="{Binding ImageUrl}"/>
+                        </Grid>
+
+                        <Grid Grid.Column="1">
+                            <StackPanel Margin="10">
+                                <StackPanel.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="FontFamily" Value="AppleSDGothicNeoSB00"/>
+                                        <Setter Property="FontSize" Value="20"/>
+                                    </Style>
+                                </StackPanel.Resources>
+                                <TextBlock Text="{Binding MenuCategory, StringFormat={}카테고리 : {0}}"/>
+                                <TextBlock Text="{Binding Name, StringFormat={}상품명 : {0}}"/>
+                                <TextBlock Text="{Binding Price, StringFormat={}가격 : {0}}"/>
+                                <TextBlock Text="{Binding DiscountRate, StringFormat={}할인율 : {0}%}"/>
+                                <TextBlock Text="{Binding IsSoldOut, Converter={StaticResource IsSoldOutToStringConverter}, StringFormat={}품절 여부 : {0}}"/>
+                            </StackPanel>
+                        </Grid>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>        
+    </Grid>
+</UserControl>

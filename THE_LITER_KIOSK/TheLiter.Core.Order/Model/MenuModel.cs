@@ -54,6 +54,20 @@ namespace TheLiter.Core.Order.Model
             set => SetProperty(ref _totalPrice, value);
         }
 
+        private int _discountRate;
+        public int DiscountRate
+        {
+            get => _discountRate;
+            set => SetProperty(ref _discountRate, value);
+        }
+
+        private bool _isSoldOut;
+        public bool IsSoldOut
+        {
+            get => _isSoldOut;
+            set => SetProperty(ref _isSoldOut, value);
+        }
+
         public MenuModel Clone(MenuModel item)
         {
             MenuModel menuModel = new MenuModel();
@@ -63,6 +77,7 @@ namespace TheLiter.Core.Order.Model
             menuModel.Count = item.Count;
             menuModel.Price = item.Price;
             menuModel.ImageUrl = item.ImageUrl;
+            menuModel.DiscountRate = item.DiscountRate;
             return menuModel;
         }
 
@@ -76,6 +91,7 @@ namespace TheLiter.Core.Order.Model
                 Count = this.Count,
                 Price = this.Price,
                 ImageUrl = this.ImageUrl,
+                DiscountRate = this.DiscountRate
             };
         }
     }

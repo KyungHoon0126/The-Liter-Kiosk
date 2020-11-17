@@ -19,6 +19,7 @@ namespace TheLiter.Core.Order.ViewModel
     {
         private DBManager<SalesModel> salesDBManager = new DBManager<SalesModel>();
         private DBManager<ReceiptModel> receiptDBManager = new DBManager<ReceiptModel>();
+        private DBManager<MenuModel> orderDBManager = new DBManager<MenuModel>();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -201,6 +202,50 @@ namespace TheLiter.Core.Order.ViewModel
                 NotifyPropertyChanged(nameof(ClearAllMenuItemBtnIsEnabled));
             }
         }
+
+        private ObservableCollection<MenuModel> _adminMenuItems;
+        public ObservableCollection<MenuModel> AdminMenuItems
+        {
+            get => _adminMenuItems;
+            set
+            {
+                _adminMenuItems = value;
+                NotifyPropertyChanged(nameof(AdminMenuItems));
+            }
+        }
+
+        private MenuModel _selectedMenu;
+        public MenuModel SelectedMenu
+        {
+            get => _selectedMenu;
+            set
+            {
+                _selectedMenu = value;
+                NotifyPropertyChanged(nameof(SelectedMenu));
+            }
+        }
+
+        private int _discountRate;
+        public int DisCountRate
+        {
+            get => _discountRate;
+            set
+            {
+                _discountRate = value;
+                NotifyPropertyChanged(nameof(DisCountRate));
+            }
+        }
+
+        private bool _isSoldOutChecked;
+        public bool IsSoldOutChecked
+        {
+            get => _isSoldOutChecked;
+            set
+            {
+                _isSoldOutChecked = value;
+                NotifyPropertyChanged(nameof(IsSoldOutChecked));
+            }
+        }
         #endregion
 
         #region Commands
@@ -222,6 +267,7 @@ namespace TheLiter.Core.Order.ViewModel
             CategoryItems = new ObservableCollection<CategoryModel>();
             MenuItems = new ObservableCollection<MenuModel>();
             OrderedMenuItems = new ObservableCollection<MenuModel>();
+            AdminMenuItems = new ObservableCollection<MenuModel>();
         }
 
         private void InitCommands()
@@ -316,7 +362,7 @@ namespace TheLiter.Core.Order.ViewModel
                     Name = "CitronAde",
                     ImageUrl = ComDef.Path + "/Ade/CitronAde.jpg",
                     MenuCategory = ECategory.ADE,
-                    Price = 1000
+                    Price = 1000,
                 });
                 MenuItems.Add(new MenuModel()
                 {
@@ -750,6 +796,13 @@ namespace TheLiter.Core.Order.ViewModel
                 #endregion
                 #endregion
             });
+
+            for (int i = 0; i < MenuItems.Count; i++)
+            {
+                AdminMenuItems.Add(MenuItems[i].Clone() as MenuModel);
+            }
+
+            SetMenuDiscountRateAndIsSoldOut();
         }
 
         public void IsEnabledOrderAndClearAllMenuItemBtn()
@@ -991,6 +1044,96 @@ VALUES(
                 catch (Exception e)
                 {
                     Debug.Write("SAVE SALE INFORMATION ERROR : " + e.Message);
+                }
+            }
+        }
+
+        private async Task<List<MenuModel>> GetAllMenuDisCountRateAndIsSoldOut()
+        {
+            try
+            {
+                
+                using (var db = GetConnection())
+                {
+                    db.Open();
+
+                    string selectSql = @"
+SELECT
+    *
+FROM
+    menu_tb
+;";
+                    var items = await orderDBManager.GetListAsync(db, selectSql, "");
+                    if (items != null)
+                    {
+                        Debug.WriteLine("SUCCESS GET ALL MENU DISCOUNT RATE AND IS SOLD OUT ERROR : ");
+                        return items;
+                    }
+                    else
+                    {
+                        Debug.WriteLine("GET ALL MENU DISCOUNT RATE AND IS SOLD OUT ERROR : ");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("GET ALL MENU DISCOUNT RATE AND IS SOLD OUT ERROR : " + e.Message);
+            }
+
+            return null;
+        }
+
+        public async void SaveMenuDiscountRateAndIsSoldOut()
+        {
+            try
+            {
+                using (var db = GetConnection())
+                {
+                    db.Open();
+
+                    var soldOut = IsSoldOutChecked.ToString();
+                    string updateSql = $@"
+UPDATE
+    menu_tb
+SET
+    isSoldOut = '{soldOut}'
+,
+    discountRate = '{DisCountRate}'
+WHERE
+    idx = '{SelectedMenu.Idx}'
+;";
+                    if (await orderDBManager.UpdateAsync(db, updateSql, "") == 1)
+                    {
+                        DisCountRate = 0;
+                        IsSoldOutChecked = false;
+                        Debug.WriteLine("SUCCESS SAVE MENU DISCOUNT RATE AND IS SOLD OUT");
+                    }
+                    else
+                    {
+                        Debug.WriteLine("SAVE MENU DISCOUNT RATE AND IS SOLD OUT ERROR");
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("SAVE MENU DISCOUNT RATE AND IS SOLD OUT ERROR : " + e.Message);
+            }
+        }
+
+        public async void SetMenuDiscountRateAndIsSoldOut()
+        {
+            List<MenuModel> items = await GetAllMenuDisCountRateAndIsSoldOut();
+
+            for (int i = 0; i < AdminMenuItems.Count; i++)
+            {
+                for (int j = 0; j < items.Count; j++)
+                {
+                    if (AdminMenuItems[i].Idx == items[j].Idx)
+                    {
+                        AdminMenuItems[i].DiscountRate = items[j].DiscountRate;
+                        AdminMenuItems[i].IsSoldOut = items[j].IsSoldOut;
+                        break;
+                    }
                 }
             }
         }
