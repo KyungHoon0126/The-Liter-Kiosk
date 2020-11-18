@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheLiter.Core.DBManager", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheLiter.Core.Member", "TheLiter.Core.Member\TheLiter.Core.Member.csproj", "{3B669985-CA61-4B31-BD3B-02D9270A1BCD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TheLiter.Core.Network", "TheLiter.Core.Network\TheLiter.Core.Network.csproj", "{27AE824B-CDBD-4CD1-973E-E0BAF39E5458}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -51,6 +53,10 @@ Global
 		{3B669985-CA61-4B31-BD3B-02D9270A1BCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B669985-CA61-4B31-BD3B-02D9270A1BCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B669985-CA61-4B31-BD3B-02D9270A1BCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{27AE824B-CDBD-4CD1-973E-E0BAF39E5458}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{27AE824B-CDBD-4CD1-973E-E0BAF39E5458}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{27AE824B-CDBD-4CD1-973E-E0BAF39E5458}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{27AE824B-CDBD-4CD1-973E-E0BAF39E5458}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -9,6 +9,8 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using THE_LITER_KIOSK.Common;
 using THE_LITER_KIOSK.DataBase.Models;
+using THE_LITER_KIOSK.Network;
+using THE_LITER_KIOSK.Network.Model;
 using TheLiter.Core.DBManager;
 using TheLiter.Core.Order.DataBase.Model;
 using TheLiter.Core.Order.Model;
@@ -19,7 +21,7 @@ namespace TheLiter.Core.Order.ViewModel
     {
         private DBManager<SalesModel> salesDBManager = new DBManager<SalesModel>();
         private DBManager<ReceiptModel> receiptDBManager = new DBManager<ReceiptModel>();
-        private DBManager<MenuModel> orderDBManager = new DBManager<MenuModel>();
+        private DBManager<Model.MenuModel> orderDBManager = new DBManager<Model.MenuModel>();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -35,8 +37,8 @@ namespace TheLiter.Core.Order.ViewModel
             }
         }
 
-        private ObservableCollection<MenuModel> _menuItems;
-        public ObservableCollection<MenuModel> MenuItems
+        private ObservableCollection<Model.MenuModel> _menuItems;
+        public ObservableCollection<Model.MenuModel> MenuItems
         {
             get => _menuItems;
             set
@@ -46,8 +48,8 @@ namespace TheLiter.Core.Order.ViewModel
             }
         }
 
-        private ObservableCollection<MenuModel> _orderedMenuItems;
-        public ObservableCollection<MenuModel> OrderedMenuItems
+        private ObservableCollection<Model.MenuModel> _orderedMenuItems;
+        public ObservableCollection<Model.MenuModel> OrderedMenuItems
         {
             get => _orderedMenuItems;
             set 
@@ -144,15 +146,15 @@ namespace TheLiter.Core.Order.ViewModel
             }
         }
 
-        private List<MenuModel> _menuList;
-        public List<MenuModel> MenuList
+        private List<Model.MenuModel> _menuList;
+        public List<Model.MenuModel> MenuList
         {
             get => _menuList;
             set { _menuList = value; }
         }
 
-        private List<MenuModel> _currentMenuList;
-        public List<MenuModel> CurrentMenuList
+        private List<Model.MenuModel> _currentMenuList;
+        public List<Model.MenuModel> CurrentMenuList
         {
             get => _currentMenuList;
             set
@@ -170,8 +172,8 @@ namespace TheLiter.Core.Order.ViewModel
             }
         }
 
-        private ObservableCollection<MenuModel> _pagingMenuList;
-        public ObservableCollection<MenuModel> PagingMenuList
+        private ObservableCollection<Model.MenuModel> _pagingMenuList;
+        public ObservableCollection<Model.MenuModel> PagingMenuList
         {
             get => _pagingMenuList;
             set 
@@ -203,8 +205,8 @@ namespace TheLiter.Core.Order.ViewModel
             }
         }
 
-        private ObservableCollection<MenuModel> _adminMenuItems;
-        public ObservableCollection<MenuModel> AdminMenuItems
+        private ObservableCollection<Model.MenuModel> _adminMenuItems;
+        public ObservableCollection<Model.MenuModel> AdminMenuItems
         {
             get => _adminMenuItems;
             set
@@ -214,8 +216,8 @@ namespace TheLiter.Core.Order.ViewModel
             }
         }
 
-        private MenuModel _selectedMenu;
-        public MenuModel SelectedMenu
+        private Model.MenuModel _selectedMenu;
+        public Model.MenuModel SelectedMenu
         {
             get => _selectedMenu;
             set
@@ -265,9 +267,9 @@ namespace TheLiter.Core.Order.ViewModel
         private void InitVariables()
         {
             CategoryItems = new ObservableCollection<CategoryModel>();
-            MenuItems = new ObservableCollection<MenuModel>();
-            OrderedMenuItems = new ObservableCollection<MenuModel>();
-            AdminMenuItems = new ObservableCollection<MenuModel>();
+            MenuItems = new ObservableCollection<Model.MenuModel>();
+            OrderedMenuItems = new ObservableCollection<Model.MenuModel>();
+            AdminMenuItems = new ObservableCollection<Model.MenuModel>();
         }
 
         private void InitCommands()
@@ -356,7 +358,7 @@ namespace TheLiter.Core.Order.ViewModel
             {
                 #region Menus
                 #region Ade
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 1,
                     Name = "CitronAde",
@@ -364,7 +366,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.ADE,
                     Price = 1000,
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 2,
                     Name = "GrapefruitAde",
@@ -372,7 +374,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.ADE,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 3,
                     Name = "GreengrapeAde",
@@ -380,7 +382,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.ADE,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 4,
                     Name = "LemonAde",
@@ -388,7 +390,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.ADE,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 5,
                     Name = "MojitoAde",
@@ -399,7 +401,7 @@ namespace TheLiter.Core.Order.ViewModel
                 #endregion
 
                 #region Coffee
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 6,
                     Name = "Americano",
@@ -407,7 +409,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.ADE,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 7,
                     Name = "Cafelatte",
@@ -415,7 +417,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.COFFEE,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 8,
                     Name = "CafeMocha",
@@ -423,7 +425,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.COFFEE,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 9,
                     Name = "Cappuccino",
@@ -431,7 +433,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.COFFEE,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 10,
                     Name = "CaramelMacchiato",
@@ -439,7 +441,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.COFFEE,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 11,
                     Name = "ColdBrew",
@@ -447,7 +449,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.COFFEE,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 12,
                     Name = "ColdBrewLatte",
@@ -455,7 +457,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.COFFEE,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 13,
                     Name = "CondensedMilkLatte",
@@ -463,7 +465,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.COFFEE,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 14,
                     Name = "HazelnutLatte",
@@ -471,7 +473,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.COFFEE,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 15,
                     Name = "TiramisuLatte",
@@ -479,7 +481,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.COFFEE,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 16,
                     Name = "vanillaLatte",
@@ -490,7 +492,7 @@ namespace TheLiter.Core.Order.ViewModel
                 #endregion
 
                 #region Desert
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 17,
                     Name = "Cookie",
@@ -498,7 +500,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.DESERT,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 18,
                     Name = "CurstardStick",
@@ -506,7 +508,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.DESERT,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 19,
                     Name = "HeartPie",
@@ -514,7 +516,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.DESERT,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 20,
                     Name = "MuffinSandwich",
@@ -522,7 +524,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.DESERT,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 21,
                     Name = "Waffle",
@@ -533,7 +535,7 @@ namespace TheLiter.Core.Order.ViewModel
                 #endregion
 
                 #region Latte
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 22,
                     Name = "DeepChocoLatte",
@@ -541,7 +543,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.LATTE,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 23,
                     Name = "GreenteaLatte",
@@ -549,7 +551,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.LATTE,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 24,
                     Name = "MilkTea",
@@ -557,7 +559,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.LATTE,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 25,
                     Name = "MintChocoLatte",
@@ -565,7 +567,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.LATTE,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 26,
                     Name = "PurplesweetpotatoLatte",
@@ -576,7 +578,7 @@ namespace TheLiter.Core.Order.ViewModel
                 #endregion
 
                 #region Literccino
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 27,
                     Name = "CookieCreamLiterccino",
@@ -584,7 +586,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.LITERCCINO,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 28,
                     Name = "DoublechocoLiterccino",
@@ -592,7 +594,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.LITERCCINO,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 29,
                     Name = "GreenteaLiterccino",
@@ -600,7 +602,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.LITERCCINO,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 30,
                     Name = "JavachipLiterccino",
@@ -608,7 +610,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.LITERCCINO,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 31,
                     Name = "MintChocochipLiterccino",
@@ -619,7 +621,7 @@ namespace TheLiter.Core.Order.ViewModel
                 #endregion
 
                 #region Tea
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 32,
                     Name = "FruitTea",
@@ -627,7 +629,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.TEA,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 33,
                     Name = "HerbTea",
@@ -638,7 +640,7 @@ namespace TheLiter.Core.Order.ViewModel
                 #endregion
 
                 #region TheLiterSpecial
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 34,
                     Name = "Bananalatte",
@@ -646,7 +648,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.THELITERSPECIAL,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 35,
                     Name = "C1Soda",
@@ -654,7 +656,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.THELITERSPECIAL,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 36,
                     Name = "ChamMelon",
@@ -662,7 +664,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.THELITERSPECIAL,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 37,
                     Name = "Grainlatte",
@@ -670,7 +672,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.THELITERSPECIAL,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 38,
                     Name = "PeachSoongsoong",
@@ -678,7 +680,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.THELITERSPECIAL,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 39,
                     Name = "PineappleSoda",
@@ -686,7 +688,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.THELITERSPECIAL,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 40,
                     Name = "ShiningSuger",
@@ -694,7 +696,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.THELITERSPECIAL,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 41,
                     Name = "StrawberrySoksok",
@@ -702,7 +704,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.THELITERSPECIAL,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 42,
                     Name = "sugarlatte",
@@ -710,7 +712,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.THELITERSPECIAL,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 43,
                     Name = "sugarmilktea",
@@ -718,7 +720,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.THELITERSPECIAL,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 44,
                     Name = "AvocadoJuice",
@@ -726,7 +728,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.THELITERSPECIAL,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 45,
                     Name = "BlueberryJuice",
@@ -734,7 +736,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.THELITERSPECIAL,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 46,
                     Name = "PersimmonJuice",
@@ -745,7 +747,7 @@ namespace TheLiter.Core.Order.ViewModel
                 #endregion
 
                 #region Yogurs
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 47,
                     Name = "BlueberryYogurs",
@@ -753,7 +755,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.YOGURS,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 48,
                     Name = "CitronYogurs",
@@ -761,7 +763,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.YOGURS,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 49,
                     Name = "MangoYogurs",
@@ -769,7 +771,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.YOGURS,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 50,
                     Name = "PeachYogurs",
@@ -777,7 +779,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.YOGURS,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 51,
                     Name = "PlainYogurs",
@@ -785,7 +787,7 @@ namespace TheLiter.Core.Order.ViewModel
                     MenuCategory = ECategory.YOGURS,
                     Price = 1000
                 });
-                MenuItems.Add(new MenuModel()
+                MenuItems.Add(new Model.MenuModel()
                 {
                     Idx = 52,
                     Name = "StrawberryYogurs",
@@ -799,7 +801,7 @@ namespace TheLiter.Core.Order.ViewModel
 
             for (int i = 0; i < MenuItems.Count; i++)
             {
-                AdminMenuItems.Add(MenuItems[i].Clone() as MenuModel);
+                AdminMenuItems.Add(MenuItems[i].Clone() as Model.MenuModel);
             }
 
             SetMenuDiscountRateAndIsSoldOut();
@@ -843,9 +845,9 @@ namespace TheLiter.Core.Order.ViewModel
             return CurrentPageIdx * itemPerPage - itemPerPage;
         }
 
-        private ObservableCollection<MenuModel> ExtractMenuItems(int itemPerPage)
+        private ObservableCollection<Model.MenuModel> ExtractMenuItems(int itemPerPage)
         {
-            return new ObservableCollection<MenuModel>(CurrentMenuList.GetRange(GetCurrentMenusCnt(), itemPerPage).ToList());
+            return new ObservableCollection<Model.MenuModel>(CurrentMenuList.GetRange(GetCurrentMenusCnt(), itemPerPage).ToList());
         }
 
         private void IncreasePageIdx()
@@ -875,31 +877,31 @@ namespace TheLiter.Core.Order.ViewModel
             return (OrderedMenuItems != null && OrderedMenuItems.Count > 0) ? true : false;
         }
 
-        public bool IsQuantityValid(MenuModel selectedMenu)
+        public bool IsQuantityValid(Model.MenuModel selectedMenu)
         {
             return (selectedMenu.Count == 1) ? true : false;
         }
 
-        public void AddOrderedMenuItems(MenuModel selectedMenu)
+        public void AddOrderedMenuItems(Model.MenuModel selectedMenu)
         {
             OrderedMenuItems.Add(selectedMenu);
         }
 
-        public void IncreaseMenuCount(MenuModel selectedMenu)
+        public void IncreaseMenuCount(Model.MenuModel selectedMenu)
         {
             selectedMenu.Count++;
             selectedMenu.TotalPrice += selectedMenu.Price;
             OrderTotalPrice += selectedMenu.Price;
         }
 
-        public void DecreaseMenuCount(MenuModel selectedMenu)
+        public void DecreaseMenuCount(Model.MenuModel selectedMenu)
         {
             selectedMenu.Count--;
             selectedMenu.TotalPrice -= selectedMenu.Price;
             OrderTotalPrice -= selectedMenu.Price;
         }
 
-        public void ClearSelectedMenuItems(MenuModel selectedMenu)
+        public void ClearSelectedMenuItems(Model.MenuModel selectedMenu)
         {
             var temp = selectedMenu.Count;
             var removeTarget = OrderedMenuItems.Where(x => x.Name == selectedMenu.Name).FirstOrDefault();
@@ -913,7 +915,7 @@ namespace TheLiter.Core.Order.ViewModel
             IsEnabledOrderAndClearAllMenuItemBtn();
         }
 
-        public void RemoveSelectedMenu(MenuModel selectedMenu)
+        public void RemoveSelectedMenu(Model.MenuModel selectedMenu)
         { 
             OrderedMenuItems.Remove(selectedMenu);
             IsEnabledOrderAndClearAllMenuItemBtn();
@@ -1035,9 +1037,14 @@ VALUES(
     @ReceiptIdx
 );";
                             if (await salesDBManager.InsertAsync(db, insertSql, salesModel) == 1)
+                            {
                                 Debug.WriteLine("SUCCESS SAVE SALES INFORMATION");
+                                SendPayInfo();
+                            }
                             else
+                            {
                                 Debug.WriteLine("FAILURE SAVE SALES INFORMATION");
+                            }
                         }
                     }
                 }
@@ -1048,7 +1055,7 @@ VALUES(
             }
         }
 
-        private async Task<List<MenuModel>> GetAllMenuDisCountRateAndIsSoldOut()
+        private async Task<List<Model.MenuModel>> GetAllMenuDisCountRateAndIsSoldOut()
         {
             try
             {
@@ -1122,7 +1129,7 @@ WHERE
 
         public async void SetMenuDiscountRateAndIsSoldOut()
         {
-            List<MenuModel> items = await GetAllMenuDisCountRateAndIsSoldOut();
+            List<Model.MenuModel> items = await GetAllMenuDisCountRateAndIsSoldOut();
 
             for (int i = 0; i < AdminMenuItems.Count; i++)
             {
@@ -1138,6 +1145,27 @@ WHERE
             }
         }
         #endregion
+
+        public void SendPayInfo()
+        {
+            TcpModel tcpModel = new TcpModel();
+
+            List<THE_LITER_KIOSK.Network.MenuModel> menuItems = new List<THE_LITER_KIOSK.Network.MenuModel>();
+            var orderedMenuItems = OrderedMenuItems.Cast<THE_LITER_KIOSK.Network.MenuModel>().ToList();
+
+            tcpModel.MessageType = (int)EMessageType.ORDER_INFO;
+            tcpModel.Id = "2106";
+            tcpModel.ShopName = "더리터 사이코점";
+            tcpModel.Content = "";
+            tcpModel.OrderNumber = ReceiptIdx.ToString();     
+
+            for (int i = 0; i < orderedMenuItems.Count; i++)
+            {
+                menuItems.Add(orderedMenuItems[i]);
+            }
+
+            tcpModel.MenuItems = orderedMenuItems;
+        }
 
         public void NotifyPropertyChanged(string propertyName)
         {
