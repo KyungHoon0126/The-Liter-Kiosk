@@ -10,7 +10,7 @@ namespace THE_LITER_KIOSK.Network
 {
     public class TcpClient
     {
-        private const string ip = "10.80.161.175";
+        private const string ip = "10.80.162.152";
         private const int port = 80;
 
         private static ManualResetEvent connectDone =
@@ -57,12 +57,22 @@ namespace THE_LITER_KIOSK.Network
             var json = new JObject();
             var jArray = new JArray();
 
+            for (int i = 0; i < tcpModel.MenuItems.Count; i++)
+            {
+                JObject jObject = new JObject();
+
+                jObject["Name"] = tcpModel.MenuItems[i].Name;
+                jObject["Price"] = tcpModel.MenuItems[i].Price;
+                jObject["Count"] = tcpModel.MenuItems[i].Count;
+
+                jArray.Add(jObject);
+            }
+            
             json["MSGType"] = tcpModel.MessageType;
             json["id"] = tcpModel.Id;
             json["ShopName"] = tcpModel.ShopName;
             json["Content"] = tcpModel.Content;
             json["OrderNumber"] = tcpModel.OrderNumber;
-            jArray.Add(tcpModel.MenuItems);
             json["Menus"] = jArray;
 
             return json.ToString();
@@ -130,9 +140,9 @@ namespace THE_LITER_KIOSK.Network
             }
         }
 
-        private void Send(Socket client, string data)
+        public void Send(Socket client, string data)
         {
-            byte[] byteData = Encoding.ASCII.GetBytes(data);
+            byte[] byteData = Encoding.UTF8.GetBytes(data);
             client.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), client);
         }
 

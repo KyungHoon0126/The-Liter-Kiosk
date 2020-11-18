@@ -1039,7 +1039,6 @@ VALUES(
                             if (await salesDBManager.InsertAsync(db, insertSql, salesModel) == 1)
                             {
                                 Debug.WriteLine("SUCCESS SAVE SALES INFORMATION");
-                                SendPayInfo();
                             }
                             else
                             {
@@ -1146,12 +1145,12 @@ WHERE
         }
         #endregion
 
-        public void SendPayInfo()
+        public TcpModel SendPayInfo()
         {
             TcpModel tcpModel = new TcpModel();
 
             List<THE_LITER_KIOSK.Network.MenuModel> menuItems = new List<THE_LITER_KIOSK.Network.MenuModel>();
-            var orderedMenuItems = OrderedMenuItems.Cast<THE_LITER_KIOSK.Network.MenuModel>().ToList();
+            var orderedMenuItems = OrderedMenuItems.ToList();
 
             tcpModel.MessageType = (int)EMessageType.ORDER_INFO;
             tcpModel.Id = "2106";
@@ -1161,10 +1160,17 @@ WHERE
 
             for (int i = 0; i < orderedMenuItems.Count; i++)
             {
-                menuItems.Add(orderedMenuItems[i]);
+                menuItems.Add(new THE_LITER_KIOSK.Network.MenuModel()
+                {
+                    Name = orderedMenuItems[i].Name,
+                    Price = orderedMenuItems[i].Count,
+                    Count = orderedMenuItems[i].Count
+                });
             }
 
-            tcpModel.MenuItems = orderedMenuItems;
+            tcpModel.MenuItems = menuItems;
+
+            return tcpModel;
         }
 
         public void NotifyPropertyChanged(string propertyName)

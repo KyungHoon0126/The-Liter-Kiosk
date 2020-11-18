@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Windows;
 using THE_LITER_KIOSK.DataBase.Models;
+using THE_LITER_KIOSK.Network;
 using THE_LITER_KIOSK.UIManager;
 
 namespace THE_LITER_KIOSK.Controls.PayControl
@@ -42,6 +43,9 @@ namespace THE_LITER_KIOSK.Controls.PayControl
                 {
                     ClearQrCode();
                     SaveSalesInformation(payTime, PaymentType.CARD.ToString(), tableIdx, App.memberData.memberViewModel.Id);
+                    
+                    App.tcpClient.Send(TcpHelper.SocketClient, App.tcpClient.SetMsgArgs(App.orderData.orderViewModel.SendPayInfo()));
+                    
                     App.qrIndex++;
                     App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE);
                     OnCompletePayByCard?.Invoke();

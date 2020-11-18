@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using THE_LITER_KIOSK.Network;
+using THE_LITER_KIOSK.Network.Model;
 using THE_LITER_KIOSK.UIManager;
 
 namespace THE_LITER_KIOSK
@@ -15,7 +16,8 @@ namespace THE_LITER_KIOSK
     public partial class MainWindow : Window
     {
         DispatcherTimer dispatcherTimer;
-        public bool isConnected;
+        private bool isConnected;
+
         #region Constructor
         public MainWindow()
         {
@@ -47,15 +49,15 @@ namespace THE_LITER_KIOSK
         private void OnSocketLogin()
         {
             isConnected = App.tcpClient.CheckServerState();
+            
             if (isConnected)
             {
-                // 경훈: Socket이 계속 연결되어 있어야 하므로, 새로운 Thread로 처리.
                 new Thread(() =>
                 {
                     TcpModel tcpModel = new TcpModel();
                     List<MenuModel> menuItems = new List<MenuModel>();
-                    tcpModel.MessageType = 0;
-                    tcpModel.Id = "2106";
+                    tcpModel.MessageType = (int)EMessageType.LOGIN;
+                    tcpModel.Id = "2107";
                     tcpModel.ShopName = "";
                     tcpModel.Content = "";
                     tcpModel.OrderNumber = "";
@@ -63,7 +65,8 @@ namespace THE_LITER_KIOSK
 
                     App.tcpClient.StartClient(tcpModel);
                 }).Start();
-            } else
+            } 
+            else
             {
                 isConnected = false;
                 return;
@@ -149,7 +152,7 @@ namespace THE_LITER_KIOSK
                 
                 if (isConnected)
                 {
-                    App.uIStateManager.SwitchCustomControl(CustomControlType.HOME);
+                    MoveOrderToHome();
                 }
                 else
                 {
