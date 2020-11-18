@@ -10,7 +10,7 @@ namespace THE_LITER_KIOSK.Network
 {
     public class TcpClient
     {
-        private const string ip = "10.80.162.152";
+        private const string ip = "10.80.161.175";
         private const int port = 80;
 
         private static ManualResetEvent connectDone =
@@ -155,9 +155,8 @@ namespace THE_LITER_KIOSK.Network
 
         public bool CheckServerState()
         {
-            
-
             Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+
             try
             {
                 client.Connect(ip, port);
@@ -167,7 +166,6 @@ namespace THE_LITER_KIOSK.Network
             {
                 return false;
             }
-            
         }
     }
 }

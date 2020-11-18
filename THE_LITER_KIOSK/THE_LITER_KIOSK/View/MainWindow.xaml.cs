@@ -15,7 +15,7 @@ namespace THE_LITER_KIOSK
     public partial class MainWindow : Window
     {
         DispatcherTimer dispatcherTimer;
-
+        public bool isConnected;
         #region Constructor
         public MainWindow()
         {
@@ -40,6 +40,34 @@ namespace THE_LITER_KIOSK
             App.adminData.adminViewModel.SynchronizationOpertaionTime();
             
             TcpHelper.InitializeClient();
+
+            OnSocketLogin();
+        }
+
+        private void OnSocketLogin()
+        {
+            isConnected = App.tcpClient.CheckServerState();
+            if (isConnected)
+            {
+                // 경훈: Socket이 계속 연결되어 있어야 하므로, 새로운 Thread로 처리.
+                new Thread(() =>
+                {
+                    TcpModel tcpModel = new TcpModel();
+                    List<MenuModel> menuItems = new List<MenuModel>();
+                    tcpModel.MessageType = 0;
+                    tcpModel.Id = "2106";
+                    tcpModel.ShopName = "";
+                    tcpModel.Content = "";
+                    tcpModel.OrderNumber = "";
+                    tcpModel.MenuItems = menuItems;
+
+                    App.tcpClient.StartClient(tcpModel);
+                }).Start();
+            } else
+            {
+                isConnected = false;
+                return;
+            }
         }
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
@@ -118,33 +146,10 @@ namespace THE_LITER_KIOSK
             {
                 CtrlLogin.Visibility = Visibility.Collapsed;
                 App.memberData.GetMemberData();
-
-#if false
-                if (App.tcpClient.CheckServerState())
-                // var isConnected = App.tcpClient.CheckServerState();
-#endif
-
-#if true
-                if (true)
-#endif
+                
+                if (isConnected)
                 {
                     App.uIStateManager.SwitchCustomControl(CustomControlType.HOME);
-
-                    // 경훈: Socket이 계속 연결되어 있어야 하므로, 새로운 Thread로 처리.
-                    new Thread(() =>
-                    {
-                        TcpModel tcpModel = new TcpModel();
-                        List<MenuModel> menuItems = new List<MenuModel>();
-                        tcpModel.MessageType = 0;
-                        //tcpModel.Id = App.memberData.memberViewModel.Id;
-                        tcpModel.Id = "2107";
-                        tcpModel.ShopName = "";
-                        tcpModel.Content = "";
-                        tcpModel.OrderNumber = "";
-                        tcpModel.MenuItems = menuItems;
-
-                        App.tcpClient.StartClient(tcpModel);
-                    }).Start();
                 }
                 else
                 {
