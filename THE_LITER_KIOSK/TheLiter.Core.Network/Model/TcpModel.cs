@@ -2,8 +2,9 @@
 using Newtonsoft.Json.Serialization;
 using Prism.Mvvm;
 using System.Collections.Generic;
+using TheLiter.Core.Network.Model;
 
-namespace THE_LITER_KIOSK.Network
+namespace TheLiter.Core.Network
 {
     public class TcpModel:BindableBase
     {
@@ -49,30 +50,6 @@ namespace THE_LITER_KIOSK.Network
         {
             get => _menuItems;
             set => SetProperty(ref _menuItems, value);
-        }
-    }
-
-    public class MenuModel: BindableBase
-    {
-        private string _name;
-        public string Name
-        {
-            get => _name;
-            set => SetProperty(ref _name, value);
-        }
-
-        private int _count;
-        public int Count
-        {
-            get => _count;
-            set => SetProperty(ref _count, value);
-        }
-
-        private int _price;
-        public int Price
-        {
-            get => _price;
-            set => SetProperty(ref _price, value);
         }
     }
 }

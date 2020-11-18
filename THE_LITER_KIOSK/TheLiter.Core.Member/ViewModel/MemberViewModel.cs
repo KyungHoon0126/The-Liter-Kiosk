@@ -236,8 +236,6 @@ AND
     pw = '{Pw}'
 ;";
                     member = await memberDBManager.GetSingleDataAsync(db, selectSql, "");
-                    if (member.Id == null)
-                        member = null;
                 }
             }
             catch (Exception e)

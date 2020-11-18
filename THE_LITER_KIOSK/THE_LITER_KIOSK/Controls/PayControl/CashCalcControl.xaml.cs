@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using THE_LITER_KIOSK.DataBase.Models;
+using THE_LITER_KIOSK.Network;
 using THE_LITER_KIOSK.UIManager;
 
 namespace THE_LITER_KIOSK.Controls.PayControl
@@ -40,11 +41,13 @@ namespace THE_LITER_KIOSK.Controls.PayControl
             {
                 var selectedTable = App.placeData.tableViewModel.SelectedTable;
                 var payTime = DateTime.Now;
+                var memberId = App.memberData.memberViewModel.Id;
 
                 SetPayByCashDelegate setDel = (tableIdx) =>
                 {
                     ClearBarCode();
-                    SaveSalesInformation(payTime, PaymentType.CASH.ToString(), tableIdx, App.memberData.memberViewModel.Id);
+                    SaveSalesInformation(payTime, PaymentType.CASH.ToString(), tableIdx, memberId);
+                    App.networkManager.Send(TcpHelper.SocketClient, App.networkManager.SetMsgArgs(App.orderData.orderViewModel.SendPayInfo(memberId)));
                     App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE);
                     OnCompletePayByCash?.Invoke();
                 };

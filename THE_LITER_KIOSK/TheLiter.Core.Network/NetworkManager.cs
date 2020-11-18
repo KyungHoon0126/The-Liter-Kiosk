@@ -4,11 +4,12 @@ using System.Diagnostics;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using THE_LITER_KIOSK.Network.Model;
+using TheLiter.Core.Network;
+using TheLiter.Core.Network.Model;
 
 namespace THE_LITER_KIOSK.Network
 {
-    public class TcpClient
+    public class NetworkManager
     {
         private const string ip = "10.80.162.152";
         private const int port = 80;
@@ -19,20 +20,21 @@ namespace THE_LITER_KIOSK.Network
             new ManualResetEvent(false);
         private static ManualResetEvent receiveDone =
             new ManualResetEvent(false);
+        private static ManualResetEvent disconnectDone =
+            new ManualResetEvent(false);
             
         private static string response = string.Empty;
 
-
-        public void StartClient(TcpModel tcpModel)
+        public void ConnectSocket(TcpModel tcpModel)
         {
             try 
             {
-                while (true)
-                {
+                //while (true)
+                //{
                     if(tcpModel != null)
                     {
                         TcpHelper.SocketClient.BeginConnect(ip, port, new AsyncCallback(ConnectCallback), TcpHelper.SocketClient);
-                        connectDone.WaitOne();
+                        connectDone.WaitOne(); // 완료되기를 기다림.
 
                         Debug.WriteLine(TcpHelper.SocketClient.Connected);
 
@@ -41,41 +43,23 @@ namespace THE_LITER_KIOSK.Network
 
                         Receive(TcpHelper.SocketClient);
                         receiveDone.WaitOne();
+
+                        if (TcpHelper.SocketClient.Connected)
+                        {
+                            Debug.WriteLine("We're still connected");
+                        }
+                        else
+                        {
+                            Debug.WriteLine("We're disconnected");
+                        }
                     }
                     tcpModel = null;
-                }
-              
+                //}
             }
             catch (Exception e)
             {
                 Debug.WriteLine("START CLIENT ERROR : " + e.Message);
             }
-        }
-
-        public string SetMsgArgs(TcpModel tcpModel)
-        {
-            var json = new JObject();
-            var jArray = new JArray();
-
-            for (int i = 0; i < tcpModel.MenuItems.Count; i++)
-            {
-                JObject jObject = new JObject();
-
-                jObject["Name"] = tcpModel.MenuItems[i].Name;
-                jObject["Price"] = tcpModel.MenuItems[i].Price;
-                jObject["Count"] = tcpModel.MenuItems[i].Count;
-
-                jArray.Add(jObject);
-            }
-            
-            json["MSGType"] = tcpModel.MessageType;
-            json["id"] = tcpModel.Id;
-            json["ShopName"] = tcpModel.ShopName;
-            json["Content"] = tcpModel.Content;
-            json["OrderNumber"] = tcpModel.OrderNumber;
-            json["Menus"] = jArray;
-
-            return json.ToString();
         }
 
         private void ConnectCallback(IAsyncResult ar)
@@ -145,7 +129,7 @@ namespace THE_LITER_KIOSK.Network
             byte[] byteData = Encoding.UTF8.GetBytes(data);
             client.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), client);
         }
-
+        
         private void SendCallback(IAsyncResult ar)
         {
             try
@@ -163,19 +147,62 @@ namespace THE_LITER_KIOSK.Network
             }
         }
 
+        public void DisconnectSocket()
+        {
+            TcpHelper.SocketClient.Shutdown(SocketShutdown.Both);
+            TcpHelper.SocketClient.BeginDisconnect(true, new AsyncCallback(DisconnectCallback), TcpHelper.SocketClient);
+            disconnectDone.WaitOne();
+        }
+
+        private void DisconnectCallback(IAsyncResult ar)
+        {
+            TcpHelper.SocketClient = (Socket)ar.AsyncState;
+            TcpHelper.SocketClient.EndDisconnect(ar);
+            disconnectDone.Set();
+        }
+
         public bool CheckServerState()
         {
-            Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
             try
             {
+                Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 client.Connect(ip, port);
+                
                 Debug.WriteLine(client.Connected);
+                
                 return client.Connected ? true : false;
-            } catch (Exception e)
+            }
+            catch (Exception e)
             {
+                Debug.WriteLine("CHECK SERVER STATE ERROR : " + e.Message);
                 return false;
             }
+        }
+
+        public string SetMsgArgs(TcpModel tcpModel)
+        {
+            var json = new JObject();
+            var jArray = new JArray();
+
+            for (int i = 0; i < tcpModel.MenuItems.Count; i++)
+            {
+                JObject jObject = new JObject();
+
+                jObject["Name"] = tcpModel.MenuItems[i].Name;
+                jObject["Price"] = tcpModel.MenuItems[i].Price;
+                jObject["Count"] = tcpModel.MenuItems[i].Count;
+
+                jArray.Add(jObject);
+            }
+
+            json["MSGType"] = tcpModel.MessageType;
+            json["id"] = tcpModel.Id;
+            json["ShopName"] = tcpModel.ShopName;
+            json["Content"] = tcpModel.Content;
+            json["OrderNumber"] = tcpModel.OrderNumber;
+            json["Menus"] = jArray;
+
+            return json.ToString();
         }
     }
 }

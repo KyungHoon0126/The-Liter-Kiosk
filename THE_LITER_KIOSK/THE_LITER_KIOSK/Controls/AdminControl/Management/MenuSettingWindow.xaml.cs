@@ -40,11 +40,6 @@ namespace THE_LITER_KIOSK.Controls.AdminControl.Management
             this.Close();
         }
 
-        private void cbSoldOut_Checked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void tbDisCountRate_PreviewTextInput(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");

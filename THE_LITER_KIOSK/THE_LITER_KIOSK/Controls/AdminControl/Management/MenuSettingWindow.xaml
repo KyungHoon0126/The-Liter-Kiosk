@@ -87,7 +87,6 @@
                 <CheckBox x:Name="cbSoldOut" Margin="0,0,0,30"
                           FontSize="14"
                           Content="품절 적용하기"
-                          Checked="cbSoldOut_Checked"
                           FocusVisualStyle="{x:Null}"
                           HorizontalAlignment="Center"
                           VerticalAlignment="Bottom"

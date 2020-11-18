@@ -9,9 +9,9 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using THE_LITER_KIOSK.Common;
 using THE_LITER_KIOSK.DataBase.Models;
-using THE_LITER_KIOSK.Network;
-using THE_LITER_KIOSK.Network.Model;
 using TheLiter.Core.DBManager;
+using TheLiter.Core.Network;
+using TheLiter.Core.Network.Model;
 using TheLiter.Core.Order.DataBase.Model;
 using TheLiter.Core.Order.Model;
 
@@ -1145,22 +1145,22 @@ WHERE
         }
         #endregion
 
-        public TcpModel SendPayInfo()
+        public TcpModel SendPayInfo(string id)
         {
             TcpModel tcpModel = new TcpModel();
 
-            List<THE_LITER_KIOSK.Network.MenuModel> menuItems = new List<THE_LITER_KIOSK.Network.MenuModel>();
+            List<Network.Model.MenuModel> menuItems = new List<Network.Model.MenuModel>();
             var orderedMenuItems = OrderedMenuItems.ToList();
 
             tcpModel.MessageType = (int)EMessageType.ORDER_INFO;
-            tcpModel.Id = "2106";
+            tcpModel.Id = id;
             tcpModel.ShopName = "더리터 사이코점";
             tcpModel.Content = "";
             tcpModel.OrderNumber = ReceiptIdx.ToString();     
 
             for (int i = 0; i < orderedMenuItems.Count; i++)
             {
-                menuItems.Add(new THE_LITER_KIOSK.Network.MenuModel()
+                menuItems.Add(new Network.Model.MenuModel()
                 {
                     Name = orderedMenuItems[i].Name,
                     Price = orderedMenuItems[i].Count,

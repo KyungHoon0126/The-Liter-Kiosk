@@ -1,7 +1,7 @@
 ﻿using System.Net.Sockets;
 using System.Text;
 
-namespace THE_LITER_KIOSK.Network.Model
+namespace TheLiter.Core.Network.Model
 {
     public class StateObjectModel
     {

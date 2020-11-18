@@ -23,7 +23,7 @@ namespace THE_LITER_KIOSK
         public static MemberData memberData = new MemberData();
 
         public static int qrIndex = 0;
-        public static TcpClient tcpClient = new TcpClient();
+        public static NetworkManager networkManager = new NetworkManager();
 
         public App()
         {

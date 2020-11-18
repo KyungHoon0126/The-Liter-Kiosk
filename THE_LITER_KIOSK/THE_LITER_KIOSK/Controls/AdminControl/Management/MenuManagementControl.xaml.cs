@@ -1,6 +1,5 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
-using TheLiter.Core.Order.Model;
 
 namespace THE_LITER_KIOSK.Controls.AdminControl
 {

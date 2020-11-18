@@ -51,9 +51,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Model\EMessageType.cs" />
+    <Compile Include="Model\MenuModel.cs" />
     <Compile Include="Model\StateObjectModel.cs" />
     <Compile Include="Model\TcpModel.cs" />
-    <Compile Include="TcpClient.cs" />
+    <Compile Include="NetworkManager.cs" />
     <Compile Include="TcpHelper.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

@@ -1,4 +1,4 @@
-﻿namespace THE_LITER_KIOSK.Network.Model
+﻿namespace TheLiter.Core.Network.Model
 {
     public enum EMessageType
     {

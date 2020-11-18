@@ -5,8 +5,9 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using THE_LITER_KIOSK.Network;
-using THE_LITER_KIOSK.Network.Model;
 using THE_LITER_KIOSK.UIManager;
+using TheLiter.Core.Network;
+using TheLiter.Core.Network.Model;
 
 namespace THE_LITER_KIOSK
 {
@@ -42,35 +43,6 @@ namespace THE_LITER_KIOSK
             App.adminData.adminViewModel.SynchronizationOpertaionTime();
             
             TcpHelper.InitializeClient();
-
-            OnSocketLogin();
-        }
-
-        private void OnSocketLogin()
-        {
-            isConnected = App.tcpClient.CheckServerState();
-            
-            if (isConnected)
-            {
-                new Thread(() =>
-                {
-                    TcpModel tcpModel = new TcpModel();
-                    List<MenuModel> menuItems = new List<MenuModel>();
-                    tcpModel.MessageType = (int)EMessageType.LOGIN;
-                    tcpModel.Id = "2107";
-                    tcpModel.ShopName = "";
-                    tcpModel.Content = "";
-                    tcpModel.OrderNumber = "";
-                    tcpModel.MenuItems = menuItems;
-
-                    App.tcpClient.StartClient(tcpModel);
-                }).Start();
-            } 
-            else
-            {
-                isConnected = false;
-                return;
-            }
         }
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
@@ -145,6 +117,8 @@ namespace THE_LITER_KIOSK
 
         private void CtrlLogin_OnLoginResultRecieved(object sender, bool success)
         {
+            OnSocketLogin();
+
             if (success)
             {
                 CtrlLogin.Visibility = Visibility.Collapsed;
@@ -170,6 +144,33 @@ namespace THE_LITER_KIOSK
             }
         }
 
+        private void OnSocketLogin()
+        {
+            isConnected = App.networkManager.CheckServerState();
+
+            if (isConnected)
+            {
+                new Thread(() =>
+                {
+                    TcpModel tcpModel = new TcpModel();
+                    List<MenuModel> menuItems = new List<MenuModel>();
+                    tcpModel.MessageType = (int)EMessageType.LOGIN;
+                    tcpModel.Id = App.memberData.memberViewModel.Id;
+                    tcpModel.ShopName = "";
+                    tcpModel.Content = "";
+                    tcpModel.OrderNumber = "";
+                    tcpModel.MenuItems = menuItems;
+
+                    App.networkManager.ConnectSocket(tcpModel);
+                }).Start();
+            }
+            else
+            {
+                isConnected = false;
+                return;
+            }
+        }
+
         private void CtrlPay_OnCompletePay()
         {
             CtrlPayComplete.payCompleteTimer.Start();
@@ -179,6 +180,7 @@ namespace THE_LITER_KIOSK
         private void Window_Closed(object sender, EventArgs e)
         {
             App.adminData.adminViewModel.SaveProgramTotalUsageTime();
+            App.networkManager.DisconnectSocket();
         }
     }
 }
