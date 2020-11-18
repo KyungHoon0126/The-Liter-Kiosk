@@ -138,6 +138,7 @@ namespace TheLiter.Core.Order.ViewModel
                 NextBtnIsEnabled = false;
 
                 PagingMenuItems();
+                SetMenuDiscountRateAndIsSoldOut();
 
                 if (CurrentPageIdx > 1)
                     PreviousBtnIsEnabled = true;
@@ -164,6 +165,7 @@ namespace TheLiter.Core.Order.ViewModel
                 PreviousBtnIsEnabled = false;
 
                 PagingMenuItems();
+                SetMenuDiscountRateAndIsSoldOut();
 
                 if (CurrentMenuList.Count > itemPerPage)
                     NextBtnIsEnabled = true;
@@ -202,17 +204,6 @@ namespace TheLiter.Core.Order.ViewModel
             {
                 _clearAllMenuItemBtnIsEnabled = value;
                 NotifyPropertyChanged(nameof(ClearAllMenuItemBtnIsEnabled));
-            }
-        }
-
-        private ObservableCollection<Model.MenuModel> _adminMenuItems;
-        public ObservableCollection<Model.MenuModel> AdminMenuItems
-        {
-            get => _adminMenuItems;
-            set
-            {
-                _adminMenuItems = value;
-                NotifyPropertyChanged(nameof(AdminMenuItems));
             }
         }
 
@@ -269,7 +260,6 @@ namespace TheLiter.Core.Order.ViewModel
             CategoryItems = new ObservableCollection<CategoryModel>();
             MenuItems = new ObservableCollection<Model.MenuModel>();
             OrderedMenuItems = new ObservableCollection<Model.MenuModel>();
-            AdminMenuItems = new ObservableCollection<Model.MenuModel>();
         }
 
         private void InitCommands()
@@ -798,13 +788,6 @@ namespace TheLiter.Core.Order.ViewModel
                 #endregion
                 #endregion
             });
-
-            for (int i = 0; i < MenuItems.Count; i++)
-            {
-                AdminMenuItems.Add(MenuItems[i].Clone() as Model.MenuModel);
-            }
-
-            SetMenuDiscountRateAndIsSoldOut();
         }
 
         public void IsEnabledOrderAndClearAllMenuItemBtn()
@@ -890,15 +873,17 @@ namespace TheLiter.Core.Order.ViewModel
         public void IncreaseMenuCount(Model.MenuModel selectedMenu)
         {
             selectedMenu.Count++;
-            selectedMenu.TotalPrice += selectedMenu.Price;
-            OrderTotalPrice += selectedMenu.Price;
+            int price = selectedMenu.Price - ((selectedMenu.Price * selectedMenu.DiscountRate) / 100);
+            selectedMenu.TotalPrice += price;
+            OrderTotalPrice += price;
         }
 
         public void DecreaseMenuCount(Model.MenuModel selectedMenu)
         {
             selectedMenu.Count--;
-            selectedMenu.TotalPrice -= selectedMenu.Price;
-            OrderTotalPrice -= selectedMenu.Price;
+            int price = selectedMenu.Price - ((selectedMenu.Price * selectedMenu.DiscountRate) / 100);
+            selectedMenu.TotalPrice -= price;
+            OrderTotalPrice -= price;
         }
 
         public void ClearSelectedMenuItems(Model.MenuModel selectedMenu)
@@ -1008,10 +993,12 @@ VALUES(
                             salesModel.Price = OrderedMenuItems[i].TotalPrice;
                             salesModel.PayTime = payTime;
                             salesModel.PayType = payType;
+                            salesModel.MemberId = memberId;
+
                             if (tableIdx == null) salesModel.TableIdx = -1;
                             else salesModel.TableIdx = (int)tableIdx;
-                            salesModel.MemberId = memberId;
-                            salesModel.ReceiptIdx = ReceiptIdx; 
+
+                            if (ReceiptIdx > 0) salesModel.ReceiptIdx = ReceiptIdx % 100;
 
                             string insertSql = @"
 INSERT INTO sales_tb(
@@ -1125,25 +1112,25 @@ WHERE
                 Debug.WriteLine("SAVE MENU DISCOUNT RATE AND IS SOLD OUT ERROR : " + e.Message);
             }
         }
+        #endregion
 
         public async void SetMenuDiscountRateAndIsSoldOut()
         {
             List<Model.MenuModel> items = await GetAllMenuDisCountRateAndIsSoldOut();
 
-            for (int i = 0; i < AdminMenuItems.Count; i++)
+            for (int i = 0; i < PagingMenuList.Count; i++)
             {
                 for (int j = 0; j < items.Count; j++)
                 {
-                    if (AdminMenuItems[i].Idx == items[j].Idx)
+                    if (PagingMenuList[i].Idx == items[j].Idx)
                     {
-                        AdminMenuItems[i].DiscountRate = items[j].DiscountRate;
-                        AdminMenuItems[i].IsSoldOut = items[j].IsSoldOut;
+                        PagingMenuList[i].DiscountRate = items[j].DiscountRate;
+                        PagingMenuList[i].IsSoldOut = items[j].IsSoldOut;
                         break;
                     }
                 }
             }
         }
-        #endregion
 
         public TcpModel SendPayInfo(string id)
         {

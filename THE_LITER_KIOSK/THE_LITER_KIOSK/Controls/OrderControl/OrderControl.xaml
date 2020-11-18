@@ -11,6 +11,9 @@
 
     <UserControl.Resources>
         <converter:MenuCategoryToKoreanConverter x:Key="MenuCategoryToKoreanConverter"/>
+        <converter:IsSoldOutToStringConverter x:Key="IsSoldOutToStringConverter"/>
+        <converter:IsSoldOutToFocusableConverter x:Key="IsSoldOutToFocusableConverter"/>
+        <converter:IsSoldOutToOpacityConverter x:Key="IsSoldOutToOpacityConverter"/>
     </UserControl.Resources>
     
     <Grid Background="White">
@@ -92,7 +95,8 @@
                         <Style TargetType="ListViewItem">
                             <Setter Property="FocusVisualStyle" Value="{x:Null}"/>
                             <Setter Property="Margin" Value="5"/>
-                            <Setter Property="MaxHeight" Value="410"/> <!--메뉴가 적은 경우 최대 높이를 지정.-->
+                            <Setter Property="MaxHeight" Value="460"/>
+                            <!--메뉴가 적은 경우 최대 높이를 지정.-->
                             <Setter Property="Template">
                                 <Setter.Value>
                                     <ControlTemplate TargetType="{x:Type ListViewItem}">
@@ -100,6 +104,8 @@
                                     </ControlTemplate>
                                 </Setter.Value>
                             </Setter>
+                            <Setter Property="Focusable" Value="{Binding IsSoldOut, Converter={StaticResource IsSoldOutToFocusableConverter}}"/>
+                            <Setter Property="Opacity" Value="{Binding IsSoldOut, Converter={StaticResource IsSoldOutToOpacityConverter}}"/>
                         </Style>
                     </ListView.ItemContainerStyle>
                     
@@ -116,6 +122,8 @@
                                 <TextBlock Text="{Binding Name}" 
                                            FontWeight="SemiBold"/>
                                 <TextBlock Text="{Binding Price, StringFormat={}{0}원}"/>
+                                <TextBlock Text="{Binding DiscountRate, StringFormat={}할인율 : {0}%}"/>
+                                <TextBlock Text="{Binding IsSoldOut, StringFormat={}품절 : {0}, Converter={StaticResource IsSoldOutToStringConverter}}"/>
                             </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
@@ -129,6 +137,10 @@
                         <Setter Property="Height" Value="50"/>
                         <Setter Property="Width" Value="180"/>
                         <Setter Property="Background" Value="#e0e0e0"/>
+                        <Setter Property="FontFamily" Value="AppleSDGothicNeoSB00"/>
+                        <Setter Property="FontSize" Value="20"/>
+                        <Setter Property="BorderBrush" Value="Transparent"/>
+                        <Setter Property="FontWeight" Value="SemiBold"/>
                     </Style>
                 </Grid.Resources>
                 
@@ -141,10 +153,6 @@
                 <Grid Grid.Column="0">
                     <Button x:Name="btnPreviousMenu"
                             Content="&lt; 이전"
-                            Background="#e6e6e6"
-                            BorderBrush="Transparent"
-                            FontSize="20"
-                            FontWeight="SemiBold"
                             IsEnabled="{Binding PreviousBtnIsEnabled}"
                             Command="{Binding PreviousMenuCommand}">
                         <Button.Resources>
@@ -155,17 +163,9 @@
                     </Button>
                 </Grid>
 
-                <Grid Grid.Column="1">
-
-                </Grid>
-
                 <Grid Grid.Column="2">
                     <Button x:Name="btnNextMenu"
                             Content="다음 &gt;"
-                            Background="#e6e6e6"
-                            BorderBrush="Transparent"
-                            FontSize="20"
-                            FontWeight="SemiBold"
                             IsEnabled="{Binding NextBtnIsEnabled}"
                             Command="{Binding NextMenuCommand}">
                         <Button.Resources>

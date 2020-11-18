@@ -35,15 +35,22 @@
                 </Grid.ColumnDefinitions>
 
                 <Grid Grid.Column="0">
-                    <Image Margin="10"
-                           Source="/Assets/Logo/TheLiterLogo.png"
-                           HorizontalAlignment="Left"/>
+                    <StackPanel Orientation="Horizontal">
+                        <Image Margin="10" 
+                               VerticalAlignment="Top"
+                               Source="/Assets/Logo/TheLiterLogo.png"
+                               HorizontalAlignment="Left"/>
+
+                        <TextBlock Margin="10" x:Name="tbcurrentAccessTime"
+                                   Text="최근 서버 접속 시간 : "
+                                   VerticalAlignment="Center"
+                                   FontSize="30"/>
+                    </StackPanel>
                 </Grid>
 
                 <Grid Grid.Column="1">
                     <TextBlock x:Name="tbClock" 
                                FontSize="30" 
-                               FontWeight="Light"
                                VerticalAlignment="Center" 
                                HorizontalAlignment="Right"/>
                 </Grid>

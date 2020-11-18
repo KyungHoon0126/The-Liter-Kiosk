@@ -182,6 +182,8 @@
       <DependentUpon>TableControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\BackgroundColorConverter.cs" />
+    <Compile Include="Converters\IsSoldOutToFocusableConverter.cs" />
+    <Compile Include="Converters\IsSoldOutToOpacitiyConverter.cs" />
     <Compile Include="Converters\IsSoldOutToStringConverter.cs" />
     <Compile Include="Converters\PayTimeToVisibilityConverter.cs" />
     <Compile Include="Converters\IsUsedToFocusableConverter.cs" />

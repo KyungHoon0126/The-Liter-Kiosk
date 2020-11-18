@@ -26,8 +26,8 @@
                                 <Setter Property="FontSize" Value="20"/>
                                 <Setter Property="HorizontalAlignment" Value="Center"/>
                             </Style>
-                        </StackPanel.Resources>
-                        
+                        </StackPanel.Resources> 
+
                         <TextBlock Text="{Binding Id, StringFormat={}아이디 : {0}}"/>
                         <TextBlock Text="{Binding Name, StringFormat={}이름 : {0}}"/>
                         <TextBlock Text="{Binding QrCode, StringFormat={}QrCode : {0}}"/>

@@ -163,6 +163,8 @@ namespace THE_LITER_KIOSK
 
                     App.networkManager.ConnectSocket(tcpModel);
                 }).Start();
+
+                tbcurrentAccessTime.Text = "최근 서버 접속 시간 : " + DateTime.Now.ToString("tt H시 mm분 ss초");
             }
             else
             {
