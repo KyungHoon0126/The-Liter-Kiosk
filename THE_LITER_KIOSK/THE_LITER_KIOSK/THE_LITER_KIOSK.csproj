@@ -187,11 +187,6 @@
     <Compile Include="Converters\IsUsedToFocusableConverter.cs" />
     <Compile Include="Converters\MenuCategoryToKoreanConverter.cs" />
     <Compile Include="Converters\TableIdxToNameConverter.cs" />
-    <Compile Include="Network\Model\EMessageType.cs" />
-    <Compile Include="Network\Model\StateObjectModel.cs" />
-    <Compile Include="Network\TcpClient.cs" />
-    <Compile Include="Network\Model\TcpModel.cs" />
-    <Compile Include="Network\TcpHelper.cs" />
     <Compile Include="UIStateManager\UIStateManager.cs" />
     <Compile Include="UIStateManager\CustomControlType.cs" />
     <Compile Include="UIStateManager\CustomControlModel.cs" />
@@ -389,6 +384,10 @@
     <ProjectReference Include="..\TheLiter.Core.Member\TheLiter.Core.Member.csproj">
       <Project>{3B669985-CA61-4B31-BD3B-02D9270A1BCD}</Project>
       <Name>TheLiter.Core.Member</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TheLiter.Core.Network\TheLiter.Core.Network.csproj">
+      <Project>{27AE824B-CDBD-4CD1-973E-E0BAF39E5458}</Project>
+      <Name>TheLiter.Core.Network</Name>
     </ProjectReference>
     <ProjectReference Include="..\TheLiter.Core.Order\TheLiter.Core.Order.csproj">
       <Project>{1EBD103B-9FBB-4D72-8823-A0F82D30AF20}</Project>
