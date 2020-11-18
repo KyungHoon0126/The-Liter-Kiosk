@@ -1,0 +1,40 @@
+﻿<UserControl x:Class="THE_LITER_KIOSK.Controls.AdminControl.MemberManagementControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:THE_LITER_KIOSK.Controls.AdminControl"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    
+    <Grid Background="White">
+        <ListView x:Name="lvMemberList" 
+                  Margin="5"
+                  ItemsSource="{Binding MemberItems}">
+            <ListView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <WrapPanel />
+                </ItemsPanelTemplate>
+            </ListView.ItemsPanel>
+            
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <StackPanel Width="300">
+                        <StackPanel.Resources>
+                            <Style TargetType="TextBlock">
+                                <Setter Property="FontFamily" Value="AppleSDGothicNeoSB00"/>
+                                <Setter Property="FontSize" Value="20"/>
+                                <Setter Property="HorizontalAlignment" Value="Center"/>
+                            </Style>
+                        </StackPanel.Resources>
+                        
+                        <TextBlock Text="{Binding Id, StringFormat={}아이디 : {0}}"/>
+                        <TextBlock Text="{Binding Name, StringFormat={}이름 : {0}}"/>
+                        <TextBlock Text="{Binding QrCode, StringFormat={}QrCode : {0}}"/>
+                        <TextBlock Text="{Binding BarCode, StringFormat={}BarCode : {0}}"/>
+                    </StackPanel>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</UserControl>

@@ -10,8 +10,8 @@
 
     <Grid Background="White">
         <Grid.RowDefinitions>
-            <RowDefinition Height="1*"/>
-            <RowDefinition Height="9*"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
         <Grid Grid.Row="0">
@@ -19,18 +19,22 @@
                        Text="{Binding OperationTimeDesc, Mode=TwoWay, StringFormat=프로그램 구동 시간 : \{0:\\ hh\\시\\간\\ mm\\분\\ ss\\초\}}"
                        FontSize="30"
                        FontFamily="AppleSDGothicNeoSB00"
-                       VerticalAlignment="Center"
+                       VerticalAlignment="Bottom"
                        HorizontalAlignment="Right"/>
         </Grid>
 
         <Grid Grid.Row="1">
             <TabControl>
                 <TabItem Header="회원 리스트">
-                    <local:MemberManagementControl/>
+                    <local:MemberManagementControl x:Name="ctrlMemberManagement"/>
                 </TabItem>
-                
+
+                <TabItem Header="메뉴 관리">
+                    <local:MenuManagementControl x:Name="ctrlMenuManagement"/>
+                </TabItem>
+
                 <TabItem Header="통계 화면">
-                    <local:StatisticsControl/>
+                    <local:StatisticsControl x:Name="ctrlStatistics"/>
                 </TabItem>
             </TabControl>
 

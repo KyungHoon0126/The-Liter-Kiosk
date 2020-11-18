@@ -1,13 +1,11 @@
 ﻿using System;
-using Newtonsoft.Json.Linq;
-using System.Net.Sockets;
+using System.Collections.Generic;
 using System.Threading;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 using THE_LITER_KIOSK.Network;
 using THE_LITER_KIOSK.UIManager;
-using System.Collections.Generic;
 
 namespace THE_LITER_KIOSK
 {
@@ -121,12 +119,12 @@ namespace THE_LITER_KIOSK
                 CtrlLogin.Visibility = Visibility.Collapsed;
                 App.memberData.GetMemberData();
 
-#if true
+#if false
                 if (App.tcpClient.CheckServerState())
                 // var isConnected = App.tcpClient.CheckServerState();
 #endif
 
-#if false
+#if true
                 if (true)
 #endif
                 {
@@ -138,7 +136,8 @@ namespace THE_LITER_KIOSK
                         TcpModel tcpModel = new TcpModel();
                         List<MenuModel> menuItems = new List<MenuModel>();
                         tcpModel.MessageType = 0;
-                        tcpModel.Id = App.memberData.memberViewModel.Id;
+                        //tcpModel.Id = App.memberData.memberViewModel.Id;
+                        tcpModel.Id = "2107";
                         tcpModel.ShopName = "";
                         tcpModel.Content = "";
                         tcpModel.OrderNumber = "";
