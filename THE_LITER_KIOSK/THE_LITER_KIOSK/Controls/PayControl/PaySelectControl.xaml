@@ -75,7 +75,7 @@
                                 <GridViewColumn.CellTemplate>
                                     <DataTemplate>
                                         <Grid>
-                                            <TextBlock Text="{Binding TotalPrice, StringFormat=\{0:N0\}원}"
+                                            <TextBlock Text="{Binding DiscountPrice, StringFormat=\{0:N0\}원}"
                                                        Margin="5"/>
                                         </Grid>
                                     </DataTemplate>
@@ -140,7 +140,7 @@
                         <Setter Property="FontSize" Value="30"/>
                     </Style>
                 </StackPanel.Resources>
-                <TextBlock Text="{Binding OrderTotalPrice, StringFormat=총 금액 : \{0:N0\}원}"
+                <TextBlock Text="{Binding DiscountTotalPrice, StringFormat=총 금액 : \{0:N0\}원}"
                            FontFamily="AppleSDGothicNeoSB00"
                            Margin="5"/>
             </StackPanel>

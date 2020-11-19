@@ -32,11 +32,11 @@ namespace THE_LITER_KIOSK.DataBase.Models
             set => SetProperty(ref _count, value);
         }
 
-        private int _price;
-        public int Price
+        private int _discountTotalPrice;
+        public int DiscountTotalPrice
         {
-            get => _price;
-            set => SetProperty(ref _price, value);
+            get => _discountTotalPrice;
+            set => SetProperty(ref _discountTotalPrice, value);
         }
 
         private DateTime _payTime;
@@ -72,6 +72,21 @@ namespace THE_LITER_KIOSK.DataBase.Models
         {
             get => _receiptIdx;
             set => SetProperty(ref _receiptIdx, value);
+        }
+
+        private int _discountAmount;
+        public int DiscountAmount
+        {
+            get => _discountAmount;
+            set => SetProperty(ref _discountAmount, value);
+        }
+
+        // 순수 매출액
+        private int _totalPrice;
+        public int TotalPrice
+        {
+            get => _totalPrice;
+            set => SetProperty(ref _totalPrice, value);
         }
     }
 }

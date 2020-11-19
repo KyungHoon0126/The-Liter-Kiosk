@@ -47,11 +47,11 @@ namespace TheLiter.Core.Order.Model
             set => SetProperty(ref _imageUrl, value);
         }
 
-        private int _totalPrice;
-        public int TotalPrice
+        private int _disCountTotalPrice;
+        public int DiscountPrice
         {
-            get => _totalPrice;
-            set => SetProperty(ref _totalPrice, value);
+            get => _disCountTotalPrice;
+            set => SetProperty(ref _disCountTotalPrice, value);
         }
 
         private int _discountRate;
@@ -68,6 +68,24 @@ namespace TheLiter.Core.Order.Model
             set => SetProperty(ref _isSoldOut, value);
         }
 
+
+        /// <summary>
+        /// 
+        /// </summary>
+        private int _totalPrice;
+        public int TotalPrice
+        {
+            get => _totalPrice;
+            set => SetProperty(ref _totalPrice, value);
+        }
+
+        private int _discountAmount = 0;
+        public int DiscountAmount
+        {
+            get => _discountAmount;
+            set => SetProperty(ref _discountAmount, value);
+        }
+
         public MenuModel Clone(MenuModel item)
         {
             MenuModel menuModel = new MenuModel();
@@ -78,6 +96,7 @@ namespace TheLiter.Core.Order.Model
             menuModel.Price = item.Price;
             menuModel.ImageUrl = item.ImageUrl;
             menuModel.DiscountRate = item.DiscountRate;
+            menuModel.DiscountAmount = item.DiscountAmount;
             return menuModel;
         }
 
@@ -91,7 +110,8 @@ namespace TheLiter.Core.Order.Model
                 Count = this.Count,
                 Price = this.Price,
                 ImageUrl = this.ImageUrl,
-                DiscountRate = this.DiscountRate
+                DiscountRate = this.DiscountRate,
+                DiscountAmount = this.DiscountAmount
             };
         }
     }

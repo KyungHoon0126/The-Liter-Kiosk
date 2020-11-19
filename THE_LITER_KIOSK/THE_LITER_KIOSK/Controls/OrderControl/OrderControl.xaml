@@ -259,7 +259,7 @@
                                             <DataTemplate>
                                                 <Grid>
                                                     <StackPanel Orientation="Horizontal">
-                                                        <TextBlock Text="{Binding TotalPrice, StringFormat=\{0:N0\}원}"
+                                                        <TextBlock Text="{Binding DiscountPrice, StringFormat=\{0:N0\}원}"
                                                                    Margin="5"/>
                                                         <Button x:Name="btnDel"
                                                                 Content="x"
@@ -286,7 +286,7 @@
                                 </Style>
                             </StackPanel.Resources>
                             <TextBlock Text="총가격 : "/>
-                            <TextBlock Text="{Binding OrderTotalPrice, StringFormat=\{0:N0\}원}"/>
+                            <TextBlock Text="{Binding DiscountTotalPrice, StringFormat=\{0:N0\}원}"/>
                         </StackPanel>
                     </Grid>
                 </Grid>

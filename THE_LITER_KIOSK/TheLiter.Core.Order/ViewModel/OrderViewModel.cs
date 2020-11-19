@@ -59,6 +59,17 @@ namespace TheLiter.Core.Order.ViewModel
             }
         }
 
+        private int _discountTotalPrice = 0;
+        public int DiscountTotalPrice
+        {
+            get => _discountTotalPrice;
+            set
+            {
+                _discountTotalPrice = value;
+                NotifyPropertyChanged(nameof(DiscountTotalPrice));
+            }
+        }
+
         private int _orderTotalPrice = 0;
         public int OrderTotalPrice
         {
@@ -848,11 +859,11 @@ namespace TheLiter.Core.Order.ViewModel
             for (int i = 0; i < OrderedMenuItems.Count; i++)
             {
                 OrderedMenuItems[i].Count = 0;
-                OrderedMenuItems[i].TotalPrice = 0;
+                OrderedMenuItems[i].DiscountPrice = 0;
             }
 
             OrderedMenuItems.Clear();
-            OrderTotalPrice = 0;
+            DiscountTotalPrice = 0;
         }
 
         public bool IsOrderedMenuItemsValid()
@@ -873,17 +884,40 @@ namespace TheLiter.Core.Order.ViewModel
         public void IncreaseMenuCount(Model.MenuModel selectedMenu)
         {
             selectedMenu.Count++;
-            int price = selectedMenu.Price - ((selectedMenu.Price * selectedMenu.DiscountRate) / 100);
-            selectedMenu.TotalPrice += price;
-            OrderTotalPrice += price;
+            
+            int price = selectedMenu.Price - ((selectedMenu.Price * selectedMenu.DiscountRate) / 100); // 기존 가격 - 할인금액, 사용자에게 보여지는 가격, 할인율이 있으면 할인율이 적용된 가격
+            selectedMenu.DiscountPrice += price;  // 사용자에게 보여지는 메뉴의 total 가격
+            DiscountTotalPrice += price; // 사용자에게 보여지는 모든 메뉴 전체 total 가격
+
+            // int price = selectedMenu.Price - ((selectedMenu.Price * selectedMenu.DiscountRate) / 100); // 전체 가격 - 할인 금액 => 순수 매출액
+
+            selectedMenu.TotalPrice += selectedMenu.Price; // 메뉴 총 금액
+            OrderTotalPrice += selectedMenu.Price; // 주문 전체 금액
+            selectedMenu.DiscountAmount = ((selectedMenu.Price * selectedMenu.DiscountRate) / 100); // 할인 금액
+            // 순수 매출액 = selectedMenu.TotalPrice - selectedMenu.DiscountAmount
+
+            // 총 금액 = 순수매출액 + 할인금액
+            // 예를 들어, 하루 2000원짜리 햄버거를 1개 팔았는데,
+            // 할인을 하면 1600원일 경우
+            // 총 금액은 2000원
+            // 순수 매출액은 1600원
+            // 할인금액은 400원
+
+            // 총금액 = 순수 매출액 + 총 금액
+            // 순수 매출액
+            // 총 금액
         }
 
         public void DecreaseMenuCount(Model.MenuModel selectedMenu)
         {
             selectedMenu.Count--;
-            int price = selectedMenu.Price - ((selectedMenu.Price * selectedMenu.DiscountRate) / 100);
-            selectedMenu.TotalPrice -= price;
-            OrderTotalPrice -= price;
+
+            int price = selectedMenu.Price - ((selectedMenu.Price * selectedMenu.DiscountRate) / 100); // 기존 가격 - 할인금액, 사용자에게 보여지는 가격, 할인율이 있으면 할인율이 적용된 가격
+            selectedMenu.DiscountPrice -= price;  // 사용자에게 보여지는 메뉴의 total 가격
+            DiscountTotalPrice -= price; // 사용자에게 보여지는 모든 메뉴 전체 total 가격
+
+            selectedMenu.TotalPrice -= selectedMenu.Price; // 메뉴 총 금액
+            OrderTotalPrice -= selectedMenu.Price; // 주문 전체 금액
         }
 
         public void ClearSelectedMenuItems(Model.MenuModel selectedMenu)
@@ -893,9 +927,9 @@ namespace TheLiter.Core.Order.ViewModel
             for (int i = 0; i < temp; i++)
             {
                 selectedMenu.Count--;
-                OrderTotalPrice -= removeTarget.Price;
+                DiscountTotalPrice -= removeTarget.Price;
             }
-            selectedMenu.TotalPrice = 0;
+            selectedMenu.DiscountPrice = 0;
             RemoveSelectedMenu(selectedMenu);
             IsEnabledOrderAndClearAllMenuItemBtn();
         }
@@ -987,41 +1021,49 @@ VALUES(
                         for (int i = 0; i < OrderedMenuItems.Count; i++)
                         {
                             var salesModel = new SalesModel();
-                            salesModel.Category = OrderedMenuItems[i].MenuCategory.ToString();
-                            salesModel.Name = OrderedMenuItems[i].Name;
-                            salesModel.Count = OrderedMenuItems[i].Count;
-                            salesModel.Price = OrderedMenuItems[i].TotalPrice;
-                            salesModel.PayTime = payTime;
-                            salesModel.PayType = payType;
-                            salesModel.MemberId = memberId;
+                            salesModel.Category = OrderedMenuItems[i].MenuCategory.ToString(); // 메뉴 카테고리
+                            salesModel.Name = OrderedMenuItems[i].Name; // 메뉴 명
+                            salesModel.Count = OrderedMenuItems[i].Count; // 메뉴 수량
+                            salesModel.DiscountTotalPrice = OrderedMenuItems[i].DiscountPrice; // 할인이 있으면 할인이 적용된 가격의 메뉴 값 토탈
+                            salesModel.PayTime = payTime; // 결제 시간
+                            salesModel.PayType = payType; // 결제 타입
+                            salesModel.MemberId = memberId; // 회원 아이디
 
                             if (tableIdx == null) salesModel.TableIdx = -1;
-                            else salesModel.TableIdx = (int)tableIdx;
+                            else salesModel.TableIdx = (int)tableIdx; // 테이블 Idx
 
-                            if (ReceiptIdx > 0) salesModel.ReceiptIdx = ReceiptIdx % 100;
+                            if (ReceiptIdx > 0) salesModel.ReceiptIdx = ReceiptIdx % 100; // 주문 Idx
+
+                            salesModel.DiscountAmount = OrderedMenuItems[i].DiscountAmount; // 할인 금액
+                            salesModel.TotalPrice = OrderedMenuItems[i].TotalPrice; // 할인과 상관없이 전체 금액 추가
 
                             string insertSql = @"
 INSERT INTO sales_tb(
-    menu_category,
-    menu_name,
+    menuCategory,
+    menuName,
     count,
-    price,
+    discountTotalPrice,
     payTime,
     payType,
     tableIdx,
-    member_id,
-    receipt_idx
+    memberId,
+    receiptIdx,
+    discountAmount,
+    totalPrice
+
 )
 VALUES(
     @Category,
     @Name,
     @Count,
-    @Price,
+    @DiscountTotalPrice,
     @PayTime,
     @PayType,
     @TableIdx,
     @MemberId,
-    @ReceiptIdx
+    @ReceiptIdx,
+    @DiscountAmount,
+    @TotalPrice
 );";
                             if (await salesDBManager.InsertAsync(db, insertSql, salesModel) == 1)
                             {

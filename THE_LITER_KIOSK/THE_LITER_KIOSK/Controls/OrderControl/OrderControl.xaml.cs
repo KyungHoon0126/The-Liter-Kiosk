@@ -77,6 +77,8 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
             DecreaseMenuCount(selectedMenu);
         }
 
+        // TODO : X누르고 메뉴아이템에서 지울 때 이상해짐.
+        // Socket 서버 연결안됬을 때 주문정보 안보내도록 고쳐야함
         private void btnDel_Click(object sender, RoutedEventArgs e)
         {
             MenuModel selectedMenu = ExtractSelectedMenu(sender);
