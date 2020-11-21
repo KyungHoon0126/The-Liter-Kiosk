@@ -11,7 +11,8 @@ namespace THE_LITER_KIOSK.Network
 {
     public class NetworkManager
     {
-        private const string ip = "10.80.162.152";
+        //private const string ip = "10.80.162.152";
+        private const string ip = "10.80.163.141";
         private const int port = 80;
 
         private static ManualResetEvent connectDone =

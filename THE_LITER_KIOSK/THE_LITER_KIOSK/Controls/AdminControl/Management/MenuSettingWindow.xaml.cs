@@ -32,11 +32,11 @@ namespace THE_LITER_KIOSK.Controls.AdminControl.Management
                 this.Close();
                 return;
             }
-            App.orderData.orderViewModel.IsSoldOutChecked = (bool)cbSoldOut.IsChecked;
 
+            App.orderData.orderViewModel.IsSoldOutChecked = (bool)cbSoldOut.IsChecked;
             App.orderData.orderViewModel.DisCountRate = int.Parse(tbDiscountRate.Text);
             App.orderData.orderViewModel.SaveMenuDiscountRateAndIsSoldOut();
-            // App.orderData.orderViewModel.SetMenuDiscountRateAndIsSoldOut();
+
             this.Close();
         }
 

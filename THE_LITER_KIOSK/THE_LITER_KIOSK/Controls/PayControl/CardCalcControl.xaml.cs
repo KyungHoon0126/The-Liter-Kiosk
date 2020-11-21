@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using THE_LITER_KIOSK.DataBase.Models;
 using THE_LITER_KIOSK.Network;
@@ -73,7 +74,7 @@ namespace THE_LITER_KIOSK.Controls.PayControl
 
         private void SaveSalesInformation(DateTime payTime, string paymentType, int? tableIdx, string memberId)
         {
-            App.orderData.orderViewModel.SaveSalesInformation(payTime, paymentType, tableIdx, memberId);
+            Task.Run(() => { App.orderData.orderViewModel.SaveSalesInformation(payTime, paymentType, tableIdx, memberId); });
         }
 
         private void ClearQrCode()

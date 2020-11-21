@@ -14,7 +14,7 @@ namespace TheLiter.Core.Order
         public void InitData()
         {
             orderViewModel.ClearMenuItems();
-            orderViewModel.IsEnabledOrderAndClearAllMenuItemBtn();
+            orderViewModel.IsEnabledOrderAndClearAllMenuBtn();
         }
 
         public void SetPagingMenuItems()

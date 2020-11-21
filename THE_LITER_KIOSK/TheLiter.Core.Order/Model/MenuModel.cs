@@ -3,7 +3,7 @@ using System;
 
 namespace TheLiter.Core.Order.Model
 {
-    public class MenuModel : BindableBase, ICloneable
+    public class SalesModel : BindableBase, ICloneable
     {
         private int _idx;
         public int Idx
@@ -86,9 +86,9 @@ namespace TheLiter.Core.Order.Model
             set => SetProperty(ref _discountAmount, value);
         }
 
-        public MenuModel Clone(MenuModel item)
+        public SalesModel Clone(SalesModel item)
         {
-            MenuModel menuModel = new MenuModel();
+            SalesModel menuModel = new SalesModel();
             menuModel.Idx = item.Idx;
             menuModel.MenuCategory = item.MenuCategory;
             menuModel.Name = item.Name;
@@ -102,7 +102,7 @@ namespace TheLiter.Core.Order.Model
 
         public object Clone()
         {
-            return new MenuModel()
+            return new SalesModel()
             {
                 Idx = this.Idx,
                 MenuCategory = this.MenuCategory,

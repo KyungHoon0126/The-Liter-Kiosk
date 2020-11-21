@@ -39,7 +39,7 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
         {
             if (lvMenuList.SelectedItem == null) return;
 
-            MenuModel selectedMenu = (MenuModel)lvMenuList.SelectedItem;
+            SalesModel selectedMenu = (SalesModel)lvMenuList.SelectedItem;
 
             if (selectedMenu != null && IsDuplicateMenu(selectedMenu))
             {
@@ -51,13 +51,13 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
                 App.orderData.orderViewModel.AddOrderedMenuItems(selectedMenu);
             }
 
-            App.orderData.orderViewModel.IsEnabledOrderAndClearAllMenuItemBtn();
+            App.orderData.orderViewModel.IsEnabledOrderAndClearAllMenuBtn();
             lvMenuList.SelectedIndex = -1;
         }
 
-        private bool IsDuplicateMenu(MenuModel selectedMenu)
+        private bool IsDuplicateMenu(SalesModel selectedMenu)
         {
-            return lvOrderList.Items.Cast<MenuModel>().ToList().Where(x => x.Name == selectedMenu.Name).FirstOrDefault() == null ? false : true;
+            return lvOrderList.Items.Cast<SalesModel>().ToList().Where(x => x.Name == selectedMenu.Name).FirstOrDefault() == null ? false : true;
         }
 
         private void btnAddMenu_Click(object sender, RoutedEventArgs e)
@@ -77,11 +77,10 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
             DecreaseMenuCount(selectedMenu);
         }
 
-        // TODO : X누르고 메뉴아이템에서 지울 때 이상해짐.
-        // Socket 서버 연결안됬을 때 주문정보 안보내도록 고쳐야함
+        // TODO : Socket 서버 연결안됬을 때 주문정보 안보내도록 고쳐야함
         private void btnDel_Click(object sender, RoutedEventArgs e)
         {
-            MenuModel selectedMenu = ExtractSelectedMenu(sender);
+            SalesModel selectedMenu = ExtractSelectedMenu(sender);
             App.orderData.orderViewModel.ClearSelectedMenuItems(selectedMenu);
         }
 
@@ -122,17 +121,17 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
             }
         }
 
-        private MenuModel ExtractSelectedMenu(object sender)
+        private SalesModel ExtractSelectedMenu(object sender)
         {
-            return ((ListViewItem)lvOrderList.ContainerFromElement(sender as Button)).Content as MenuModel;
+            return ((ListViewItem)lvOrderList.ContainerFromElement(sender as Button)).Content as SalesModel;
         }
 
-        private void IncreaseMenuCount(MenuModel selectedMenu)
+        private void IncreaseMenuCount(SalesModel selectedMenu)
         {
             App.orderData.orderViewModel.IncreaseMenuCount(selectedMenu);
         }
 
-        private void DecreaseMenuCount(MenuModel selectedMenu)
+        private void DecreaseMenuCount(SalesModel selectedMenu)
         {
             App.orderData.orderViewModel.DecreaseMenuCount(selectedMenu);
         }

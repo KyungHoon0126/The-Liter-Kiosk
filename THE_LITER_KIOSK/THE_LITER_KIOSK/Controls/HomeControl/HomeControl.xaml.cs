@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Threading.Tasks;
+using System.Windows;
 using THE_LITER_KIOSK.UIManager;
 
 namespace THE_LITER_KIOSK.Controls.HomeControl
@@ -16,13 +17,13 @@ namespace THE_LITER_KIOSK.Controls.HomeControl
         #region UserControl Transition
         private void btnOrder_Click(object sender, RoutedEventArgs e)
         {
-            App.orderData.orderViewModel.IsEnabledOrderAndClearAllMenuItemBtn();
+            App.orderData.orderViewModel.IsEnabledOrderAndClearAllMenuBtn();
             App.uIStateManager.SwitchCustomControl(CustomControlType.ORDER);
         }
 
         private void btnAdmin_Click(object sender, RoutedEventArgs e)
         {
-            App.adminData.LoadData();
+            Task.Run(() => { App.adminData.LoadData(); });
             App.memberData.GetAllMemberData();
             App.uIStateManager.SwitchCustomControl(CustomControlType.ADMIN);
         }

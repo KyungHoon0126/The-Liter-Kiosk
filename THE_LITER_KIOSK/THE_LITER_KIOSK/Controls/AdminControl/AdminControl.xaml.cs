@@ -1,10 +1,9 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Data;
 using System.Windows.Threading;
 using THE_LITER_KIOSK.Controls.AdminControl.Management;
 using THE_LITER_KIOSK.UIManager;
-using TheLiter.Core.Admin.Model;
 
 namespace THE_LITER_KIOSK.Controls.AdminControl
 {
@@ -24,7 +23,7 @@ namespace THE_LITER_KIOSK.Controls.AdminControl
             App.memberData.memberViewModel.CompleteAction += MemberViewModel_CompleteAction;
             ctrlMenuManagement.LoadMenuSettingWindow += CtrlMenuManagement_LoadMenuSettingWindow;
             
-            App.adminData.LoadData();
+            Task.Run(() => { App.adminData.LoadData(); });
             this.DataContext = App.adminData.adminViewModel;
 
             DispatcherTimer programOperationTimer = new DispatcherTimer();

@@ -8,8 +8,10 @@ namespace TheLiter.Core.Admin
 
         public void LoadData()
         {
-            adminViewModel.LoadSalesByMenuDatas();
-            adminViewModel.LoadSalesByCategory();
+            adminViewModel.LoadSalesByMenus();
+            adminViewModel.LoadSalesByCategories();
+            adminViewModel.SetTotalAndNetSales("CARD");
+            adminViewModel.SetSaleItems();
         }
     }
 }

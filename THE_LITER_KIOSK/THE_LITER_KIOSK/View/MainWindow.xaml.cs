@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
@@ -109,7 +110,7 @@ namespace THE_LITER_KIOSK
         {
             if (App.uIStateManager.customCtrlStack.Count > 0 && e.Key == Key.F2 && App.uIStateManager.customCtrlStack.Peek() == CtrlHome)
             {
-                App.adminData.LoadData();
+                Task.Run(() => { App.adminData.LoadData(); });
                 App.memberData.GetAllMemberData();
                 App.uIStateManager.SwitchCustomControl(CustomControlType.ADMIN);
             }

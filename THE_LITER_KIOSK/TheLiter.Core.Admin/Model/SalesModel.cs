@@ -5,60 +5,53 @@ namespace TheLiter.Core.Admin.Model
 {
     public class SalesModel : BindableBase
     {
-        private int _idx;
+        private int idx;
         public int Idx
         {
-            get => _idx;
-            set => SetProperty(ref _idx, value);
+            get => idx;
+            set => SetProperty(ref idx, value);
         }
 
-        private int receipt_idx;
-        public int ReceiptIdx
-        {
-            get => receipt_idx;
-            set => SetProperty(ref receipt_idx, value);
-        }
-
-        private string menu_category;
+        private string menuCategory;
         public string Category
         {
-            get => menu_category;
-            set => SetProperty(ref menu_category, value);
+            get => menuCategory;
+            set => SetProperty(ref menuCategory, value);
         }
 
-        private string menu_name;
+        private string menuName;
         public string Name
         {
-            get => menu_name;
-            set => SetProperty(ref menu_name, value);
+            get => menuName;
+            set => SetProperty(ref menuName, value);
         }
 
-        private int _count;
+        private int count;
         public int Count
         {
-            get => _count;
-            set => SetProperty(ref _count, value);
+            get => count;
+            set => SetProperty(ref count, value);
         }
 
-        private int _price;
-        public int Price
+        private int discountTotalPrice;
+        public int DiscountTotalPrice
         {
-            get => _price;
-            set => SetProperty(ref _price, value);
+            get => discountTotalPrice;
+            set => SetProperty(ref discountTotalPrice, value);
         }
 
-        private DateTime _payTime;
+        private DateTime payTime;
         public DateTime PayTime
         {
-            get => _payTime;
-            set => SetProperty(ref _payTime, value);
+            get => payTime;
+            set => SetProperty(ref payTime, value);
         }
 
-        private string _payType;
+        private string payType;
         public string PayType
         {
-            get => _payType;
-            set => SetProperty(ref _payType, value);
+            get => payType;
+            set => SetProperty(ref payType, value);
         }
 
         private int _tableIdx;
@@ -68,11 +61,32 @@ namespace TheLiter.Core.Admin.Model
             set => SetProperty(ref _tableIdx, value);
         }
 
-        private string member_id;
+        private string memberId;
         public string MemberId
         {
-            get => member_id;
-            set => SetProperty(ref member_id, value);
+            get => memberId;
+            set => SetProperty(ref memberId, value);
+        }
+
+        private int receiptIdx;
+        public int ReceiptIdx
+        {
+            get => receiptIdx;
+            set => SetProperty(ref receiptIdx, value);
+        }
+
+        private int discountAmount;
+        public int DiscountAmount
+        {
+            get => discountAmount;
+            set => SetProperty(ref discountAmount, value);
+        }
+
+        private int totalPrice;
+        public int TotalPrice
+        {
+            get => totalPrice;
+            set => SetProperty(ref totalPrice, value);
         }
     }
 }

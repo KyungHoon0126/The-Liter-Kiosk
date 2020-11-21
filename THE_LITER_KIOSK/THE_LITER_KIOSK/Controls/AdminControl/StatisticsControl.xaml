@@ -6,58 +6,87 @@
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
              xmlns:local="clr-namespace:THE_LITER_KIOSK.Controls.AdminControl"
              xmlns:converter="clr-namespace:THE_LITER_KIOSK.Converters"
-             xmlns:scm="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+             xmlns:model="clr-namespace:TheLiter.Core.Admin.Model;assembly=TheLiter.Core.Admin"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     
     <UserControl.Resources>
         <converter:TableIdxToNameConverter x:Key="TableIdxToNameConverter"/>
-        
-        <CollectionViewSource x:Key="cvsSales" Source="{Binding SalesItems}"
-                              Filter="CollectionViewSource_Filter">
-            <CollectionViewSource.SortDescriptions>
-                <scm:SortDescription PropertyName="Sales.ReceiptIdx"/>
-                <scm:SortDescription PropertyName="Sales.Category"/>
-                <scm:SortDescription PropertyName="Sales.Name"/>
-                <scm:SortDescription PropertyName="Sales.Count"/>
-                <scm:SortDescription PropertyName="Sales.Price"/>
-                <scm:SortDescription PropertyName="Sales.PayTime"/>
-                <scm:SortDescription PropertyName="Sales.PayType"/>
-                <scm:SortDescription PropertyName="Sales.TableIdx"/>
-            </CollectionViewSource.SortDescriptions>
-        </CollectionViewSource>
+
+        <Style x:Key="tbSalesStyle" TargetType="{x:Type TextBlock}">
+            <Setter Property="FontSize" Value="20"/>
+            <Setter Property="FontFamily" Value="AppleSDGothicNeoSB00"/>
+            <Setter Property="Margin" Value="5"/>
+        </Style>
+
+        <!--<DataTemplate x:Key="lvSalesbyCategoryDataTemplate" DataType="{x:Type model:SalesModel}">
+            <Grid>
+                <TextBlock Text="{Binding Category}"/>
+                <TextBlock Text="{Binding Count}"/>
+                <TextBlock Text="{Binding TotalPrice}"/>
+            </Grid>
+        </DataTemplate>-->
     </UserControl.Resources>
     
     <Grid Background="White">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="4*"/>
-            <ColumnDefinition Width="6*"/>
+            <ColumnDefinition Width="3*"/>
+            <ColumnDefinition Width="7*"/>
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0">
             <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
                 <RowDefinition Height="*"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
-                <lvc:PieChart x:Name="pcSalesByCategory" Margin="10" 
-                              Series="{Binding SalesByCategorySeriesCollection}"
-                              LegendLocation="Right" InnerRadius="100" StartingRotationAngle="180">
+                <ComboBox x:Name="cbPaymentType"
+                          FontSize="20"
+                          Width="150" 
+                          HorizontalAlignment="Right"
+                          Style="{StaticResource MaterialDesignComboBox}"
+                          SelectionChanged="PaymentType_ComboBox_SelectionChanged">
+                    <ComboBoxItem Content="▶ 카드 매출 액"/>
+                    <ComboBoxItem Content="▶ 현금 매출 액"/>
+                </ComboBox>
+            </Grid>
 
+            <Grid Grid.Row="1">
+                <TextBlock Text="{Binding TotalSales, StringFormat={}총 매출 액 : \{0:N0\}원}"
+                           HorizontalAlignment="Left"
+                           Style="{StaticResource tbSalesStyle}"/>
+                <TextBlock Text="{Binding TotalNetSales, StringFormat={}순수 매출 액 : \{0:N0\}원}"
+                           HorizontalAlignment="Center"
+                           Style="{StaticResource tbSalesStyle}"/>
+                <TextBlock Text="{Binding TotalDiscountAmount, StringFormat={}할인 총금 액 : \{0:N0\}원}"
+                           HorizontalAlignment="Right"
+                           Style="{StaticResource tbSalesStyle}"/>
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <lvc:PieChart Name="pcSalesByCategory" Margin="10"
+                              Series="{Binding SalesByCategorySeriesCollection}"
+                              Hoverable="True"
+                              LegendLocation="Right" InnerRadius="80">
+                    <lvc:PieChart.AxisY>
+                        <lvc:Axis LabelFormatter="{Binding Formatter}" Foreground="White"/>
+                    </lvc:PieChart.AxisY>
                     <lvc:PieChart.DataTooltip>
                         <lvc:DefaultTooltip BulletSize="20" SelectionMode="OnlySender"/>
                     </lvc:PieChart.DataTooltip>
                 </lvc:PieChart>
             </Grid>
 
-            <Grid Grid.Row="1">
+            <Grid Grid.Row="3" Visibility="Collapsed">
                 <lvc:PieChart Name="pcSalesByMenu" Margin="5"   
                               Series="{Binding SalesByMenuSeriesCollection}"
                               Hoverable="True">
-
+                    
                     <lvc:PieChart.DataTooltip>
-                        <lvc:DefaultTooltip BulletSize="20" SelectionMode="OnlySender"/>
+                        <lvc:DefaultTooltip BulletSize="20" SelectionMode="OnlySender"  />
                     </lvc:PieChart.DataTooltip>
                 </lvc:PieChart>
             </Grid>
@@ -72,18 +101,21 @@
             <Grid Grid.Row="0">
                 <ComboBox ItemsSource="{Binding CbSaleFilter}"
                           Width="300" FontSize="20" Margin="5"
-                          HorizontalAlignment="Right"/>
+                          HorizontalAlignment="Right"
+                          x:Name="cbSalesType"
+                          Style="{StaticResource MaterialDesignComboBox}"
+                          SelectionChanged="SalesType_ComboBox_SelectionChanged"/>
             </Grid>
 
-            <Grid Grid.Row="1">
-                <!--ItemsSource="{Binding cvsSales}"-->
+            <Grid Grid.Row="1" x:Name="gdSales">
                 <DataGrid x:Name="dgSalesStat" Margin="5"
                           ItemsSource="{Binding SalesItems}"
                           HorizontalAlignment="Center"
                           AutoGenerateColumns="False"
                           AreRowDetailsFrozen="False"
                           CanUserAddRows="False"
-                          CanUserResizeRows="False">
+                          CanUserResizeRows="False"
+                          Visibility="Collapsed">
 
                     <DataGrid.Columns>
                         <DataGridTextColumn Header="주문 번호"
@@ -94,8 +126,6 @@
                                             Binding="{Binding Name}"/>
                         <DataGridTextColumn Header="수량"
                                             Binding="{Binding Count, StringFormat={}{0}개}"/>
-                        <DataGridTextColumn Header="가격"
-                                            Binding="{Binding Price, StringFormat=\{0:N0\}원}"/>
                         <DataGridTextColumn Header="결제 시간"
                                             Binding="{Binding PayTime, StringFormat={}{0:yyyy년 MM월 dd일 a\\t h시 mm분 tt}}"/>
                         <DataGridTextColumn Header="결제 수단"
@@ -104,6 +134,31 @@
                                             Binding="{Binding TableIdx, Converter={StaticResource TableIdxToNameConverter}}"/>
                         <DataGridTextColumn Header="회원 아이디"
                                             Binding="{Binding MemberId}"/>
+                        <DataGridTextColumn Header="할인 금액"
+                                            Binding="{Binding DiscountAmount}"/>
+                        <DataGridTextColumn Header="순수 가격 총액"
+                                            Binding="{Binding DiscountTotalPrice, StringFormat=\{0:N0\}원}"/>
+                        <DataGridTextColumn Header="정가 총액"
+                                            Binding="{Binding TotalPrice, StringFormat=\{0:N0\}원}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <DataGrid x:Name="dgSalesByCategory" 
+                          ItemsSource="{Binding SalesByCategories}"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          CanUserResizeRows="False"
+                          Visibility="Collapsed">
+                    
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="카테고리"
+                                            Binding="{Binding Category}"/>
+                        <DataGridTextColumn Header="수량"
+                                            Binding="{Binding Count, StringFormat={}{0}개}"/>
+                        <DataGridTextColumn Header="순수 가격 총액"
+                                            Binding="{Binding DiscountTotalPrice, StringFormat=\{0:N0\}원}"/>
+                        <DataGridTextColumn Header="정가 총액"
+                                            Binding="{Binding TotalPrice, StringFormat=\{0:N0\}원}"/>
                     </DataGrid.Columns>
                 </DataGrid>
             </Grid>
