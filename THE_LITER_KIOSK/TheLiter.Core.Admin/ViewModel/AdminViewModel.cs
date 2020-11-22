@@ -126,89 +126,82 @@ namespace TheLiter.Core.Admin.ViewModel
             }
         }
 
-        #region 메뉴별
-        private List<SalesModel> _salesByMenus;
-        public List<SalesModel> SalesByMenus
+        List<TimeSpan> TimeZoneItems { get; set; }
+
+        #region 메뉴 별 판매 수 / 총액
+        private List<SalesModel> _salesByMenuItems;
+        public List<SalesModel> SalesByMenuItems
         {
-            get => _salesByMenus;
+            get => _salesByMenuItems;
             set
             {
-                _salesByMenus = value;
-                NotifyPropertyChanged(nameof(SalesByMenus));
+                _salesByMenuItems = value;
+                NotifyPropertyChanged(nameof(SalesByMenuItems));
             }
         }
         #endregion
 
-        #region 카테고리별
-        private List<SalesModel> _salesByCategories;
-        public List<SalesModel> SalesByCategories
+        #region 카테고리 별 판매수 / 총액
+        private List<SalesModel> _salesByCategoryItems;
+        public List<SalesModel> SalesByCategoryItems
         {
-            get => _salesByCategories;
+            get => _salesByCategoryItems;
             set
             {
-                 _salesByCategories = value;
-                NotifyPropertyChanged(nameof(SalesByCategories));
+                _salesByCategoryItems = value;
+                NotifyPropertyChanged(nameof(SalesByCategoryItems));
             }
         }
         #endregion
 
-        #region 좌석별
-        private List<SalesModel> _salesByTableMenus;
-        public List<SalesModel> SalesByTableMenus
+        #region 좌석 별 메뉴 별 판매 수 / 총액 & 좌석 별 카테고리 별 판매 수 / 총액
+        private List<SalesModel> _salesByTableMenuAndCategoryItems;
+        public List<SalesModel> SalesByTableMenuAndCategoryItems
         {
-            get => _salesByTableMenus;
+            get => _salesByTableMenuAndCategoryItems;
             set
             {
-                _salesByTableMenus = value;
-                NotifyPropertyChanged(nameof(SalesByTableMenus));
-            }
-        }
-
-        private List<SalesModel> _salesByTableCategories;
-        public List<SalesModel> SalesByTableCategories
-        {
-            get => _salesByTableCategories;
-            set
-            {
-                _salesByTableCategories = value;
-                NotifyPropertyChanged(nameof(SalesByTableCategories));
+                _salesByTableMenuAndCategoryItems = value;
+                NotifyPropertyChanged(nameof(SalesByTableMenuAndCategoryItems));
             }
         }
         #endregion
 
-        #region 일(하루)별
-        private List<SalesModel> _salesByDaily;
-        public List<SalesModel> SalesByDaily
+        #region 일별 총 매출액
+        private List<SalesModel> _salesByDailyItems;
+        public List<SalesModel> SalesByDailyItems
         {
-            get => _salesByDaily;
+            get => _salesByDailyItems;
             set
             {
-                _salesByDaily = value;
-                NotifyPropertyChanged(nameof(SalesByDaily));
-            }
-        }
-
-        private List<SalesModel> _salesByTime;
-        public List<SalesModel> SalesByTime
-        {
-            get => _salesByTime;
-            set
-            {
-                _salesByTime = value;
-                NotifyPropertyChanged(nameof(SalesByTime));
+                _salesByDailyItems = value;
+                NotifyPropertyChanged(nameof(SalesByDailyItems));
             }
         }
         #endregion
 
-        #region 회원별
-        private List<SalesModel> _salesByMembers;
-        public List<SalesModel> SalesByMembers
+        #region 시간대 별 총 매출액
+        private List<SalesModel> _salesByTimeItems;
+        public List<SalesModel> SalesByTimeItems
         {
-            get => _salesByMembers;
+            get => _salesByTimeItems;
             set
             {
-                _salesByMembers = value;
-                NotifyPropertyChanged(nameof(SalesByMembers));
+                _salesByTimeItems = value;
+                NotifyPropertyChanged(nameof(SalesByTimeItems));
+            }
+        }
+        #endregion
+
+        #region 회원별 주문 메뉴 / 총 매출
+        private List<SalesModel> _salesByMemberItems;
+        public List<SalesModel> SalesByMemberItems
+        {
+            get => _salesByMemberItems;
+            set
+            {
+                _salesByMemberItems = value;
+                NotifyPropertyChanged(nameof(SalesByMemberItems));
             }
         }
         #endregion
@@ -219,47 +212,67 @@ namespace TheLiter.Core.Admin.ViewModel
         {
             InitVariables();
             LoadCbSalesFilter();
+            LoadTimeZoneItems();
         }
         #endregion
 
         #region Init
         private void InitVariables()
         {
-            SalesItems = new List<SalesModel>();
             CbSaleFilter = new List<string>();
-
-            SalesByMenus = new List<SalesModel>();
-            SalesByCategories = new List<SalesModel>();
-            SalesByTableMenus = new List<SalesModel>();
-            SalesByTableCategories = new List<SalesModel>();
-            SalesByDaily = new List<SalesModel>();
-            SalesByTime = new List<SalesModel>();
-            SalesByMembers = new List<SalesModel>();
             
+            SalesItems = new List<SalesModel>();
+            SalesByMenuItems = new List<SalesModel>();
+            SalesByCategoryItems = new List<SalesModel>();
+            SalesByTableMenuAndCategoryItems = new List<SalesModel>();
+            SalesByDailyItems = new List<SalesModel>();
+            SalesByMemberItems = new List<SalesModel>();
+            SalesByTimeItems = new List<SalesModel>();
+
+            TimeZoneItems = new List<TimeSpan>();
+
             Formatter = value => ConvertPriceToString(value);
         }
 
         private void LoadCbSalesFilter()
         {
             CbSaleFilter.Add("▶ 전체 정보");
-
             CbSaleFilter.Add("▶ 메뉴 별 판매 수 / 총액");
-            
             CbSaleFilter.Add("▶ 카테고리 별 판매 수 / 총액");
-            
             CbSaleFilter.Add("▶ 좌석 별 메뉴 별 판매 수 / 총액");
             CbSaleFilter.Add("▶ 좌석 별 카테고리 별 판매 수 / 총액");
-            
             CbSaleFilter.Add("▶ 일별 총 매출액");
             CbSaleFilter.Add("▶ 시간대 별 총 매출액");
-            
-            CbSaleFilter.Add("▶ 회원별 총 매출액");
-            // 회원이 주문한 총 메뉴 표시
+            CbSaleFilter.Add("▶ 회원별 주문 메뉴 / 총 매출액");
+        }
+
+        private void LoadTimeZoneItems()
+        {
+            TimeZoneItems.Add(new TimeSpan(24, 00, 00));
+            TimeZoneItems.Add(new TimeSpan(01, 00, 00));
+            TimeZoneItems.Add(new TimeSpan(02, 00, 00));
+            TimeZoneItems.Add(new TimeSpan(03, 00, 00));
+            TimeZoneItems.Add(new TimeSpan(04, 00, 00));
+            TimeZoneItems.Add(new TimeSpan(05, 00, 00));
+            TimeZoneItems.Add(new TimeSpan(06, 00, 00));
+            TimeZoneItems.Add(new TimeSpan(07, 00, 00));
+            TimeZoneItems.Add(new TimeSpan(08, 00, 00));
+            TimeZoneItems.Add(new TimeSpan(09, 00, 00));
+            TimeZoneItems.Add(new TimeSpan(10, 00, 00));
+            TimeZoneItems.Add(new TimeSpan(11, 00, 00));
+            TimeZoneItems.Add(new TimeSpan(13, 00, 00));
+            TimeZoneItems.Add(new TimeSpan(14, 00, 00));
+            TimeZoneItems.Add(new TimeSpan(16, 00, 00));
+            TimeZoneItems.Add(new TimeSpan(18, 00, 00));
+            TimeZoneItems.Add(new TimeSpan(20, 00, 00));
+            TimeZoneItems.Add(new TimeSpan(21, 00, 00));
+            TimeZoneItems.Add(new TimeSpan(22, 00, 00));
+            TimeZoneItems.Add(new TimeSpan(23, 00, 00));
         }
         #endregion
 
         #region Chart
-        public void LoadSalesByMenus()
+        public void LoadSalesByMenuChartData()
         {
             SyncGetAllSalesInformation();
 
@@ -280,7 +293,7 @@ namespace TheLiter.Core.Admin.ViewModel
             }
         }
 
-        public void LoadSalesByCategories()
+        public void LoadSalesByCategoryChartData()
         {
             SyncGetAllSalesInformation();
 
@@ -331,24 +344,83 @@ namespace TheLiter.Core.Admin.ViewModel
                 TotalDiscountAmount += x.DiscountAmount;
             });
         }
-        
+
+        internal void SyncSaleItems()
+        {
+            SalesByMenuItems.Clear();
+            SalesByCategoryItems.Clear();
+            SalesByTableMenuAndCategoryItems.Clear();
+            SalesByDailyItems.Clear();
+            SalesByMemberItems.Clear();
+            SalesByTimeItems.Clear();
+
+            LoadSalesByMenuChartData();
+            LoadSalesByCategoryChartData();
+            
+            SetSaleItems();
+        }
+
         public void SetSaleItems()
         {
-            //SalesByMenus = new List<SalesModel>(); // 메뉴 별 판매 수 / 총액
-            //SalesByCategories = new List<SalesModel>(); // 카테고리 별 판매수 / 총액
-            //SalesByTableMenus = new List<SalesModel>(); // 좌석 별 메뉴 별 판매 수 / 총액
-            //SalesByTableCategories = new List<SalesModel>(); // 좌석 별 카테고리 별 판매 수 / 총액
-            //SalesByDaily = new List<SalesModel>(); // 일별 총 매출액
-            //SalesByTime = new List<SalesModel>(); // 시간대 별 총 매출액
-            //SalesByMembers = new List<SalesModel>(); // 회원별 총 매출액
+            SetSalesByMenuItems();
+            SetSalesByCategoryItems();
+            SetSalesByTableMenuAndCategoryItems();
+            SetSalesByDailyItems();
+            SetSalesByMemberItems();
+            SetSalesByTimeItems();
+        }
 
-            SalesByCategories.Clear();
+        private void SetSalesByMenuItems()
+        {
+            var menuNames = SalesItems.Select(x => x.Name).ToList();
+            var tempMenuNames = new List<string>(menuNames);
 
-            List<string> menuNames = CategoryModel.EnumItems;
+            for (int i = 0; i < tempMenuNames.Count; i++)
+            {
+                int cnt = 0;
+
+                for (int j = 0; j < menuNames.Count; j++)
+                {
+                    if (tempMenuNames[i] == menuNames[j])
+                    {
+                        cnt++;
+                    }
+
+                    if (cnt == 2)
+                    {
+                        menuNames.Remove(tempMenuNames[i]);
+                        cnt = 0;
+                    }
+                }
+            }
 
             for (int i = 0; i < menuNames.Count; i++)
             {
-                var specificMenuItems = SalesItems.Where(x => x.Category == menuNames[i]).ToList();
+                var specificMenuItems = SalesItems.Where(x => x.Name == menuNames[i]).ToList();
+                var salesModel = new SalesModel();
+
+                for (int j = 0; j < specificMenuItems.Count; j++)
+                {
+                    salesModel.Name = specificMenuItems[j].Name;
+                    salesModel.Count += specificMenuItems[j].Count;
+                    salesModel.TotalPrice += specificMenuItems[j].TotalPrice;
+                    salesModel.DiscountTotalPrice += specificMenuItems[j].DiscountTotalPrice;
+                }
+
+                if (salesModel.Count > 0)
+                {
+                    SalesByMenuItems.Add(salesModel);
+                }
+            }
+        }
+
+        private void SetSalesByCategoryItems()
+        {
+            List<string> menuCategories = CategoryModel.EnumItems; 
+
+            for (int i = 0; i < menuCategories.Count; i++)
+            {
+                var specificMenuItems = SalesItems.Where(x => x.Category == menuCategories[i]).ToList();
                 var salesModel = new SalesModel();
 
                 for (int j = 0; j < specificMenuItems.Count; j++)
@@ -361,7 +433,134 @@ namespace TheLiter.Core.Admin.ViewModel
 
                 if (salesModel.Count > 0)
                 {
-                    SalesByCategories.Add(salesModel);
+                    SalesByCategoryItems.Add(salesModel);
+                }
+            }
+        }
+
+        private void SetSalesByTableMenuAndCategoryItems()
+        {
+            for (int i = 1; i <= 9; i++)
+            {
+                var specificMenuItems = SalesItems.Where(x => x.TableIdx == i).ToList();
+                var salesModel = new SalesModel();
+
+                for (int j = 0; j < specificMenuItems.Count; j++)
+                {
+                    salesModel.TableIdx = i;
+                    salesModel.Name = specificMenuItems[j].Name;
+                    salesModel.Category = specificMenuItems[j].Category;
+                    salesModel.Count += specificMenuItems[j].Count;
+                    salesModel.TotalPrice += specificMenuItems[j].TotalPrice;
+                    salesModel.DiscountTotalPrice += specificMenuItems[j].DiscountTotalPrice;
+                }
+
+                if (salesModel.Count > 0)
+                {
+                    SalesByTableMenuAndCategoryItems.Add(salesModel);
+                }
+            }
+        }
+
+        private void SetSalesByDailyItems()
+        {
+            var saleDateItems = new List<string>();
+
+            for (int i = 0; i < SalesItems.Count; i++)
+            {
+                string saleDateItem = SalesItems[i].PayTime.ToString("yyyy-MM-dd");
+                if (saleDateItems.Where(x => x == saleDateItem).ToList().Count == 0)
+                {
+                    saleDateItems.Add(saleDateItem);
+                }
+            }
+
+            for (int i = 0; i < saleDateItems.Count; i++)
+            {
+                var specificMenuItems = SalesItems.Where(x => x.PayTime.ToString("yyyy-MM-dd") == saleDateItems[i]).ToList();
+                var salesModel = new SalesModel();
+
+                for (int j = 0; j < specificMenuItems.Count; j++)
+                {
+                    salesModel.Name = specificMenuItems[j].Name;
+                    salesModel.PayTime = specificMenuItems[j].PayTime;
+                    salesModel.Count += specificMenuItems[j].Count;
+                    salesModel.TotalPrice += specificMenuItems[j].TotalPrice;
+                    salesModel.DiscountTotalPrice += specificMenuItems[j].DiscountTotalPrice;
+                }
+
+                if (salesModel.Count > 0)
+                {
+                    SalesByDailyItems.Add(salesModel);
+                }
+            }
+        }
+
+        private void SetSalesByTimeItems()
+        {
+            for (int i = 0; i < TimeZoneItems.Count; i++)
+            {
+                // var specificMenuItems = SalesItems.Where(x => TimeSpan.Compare(x.PayTime, TimeZoneItems[i]) x.PayTime >= TimeZoneItems[i] && x <= TimeZoneItems[i]);
+                
+            }
+
+            // 24:00 ~ 01:00
+            // 01:00 ~ 02:00
+            // 02:00 ~ 03:00
+            // 03:00 ~ 04:00
+            // 04:00 ~ 05:00
+            // 05:00 ~ 06:00
+            // 06:00 ~ 07:00
+            // 07:00 ~ 08:00
+            // 08:00 ~ 09:00
+            // 09:00 ~ 10:00
+            // 10:00 ~ 11:00
+            // 11:00 ~ 12:00
+            // 13:00 ~ 14:00
+            // 14:00 ~ 15:00
+            // 16:00 ~ 17:00
+            // 18:00 ~ 19:00
+            // 20:00 ~ 21:00
+            // 21:00 ~ 22:00
+            // 22:00 ~ 23:00
+            // 23:00 ~ 24:00
+        }
+
+        private void SetSalesByMemberItems()
+        {
+            var saleMemberItems = new List<string>();
+
+            for (int i = 0; i < SalesItems.Count; i++)
+            {
+                string saleMemberItem = SalesItems[i].MemberId;
+                if (saleMemberItems.Where(x => x == saleMemberItem).Count() == 0)
+                {
+                    saleMemberItems.Add(saleMemberItem);
+                }
+            }
+            
+            List<string> menuNames = CategoryModel.EnumItems;
+
+            for (int i = 0; i < saleMemberItems.Count; i++)
+            {
+                for (int j = 0; j < menuNames.Count; j++)
+                {
+                    var specificMenuItems = SalesItems.Where(x => x.MemberId == saleMemberItems[i] && x.Category == menuNames[j]).ToList();
+                    var salesModel = new SalesModel();
+
+                    for (int k = 0; k < specificMenuItems.Count; k++)
+                    {
+                        salesModel.MemberId = specificMenuItems[k].MemberId;
+                        salesModel.Name = specificMenuItems[k].Name;
+                        salesModel.Count += specificMenuItems[k].Count;
+                        salesModel.TotalPrice += specificMenuItems[k].TotalPrice;
+                        salesModel.DiscountTotalPrice += specificMenuItems[k].DiscountTotalPrice;
+                    }
+
+                    if (salesModel.Count > 0)
+                    {
+                        SalesByMemberItems.Add(salesModel);
+                    }
                 }
             }
         }

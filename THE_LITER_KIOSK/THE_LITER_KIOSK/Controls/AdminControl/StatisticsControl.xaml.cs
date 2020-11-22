@@ -38,38 +38,50 @@ namespace THE_LITER_KIOSK.Controls.AdminControl
         private void SalesType_ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var selectedSalesType = (sender as ComboBox).SelectedItem.ToString();
-            if (IsMatchedSalesType(selectedSalesType, "전체 정보"))
+            if (IsMatchedSalesType(selectedSalesType, "▶ 전체 정보"))
             {
+                App.adminData.SyncSaleItems();
                 ShowDataGrid(dgSalesStat);
             }
-            else if (IsMatchedSalesType(selectedSalesType, "메뉴 별 판매 수")) 
+            else if (IsMatchedSalesType(selectedSalesType, "▶ 메뉴 별 판매 수 / 총액")) 
             {
-
+                App.adminData.SyncSaleItems();
+                ShowDataGrid(dgSalesByMenu);
             }
-            else if (IsMatchedSalesType(selectedSalesType, "카테고리 별 판매 수"))
+            else if (IsMatchedSalesType(selectedSalesType, "▶ 카테고리 별 판매 수 / 총액"))
             {
+                App.adminData.SyncSaleItems();
                 ShowDataGrid(dgSalesByCategory);
             }
-            else if (IsMatchedSalesType(selectedSalesType, "좌석 별 메뉴 별 판매 수"))
+            else if (IsMatchedSalesType(selectedSalesType, "▶ 좌석 별 메뉴 별 판매 수 / 총액"))
             {
-                CollapseDataGrids();
+                App.adminData.SyncSaleItems();
+                ShowDataGrid(dgSalesByTables);
+                dtcTableIdx.Visibility = Visibility.Visible; // 테이블 번호
+                dtcTableMenuName.Visibility = Visibility.Visible; // 메뉴
+                dtcTableMenuCategory.Visibility = Visibility.Collapsed; // 카테고리
             }
-            else if (IsMatchedSalesType(selectedSalesType, "좌석 별 카테고리 별 판매 수"))
+            else if (IsMatchedSalesType(selectedSalesType, "▶ 좌석 별 카테고리 별 판매 수 / 총액"))
             {
-                CollapseDataGrids();
+                App.adminData.SyncSaleItems();
+                ShowDataGrid(dgSalesByTables);
+                dtcTableIdx.Visibility = Visibility.Visible; // 테이블 번호
+                dtcTableMenuName.Visibility = Visibility.Collapsed; // 메뉴
+                dtcTableMenuCategory.Visibility = Visibility.Visible; // 카테고리
             }
-            else if (IsMatchedSalesType(selectedSalesType, "일별 총 매출액"))
+            else if (IsMatchedSalesType(selectedSalesType, "▶ 일별 총 매출액"))
             {
-                CollapseDataGrids();
+                App.adminData.SyncSaleItems();
+                ShowDataGrid(dgSalesByDaily);
             }
-            else if (IsMatchedSalesType(selectedSalesType, "시간대 별 총 매출액"))
+            else if (IsMatchedSalesType(selectedSalesType, "▶ 시간대 별 총 매출액"))
             {
-                CollapseDataGrids();
+                App.adminData.SyncSaleItems();
             }
-            // else if (IsMatchedSalesType("회원별 총 매출액")) // 회원이 주문한 총 메뉴 표시
-            else
+            else if (IsMatchedSalesType(selectedSalesType, "▶ 회원별 주문 메뉴 / 총 매출액"))
             {
-                CollapseDataGrids();
+                App.adminData.SyncSaleItems();
+                ShowDataGrid(dgSalesByMembers);
             }
         }
 
@@ -92,7 +104,7 @@ namespace THE_LITER_KIOSK.Controls.AdminControl
 
         private bool IsMatchedSalesType(string selectedSalesType, string salesType)
         {
-            return selectedSalesType.Contains(salesType);
+            return selectedSalesType.Equals(salesType);
         }
     }
 }

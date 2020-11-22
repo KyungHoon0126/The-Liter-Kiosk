@@ -8,7 +8,6 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using THE_LITER_KIOSK.Common;
-using THE_LITER_KIOSK.DataBase.Models;
 using TheLiter.Core.DBManager;
 using TheLiter.Core.Network;
 using TheLiter.Core.Network.Model;
