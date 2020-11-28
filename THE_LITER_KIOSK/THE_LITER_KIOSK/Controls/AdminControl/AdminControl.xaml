@@ -42,9 +42,9 @@
                 </TabItem>
             </TabControl>
 
-            <loadin:LoadingIndicator x:Name="progressRing" SpeedRatio="2"
+            <!--<loadin:LoadingIndicator x:Name="progressRing" SpeedRatio="2"
                                      Foreground="RoyalBlue"
-                                     Style="{DynamicResource LoadingIndicatorArcsStyle}"/>
+                                     Style="{DynamicResource LoadingIndicatorArcsStyle}"/>-->
         </Grid>
     </Grid>
 </base:CustomControlModel>

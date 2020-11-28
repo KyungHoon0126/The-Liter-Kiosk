@@ -78,6 +78,7 @@ namespace THE_LITER_KIOSK.Controls.AdminControl
             else if (IsMatchedSalesType(selectedSalesType, "▶ 시간대 별 총 매출액"))
             {
                 App.adminData.SyncSaleItems();
+                ShowDataGrid(dgSalesByTimes);
             }
             else if (IsMatchedSalesType(selectedSalesType, "▶ 회원별 주문 메뉴 / 총 매출액"))
             {

@@ -64,7 +64,6 @@
   <ItemGroup>
     <Compile Include="AdminData.cs" />
     <Compile Include="Model\MeasureModel.cs" />
-    <Compile Include="Model\MessageModel.cs" />
     <Compile Include="Model\SalesModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\AdminViewModel.cs" />

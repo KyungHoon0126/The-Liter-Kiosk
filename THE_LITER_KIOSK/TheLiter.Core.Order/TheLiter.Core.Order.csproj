@@ -54,7 +54,6 @@
     <Compile Include="DataBase\Model\ReceiptModel.cs" />
     <Compile Include="DataBase\Model\SalesModel.cs" />
     <Compile Include="Model\MenuModel.cs" />
-    <Compile Include="Model\MessageModel.cs" />
     <Compile Include="OrderData.cs" />
     <Compile Include="Model\CategoryModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

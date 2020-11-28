@@ -229,6 +229,23 @@
                     </DataGrid.Columns>
                 </DataGrid>
 
+                <DataGrid x:Name="dgSalesByTimes" 
+                          ItemsSource="{Binding SalesByTimeItems}"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          CanUserResizeRows="False"
+                          Visibility="Collapsed">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Header="결제 시간"
+                                            Binding="{Binding PayTime, StringFormat={}{0:HH시}}"/>
+                        <DataGridTextColumn Header="순수 가격 총액"
+                                            Binding="{Binding DiscountTotalPrice, StringFormat=\{0:N0\}원}"/>
+                        <DataGridTextColumn Header="정가 총액"
+                                            Binding="{Binding TotalPrice, StringFormat=\{0:N0\}원}"/>
+                    </DataGrid.Columns>
+                </DataGrid>
+
                 <DataGrid x:Name="dgSalesByMembers" Margin="5"
                           ItemsSource="{Binding SalesByMemberItems}"
                           HorizontalAlignment="Center"

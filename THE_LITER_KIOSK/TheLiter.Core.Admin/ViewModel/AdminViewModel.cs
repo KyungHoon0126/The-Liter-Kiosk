@@ -292,7 +292,7 @@ namespace TheLiter.Core.Admin.ViewModel
 
         private void LoadTimeZoneItems()
         {
-            TimeZoneItems.Add(new TimeSpan(24, 00, 00));
+            // TimeZoneItems.Add(new TimeSpan(24, 00, 00));
             TimeZoneItems.Add(new TimeSpan(01, 00, 00));
             TimeZoneItems.Add(new TimeSpan(02, 00, 00));
             TimeZoneItems.Add(new TimeSpan(03, 00, 00));
@@ -304,14 +304,17 @@ namespace TheLiter.Core.Admin.ViewModel
             TimeZoneItems.Add(new TimeSpan(09, 00, 00));
             TimeZoneItems.Add(new TimeSpan(10, 00, 00));
             TimeZoneItems.Add(new TimeSpan(11, 00, 00));
+            TimeZoneItems.Add(new TimeSpan(12, 00, 00));
             TimeZoneItems.Add(new TimeSpan(13, 00, 00));
             TimeZoneItems.Add(new TimeSpan(14, 00, 00));
+            TimeZoneItems.Add(new TimeSpan(15, 00, 00));
             TimeZoneItems.Add(new TimeSpan(16, 00, 00));
             TimeZoneItems.Add(new TimeSpan(18, 00, 00));
             TimeZoneItems.Add(new TimeSpan(20, 00, 00));
             TimeZoneItems.Add(new TimeSpan(21, 00, 00));
             TimeZoneItems.Add(new TimeSpan(22, 00, 00));
             TimeZoneItems.Add(new TimeSpan(23, 00, 00));
+            TimeZoneItems.Add(new TimeSpan(24, 00, 00));
         }
         #endregion
 
@@ -409,7 +412,7 @@ namespace TheLiter.Core.Admin.ViewModel
                 {
                     menuByCategoryTotalPrice += Convert.ToDouble(x.DiscountTotalPrice);
                 });
-
+                
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     SalesByCategorySeriesCollection.Add(new PieSeries()
@@ -542,24 +545,29 @@ namespace TheLiter.Core.Admin.ViewModel
 
         private void SetSalesByTableMenuAndCategoryItems()
         {
+            List<string> menuCategories = CategoryModel.EnumItems;
+
             for (int i = 1; i <= 9; i++)
             {
-                var specificMenuItems = SalesItems.Where(x => x.TableIdx == i).ToList();
-                var salesModel = new SalesModel();
-
-                for (int j = 0; j < specificMenuItems.Count; j++)
+                for (int j = 0; j < menuCategories.Count; j++)
                 {
-                    salesModel.TableIdx = i;
-                    salesModel.Name = specificMenuItems[j].Name;
-                    salesModel.Category = specificMenuItems[j].Category;
-                    salesModel.Count += specificMenuItems[j].Count;
-                    salesModel.TotalPrice += specificMenuItems[j].TotalPrice;
-                    salesModel.DiscountTotalPrice += specificMenuItems[j].DiscountTotalPrice;
-                }
+                    var specificMenuItems = SalesItems.Where(x => x.TableIdx == i && x.Category == menuCategories[j]).ToList();
+                    var salesModel = new SalesModel();
 
-                if (salesModel.Count > 0)
-                {
-                    SalesByTableMenuAndCategoryItems.Add(salesModel);
+                    for (int k = 0; k < specificMenuItems.Count; k++)
+                    {
+                        salesModel.TableIdx = i;
+                        salesModel.Name = specificMenuItems[k].Name;
+                        salesModel.Category = specificMenuItems[k].Category;
+                        salesModel.Count += specificMenuItems[k].Count;
+                        salesModel.TotalPrice += specificMenuItems[k].TotalPrice;
+                        salesModel.DiscountTotalPrice += specificMenuItems[k].DiscountTotalPrice;
+                    }
+
+                    if (salesModel.Count > 0)
+                    {
+                        SalesByTableMenuAndCategoryItems.Add(salesModel);
+                    }
                 }
             }
         }
@@ -602,30 +610,20 @@ namespace TheLiter.Core.Admin.ViewModel
         {
             for (int i = 0; i < TimeZoneItems.Count; i++)
             {
-                // var specificMenuItems = SalesItems.Where(x => TimeSpan.Compare(x.PayTime, TimeZoneItems[i]) x.PayTime >= TimeZoneItems[i] && x <= TimeZoneItems[i]);
-                
-            }
+                var specificMenuItems = SalesItems.Where(x => x.PayTime.ToString("HH:mm:dd").Substring(0, 2).Equals(TimeZoneItems[i].Hours.ToString())).ToList();
+                var salesModel = new SalesModel();
 
-            // 24:00 ~ 01:00
-            // 01:00 ~ 02:00
-            // 02:00 ~ 03:00
-            // 03:00 ~ 04:00
-            // 04:00 ~ 05:00
-            // 05:00 ~ 06:00
-            // 06:00 ~ 07:00
-            // 07:00 ~ 08:00
-            // 08:00 ~ 09:00
-            // 09:00 ~ 10:00
-            // 10:00 ~ 11:00
-            // 11:00 ~ 12:00
-            // 13:00 ~ 14:00
-            // 14:00 ~ 15:00
-            // 16:00 ~ 17:00
-            // 18:00 ~ 19:00
-            // 20:00 ~ 21:00
-            // 21:00 ~ 22:00
-            // 22:00 ~ 23:00
-            // 23:00 ~ 24:00
+                salesModel.PayTime = new DateTime() + TimeZoneItems[i];
+                
+                for (int j = 0; j < specificMenuItems.Count; j++)
+                {
+                    salesModel.Count += specificMenuItems[j].Count;
+                    salesModel.TotalPrice += specificMenuItems[j].TotalPrice;
+                    salesModel.DiscountTotalPrice += specificMenuItems[j].DiscountTotalPrice;
+                }
+
+                SalesByTimeItems.Add(salesModel);
+            }
         }
 
         private void SetSalesByMemberItems()
@@ -641,13 +639,13 @@ namespace TheLiter.Core.Admin.ViewModel
                 }
             }
             
-            List<string> menuNames = CategoryModel.EnumItems;
+            List<string> menuCategories = CategoryModel.EnumItems;
 
             for (int i = 0; i < saleMemberItems.Count; i++)
             {
-                for (int j = 0; j < menuNames.Count; j++)
+                for (int j = 0; j < menuCategories.Count; j++)
                 {
-                    var specificMenuItems = SalesItems.Where(x => x.MemberId == saleMemberItems[i] && x.Category == menuNames[j]).ToList();
+                    var specificMenuItems = SalesItems.Where(x => x.MemberId == saleMemberItems[i] && x.Category == menuCategories[j]).ToList();
                     var salesModel = new SalesModel();
 
                     for (int k = 0; k < specificMenuItems.Count; k++)

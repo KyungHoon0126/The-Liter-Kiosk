@@ -52,6 +52,7 @@
   <ItemGroup>
     <Compile Include="Model\EMessageType.cs" />
     <Compile Include="Model\MenuModel.cs" />
+    <Compile Include="Model\MessageModel.cs" />
     <Compile Include="Model\StateObjectModel.cs" />
     <Compile Include="Model\TcpModel.cs" />
     <Compile Include="NetworkManager.cs" />

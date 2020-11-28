@@ -16,7 +16,7 @@ namespace THE_LITER_KIOSK.Converters
             }
             else
             {
-                return $"매장식사-{tableIdx}번 테이블";
+                return $"매장식사 {tableIdx}번 테이블";
             }
         }
 
