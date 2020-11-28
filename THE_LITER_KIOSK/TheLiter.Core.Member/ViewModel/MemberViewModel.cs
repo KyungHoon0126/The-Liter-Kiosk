@@ -17,9 +17,6 @@ namespace TheLiter.Core.Member.ViewModel
         public delegate void OnLoginResultRecievedHandler(object sender, bool success);
         public event OnLoginResultRecievedHandler OnLoginResultRecieved;
 
-        public delegate void LoadCompleteEventHandler(object sender, bool success);
-        public event LoadCompleteEventHandler CompleteAction;
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         #region Properties
@@ -301,8 +298,6 @@ AND
         #region DataBase
         internal async void GetAllMemberData()
         {
-            CompleteAction?.Invoke(this, false);
-            
             try
             {
                 using (var db = GetConnection())
@@ -322,8 +317,6 @@ FROM
             {
                 Debug.Write("GET ALL MEMBER DATA : " + e.Message);
             }
-
-            CompleteAction?.Invoke(this, true);
         }
 
         internal async void GetMemberData()

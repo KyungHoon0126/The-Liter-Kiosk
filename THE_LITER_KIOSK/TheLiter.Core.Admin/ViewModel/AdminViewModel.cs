@@ -1,9 +1,12 @@
 ﻿using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using Prism.Commands;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
@@ -14,7 +17,10 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using TheLiter.Core.Admin.Database;
+using TheLiter.Core.Admin.Model;
 using TheLiter.Core.DBManager;
+using TheLiter.Core.Network;
+using TheLiter.Core.Network.Model;
 using TheLiter.Core.Order.Model;
 using SalesModel = TheLiter.Core.Admin.Model.SalesModel;
 
@@ -209,18 +215,43 @@ namespace TheLiter.Core.Admin.ViewModel
             }
         }
         #endregion
+
+        public string MemberId { get; set; }
+
+        private string _transMsg;
+        public string TransMsg
+        {
+            get => _transMsg;
+            set
+            {
+                _transMsg = value;
+                NotifyPropertyChanged(nameof(TransMsg));
+            }
+        }
+
+        private bool _isGroupMsg;
+        public bool IsGroupMsg
+        {
+            get => _isGroupMsg;
+            set
+            {
+                _isGroupMsg = value;
+                NotifyPropertyChanged(nameof(IsGroupMsg));
+            }
+        }
         #endregion
 
         #region Constructor
         public AdminViewModel()
         {
             InitVariables();
+            InitCommands();
             LoadCbSalesFilter();
             LoadTimeZoneItems();
         }
         #endregion
 
-        #region Command
+        #region Commands
         public ICommand ExportCommand { get; set; }
         #endregion
 
@@ -240,7 +271,10 @@ namespace TheLiter.Core.Admin.ViewModel
             TimeZoneItems = new List<TimeSpan>();
 
             Formatter = value => ConvertPriceToString(value);
+        }
 
+        private void InitCommands()
+        {
             ExportCommand = new DelegateCommand<string>(OnExport);
         }
 
@@ -630,6 +664,26 @@ namespace TheLiter.Core.Admin.ViewModel
                         SalesByMemberItems.Add(salesModel);
                     }
                 }
+            }
+        }
+
+        public string GetMsgArgs()
+        {
+            if (TransMsg != null)
+            {
+                JObject jObject = new JObject();
+                jObject.Add("MSGType", (int)EMessageType.NORMAL_MESSAGE);
+                jObject.Add("Id", MemberId);
+                jObject.Add("Content", TransMsg);
+                jObject.Add("ShopName", "");
+                jObject.Add("OrderNumber", "");
+                jObject.Add("Group", IsGroupMsg ? true : false);
+                jObject.Add("Menus", "");
+                return JsonConvert.SerializeObject(jObject);
+            }
+            else
+            {
+                return null;
             }
         }
 

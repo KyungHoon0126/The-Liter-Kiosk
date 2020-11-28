@@ -944,10 +944,10 @@ namespace TheLiter.Core.Order.ViewModel
             }
         }
 
-        public TcpModel SendPayInfo(string id)
+        public TcpModel SendOrderInfoToNormal(string id)
         {
             var tcpModel = new TcpModel();
-            var menuItems = new List<Network.Model.MenuModel>();
+            var menuItems = new List<MenuModel>();
             var orderedMenuItems = OrderedMenuItems.ToList();
 
             tcpModel.MessageType = (int)EMessageType.ORDER_INFO;
@@ -958,7 +958,7 @@ namespace TheLiter.Core.Order.ViewModel
 
             for (int i = 0; i < orderedMenuItems.Count; i++)
             {
-                menuItems.Add(new Network.Model.MenuModel()
+                menuItems.Add(new MenuModel()
                 {
                     Name = orderedMenuItems[i].Name,
                     Price = orderedMenuItems[i].Count,
@@ -968,6 +968,33 @@ namespace TheLiter.Core.Order.ViewModel
 
             tcpModel.MenuItems = menuItems;
             return tcpModel;
+        }
+
+        public MessageModel SendOrderInfoToGroup(string id, ObservableCollection<SalesModel> OrderedMenuItems)
+        {
+            var messageModel = new MessageModel();
+            var menuItems = new List<MenuModel>();
+            var orderedMenuItems = OrderedMenuItems.ToList();
+
+            messageModel.MessageType = (int)EMessageType.ORDER_INFO;
+            messageModel.Id = id;
+            messageModel.ShopName = "더리터 사이코점";
+            messageModel.Content = "";
+            messageModel.OrderNumber = (ReceiptIdx % 100).ToString();
+            messageModel.Group = true;
+
+            for (int i = 0; i < orderedMenuItems.Count; i++)
+            {
+                menuItems.Add(new MenuModel()
+                {
+                    Name = orderedMenuItems[i].Name,
+                    Price = orderedMenuItems[i].Count,
+                    Count = orderedMenuItems[i].Count
+                });
+            }
+
+            messageModel.MenuItems = menuItems;
+            return messageModel;
         }
 
         #region DataBase

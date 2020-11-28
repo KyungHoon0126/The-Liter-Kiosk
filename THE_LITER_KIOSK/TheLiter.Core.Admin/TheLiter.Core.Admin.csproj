@@ -64,6 +64,7 @@
   <ItemGroup>
     <Compile Include="AdminData.cs" />
     <Compile Include="Model\MeasureModel.cs" />
+    <Compile Include="Model\MessageModel.cs" />
     <Compile Include="Model\SalesModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ViewModel\AdminViewModel.cs" />
@@ -76,6 +77,10 @@
     <ProjectReference Include="..\TheLiter.Core.DBManager\TheLiter.Core.DBManager.csproj">
       <Project>{6ec64a35-cb63-4c73-a201-65be762fbe6c}</Project>
       <Name>TheLiter.Core.DBManager</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TheLiter.Core.Network\TheLiter.Core.Network.csproj">
+      <Project>{27AE824B-CDBD-4CD1-973E-E0BAF39E5458}</Project>
+      <Name>TheLiter.Core.Network</Name>
     </ProjectReference>
     <ProjectReference Include="..\TheLiter.Core.Order\TheLiter.Core.Order.csproj">
       <Project>{1EBD103B-9FBB-4D72-8823-A0F82D30AF20}</Project>

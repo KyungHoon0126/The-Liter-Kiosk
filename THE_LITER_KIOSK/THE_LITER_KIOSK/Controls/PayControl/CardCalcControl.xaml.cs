@@ -48,7 +48,8 @@ namespace THE_LITER_KIOSK.Controls.PayControl
 
                     if (TcpHelper.isConnected)
                     {
-                        App.networkManager.Send(TcpHelper.SocketClient, App.networkManager.SetMsgArgs(App.orderData.orderViewModel.SendPayInfo(memberId)));
+                        App.networkManager.Send(TcpHelper.SocketClient, App.networkManager.SetOrderMsgArgs(App.orderData.orderViewModel.SendOrderInfoToNormal(memberId)));
+                        App.networkManager.Send(TcpHelper.SocketClient, App.networkManager.SetGroupMsgArgs(App.orderData.orderViewModel.SendOrderInfoToGroup(memberId, App.orderData.orderViewModel.OrderedMenuItems)));
                     }
                     
                     App.qrIndex++;

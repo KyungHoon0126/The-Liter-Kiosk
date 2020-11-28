@@ -20,7 +20,6 @@ namespace THE_LITER_KIOSK.Controls.AdminControl
 
         private void AdminControl_Loaded(object sender, RoutedEventArgs e)
         {
-            App.memberData.memberViewModel.CompleteAction += MemberViewModel_CompleteAction;
             ctrlMenuManagement.LoadMenuSettingWindow += CtrlMenuManagement_LoadMenuSettingWindow;
             
             Task.Run(() => { App.adminData.LoadData(); });
@@ -30,18 +29,6 @@ namespace THE_LITER_KIOSK.Controls.AdminControl
             programOperationTimer.Interval = TimeSpan.FromSeconds(1);
             programOperationTimer.Tick += ProgramOperationTimer_Tick;
             programOperationTimer.Start();
-        }
-
-        private void MemberViewModel_CompleteAction(object sender, bool success)
-        {
-            if (success)
-            {
-                progressRing.IsActive = !success;
-            }
-            else
-            {
-                progressRing.IsActive = !success;
-            }
         }
 
         private void CtrlMenuManagement_LoadMenuSettingWindow(object sender, RoutedEventArgs e)

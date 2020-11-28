@@ -1,10 +1,10 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Diagnostics;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
-using System.Threading.Tasks;
 using TheLiter.Core.Network;
 using TheLiter.Core.Network.Model;
 
@@ -40,7 +40,7 @@ namespace THE_LITER_KIOSK.Network
 
                         Debug.WriteLine(TcpHelper.SocketClient.Connected);
 
-                        Send(TcpHelper.SocketClient, SetMsgArgs(tcpModel));
+                        Send(TcpHelper.SocketClient, SetOrderMsgArgs(tcpModel));
                         sendDone.WaitOne();
 
                         Receive(TcpHelper.SocketClient);
@@ -181,30 +181,57 @@ namespace THE_LITER_KIOSK.Network
             }
         }
 
-        public string SetMsgArgs(TcpModel tcpModel)
+        public string SetOrderMsgArgs(TcpModel tcpModel)
         {
-            var json = new JObject();
+            var jObject = new JObject();
             var jArray = new JArray();
 
             for (int i = 0; i < tcpModel.MenuItems.Count; i++)
             {
-                JObject jObject = new JObject();
+                JObject menuObject = new JObject();
 
-                jObject["Name"] = tcpModel.MenuItems[i].Name;
-                jObject["Price"] = tcpModel.MenuItems[i].Price;
-                jObject["Count"] = tcpModel.MenuItems[i].Count;
+                menuObject["Name"] = tcpModel.MenuItems[i].Name;
+                menuObject["Price"] = tcpModel.MenuItems[i].Price;
+                menuObject["Count"] = tcpModel.MenuItems[i].Count;
 
-                jArray.Add(jObject);
+                jArray.Add(menuObject);
             }
 
-            json["MSGType"] = tcpModel.MessageType;
-            json["id"] = tcpModel.Id;
-            json["ShopName"] = tcpModel.ShopName;
-            json["Content"] = tcpModel.Content;
-            json["OrderNumber"] = tcpModel.OrderNumber;
-            json["Menus"] = jArray;
+            jObject["MSGType"] = tcpModel.MessageType;
+            jObject["id"] = tcpModel.Id;
+            jObject["ShopName"] = tcpModel.ShopName;
+            jObject["Content"] = tcpModel.Content;
+            jObject["OrderNumber"] = tcpModel.OrderNumber;
+            jObject["Menus"] = jArray;
 
-            return json.ToString();
+            return JsonConvert.SerializeObject(jObject);
+        }
+
+        public string SetGroupMsgArgs(MessageModel messageModel)
+        {
+            var jObject = new JObject();
+            var jArray = new JArray();
+
+            for (int i = 0; i < messageModel.MenuItems.Count; i++)
+            {
+                JObject menuObject = new JObject();
+
+                menuObject["Name"] = messageModel.MenuItems[i].Name;
+                menuObject["Price"] = messageModel.MenuItems[i].Price;
+                menuObject["Count"] = messageModel.MenuItems[i].Count;
+
+                jArray.Add(menuObject);
+            }
+
+            jObject["MSGType"] = messageModel.MessageType;
+            jObject["id"] = messageModel.Id;
+            jObject["ShopName"] = messageModel.ShopName;
+            jObject["Content"] = messageModel.Content;
+            jObject["OrderNumber"] = messageModel.OrderNumber;
+            jObject["Group"] = messageModel.Group;
+            jObject["Menus"] = jArray;
+
+            return JsonConvert.SerializeObject(jObject);
         }
     }
 }
