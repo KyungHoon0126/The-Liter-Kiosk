@@ -111,43 +111,7 @@ namespace THE_LITER_KIOSK.Controls.AdminControl
 
         private void btnExport_Click(object sender, RoutedEventArgs e)
         {
-            btnExport.CommandParameter = GetFilePath();
-        }
-
-        public string GetFilePath()
-        {
-            var directoryPicker = new CommonSaveFileDialog();
-            directoryPicker.DefaultExtension = "csv";
-            AddExtensionFilter(ref directoryPicker, new string[] { "csv" }, "엑셀파일");
-
-            if (directoryPicker.ShowDialog() == CommonFileDialogResult.Ok)
-            {
-                string path = directoryPicker.FileName;
-                string[] fileExtension = path.Split(new char[] { '.' });
-                if (fileExtension.Length >= 3)
-                {
-                    string newPath = fileExtension[0] + "." + fileExtension[fileExtension.Length - 1];
-                    return newPath;
-                }
-                else
-                {
-                    return path;
-                }
-            }
-            return null;
-        }
-
-        private void AddExtensionFilter(ref CommonSaveFileDialog dialog, string[] extension, string displayName)
-        {
-            var filter = new CommonFileDialogFilter();
-            
-            for (int i = 0; i < extension.Length; i++)
-            {
-                filter.Extensions.Add(extension[i]);
-            }
-
-            filter.DisplayName = displayName;
-            dialog.Filters.Add(filter);
+            btnExport.CommandParameter = App.saveFileManager.GetFilePath();
         }
     }
 }

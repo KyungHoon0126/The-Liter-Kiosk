@@ -17,9 +17,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using TheLiter.Core.Admin.Database;
-using TheLiter.Core.Admin.Model;
 using TheLiter.Core.DBManager;
-using TheLiter.Core.Network;
 using TheLiter.Core.Network.Model;
 using TheLiter.Core.Order.Model;
 using SalesModel = TheLiter.Core.Admin.Model.SalesModel;
@@ -81,14 +79,14 @@ namespace TheLiter.Core.Admin.ViewModel
             }
         }
 
-        private SeriesCollection _salesByMenuSeriesCollection;
-        public SeriesCollection SalesByMenuSeriesCollection
+        private ObservableCollection<SalesModel> _salesStatItems = new ObservableCollection<SalesModel>();
+        public ObservableCollection<SalesModel> SalesStatItems
         {
-            get => _salesByMenuSeriesCollection;
+            get => _salesStatItems;
             set
             {
-                _salesByMenuSeriesCollection = value;
-                NotifyPropertyChanged(nameof(SalesByMenuSeriesCollection));
+                _salesStatItems = value;
+                NotifyPropertyChanged(nameof(SalesStatItems));
             }
         }
 
@@ -292,7 +290,6 @@ namespace TheLiter.Core.Admin.ViewModel
 
         private void LoadTimeZoneItems()
         {
-            // TimeZoneItems.Add(new TimeSpan(24, 00, 00));
             TimeZoneItems.Add(new TimeSpan(01, 00, 00));
             TimeZoneItems.Add(new TimeSpan(02, 00, 00));
             TimeZoneItems.Add(new TimeSpan(03, 00, 00));
@@ -377,27 +374,6 @@ namespace TheLiter.Core.Admin.ViewModel
         #endregion
 
         #region Chart
-        public void LoadSalesByMenuChartData()
-        {
-            SyncGetAllSalesInformation();
-
-            SalesByMenuSeriesCollection = new SeriesCollection();
-            for (int i = 0; i < SalesItems.Count; i++)
-            {
-                Application.Current.Dispatcher.Invoke(() =>
-                {
-                    SalesByMenuSeriesCollection.Add(new PieSeries()
-                    {
-                        // Title = SalesItems[i].Name,
-                        Title = ConvertPriceToString(Convert.ToDouble(SalesItems[i].TotalPrice)),
-                        Values = new ChartValues<double> { Convert.ToDouble(SalesItems[i].DiscountTotalPrice) },
-                        DataLabels = true,
-                        LabelPoint = PointLabel => string.Format(SalesItems[i].Name)
-                    });
-                });                
-            }
-        }
-
         public void LoadSalesByCategoryChartData()
         {
             SyncGetAllSalesInformation();
@@ -412,7 +388,7 @@ namespace TheLiter.Core.Admin.ViewModel
                 {
                     menuByCategoryTotalPrice += Convert.ToDouble(x.DiscountTotalPrice);
                 });
-                
+
                 Application.Current.Dispatcher.Invoke(() =>
                 {
                     SalesByCategorySeriesCollection.Add(new PieSeries()
@@ -424,8 +400,33 @@ namespace TheLiter.Core.Admin.ViewModel
                 });
             }
         }
+
+        public void SetSalesStatItems()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                SalesStatItems.Clear();
+
+                int totalSales = SalesItems.Select(x => x.TotalPrice).Sum();
+
+                foreach (var item in SalesItems)
+                {
+                    if (SalesStatItems.Where(x => x.Name == item.Name).Count() == 0)
+                    {
+                        int price = SalesItems.Where(x => x.Name == item.Name).Select(x => x.TotalPrice).Sum();
+
+                        SalesStatItems.Add(new SalesModel()
+                        {
+                            Name = item.Name,
+                            Rate = (price * 100) / totalSales
+                        });
+                    }
+                }
+            });
+        }
         #endregion
 
+        #region SET STATISTICS DATA
         private void SyncGetAllSalesInformation()
         {
             if (SalesItems.Count > 0)
@@ -459,9 +460,9 @@ namespace TheLiter.Core.Admin.ViewModel
             SalesByMemberItems.Clear();
             SalesByTimeItems.Clear();
 
-            LoadSalesByMenuChartData();
             LoadSalesByCategoryChartData();
-            
+            SetSalesStatItems();
+
             SetSaleItems();
         }
 
@@ -664,26 +665,7 @@ namespace TheLiter.Core.Admin.ViewModel
                 }
             }
         }
-
-        public string GetMsgArgs()
-        {
-            if (TransMsg != null)
-            {
-                JObject jObject = new JObject();
-                jObject.Add("MSGType", (int)EMessageType.NORMAL_MESSAGE);
-                jObject.Add("Id", MemberId);
-                jObject.Add("Content", TransMsg);
-                jObject.Add("ShopName", "");
-                jObject.Add("OrderNumber", "");
-                jObject.Add("Group", IsGroupMsg ? true : false);
-                jObject.Add("Menus", "");
-                return JsonConvert.SerializeObject(jObject);
-            }
-            else
-            {
-                return null;
-            }
-        }
+        #endregion
 
         #region DataBase
         public async void SynchronizationOpertaionTime()
@@ -813,7 +795,27 @@ FROM
             }
         }
         #endregion
-        
+
+        public string GetMsgArgs()
+        {
+            if (TransMsg != null)
+            {
+                JObject jObject = new JObject();
+                jObject.Add("MSGType", (int)EMessageType.NORMAL_MESSAGE);
+                jObject.Add("Id", MemberId);
+                jObject.Add("Content", TransMsg);
+                jObject.Add("ShopName", "");
+                jObject.Add("OrderNumber", "");
+                jObject.Add("Group", IsGroupMsg ? true : false);
+                jObject.Add("Menus", "");
+                return JsonConvert.SerializeObject(jObject);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
         private string ConvertPriceToString(double value)
         {
             return string.Format("{0:#,0원}", value);

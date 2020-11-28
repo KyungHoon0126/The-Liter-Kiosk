@@ -954,7 +954,7 @@ namespace TheLiter.Core.Order.ViewModel
             tcpModel.Id = id;
             tcpModel.ShopName = "더리터 사이코점";
             tcpModel.Content = "";
-            tcpModel.OrderNumber = (ReceiptIdx % 100).ToString();
+            tcpModel.OrderNumber = ConvertReceiptIdx(ReceiptIdx % 100);
 
             for (int i = 0; i < orderedMenuItems.Count; i++)
             {
@@ -968,6 +968,24 @@ namespace TheLiter.Core.Order.ViewModel
 
             tcpModel.MenuItems = menuItems;
             return tcpModel;
+        }
+
+        private string ConvertReceiptIdx(int receiptIdx)
+        {
+            var ReceiptIdx = receiptIdx.ToString();
+
+            if (ReceiptIdx.Length <= 1)
+            {
+                return "0" + ReceiptIdx;
+            }
+            else if (ReceiptIdx.Length <= 2)
+            {
+                return "00" + ReceiptIdx;
+            }
+            else
+            {
+                return ReceiptIdx;
+            }
         }
 
         public MessageModel SendOrderInfoToGroup(string id, ObservableCollection<SalesModel> OrderedMenuItems)

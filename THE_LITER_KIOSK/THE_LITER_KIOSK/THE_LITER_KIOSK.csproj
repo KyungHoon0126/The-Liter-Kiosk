@@ -143,23 +143,24 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Common\SaveFileManager.cs" />
     <Compile Include="Common\Setting.cs" />
     <Compile Include="Controls\AdminControl\AdminControl.xaml.cs">
       <DependentUpon>AdminControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\AdminControl\ChatControl.xaml.cs">
+    <Compile Include="Controls\AdminControl\Chat\ChatControl.xaml.cs">
       <DependentUpon>ChatControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\AdminControl\Management\MemberManagementControl.xaml.cs">
+    <Compile Include="Controls\AdminControl\Member\MemberManagementControl.xaml.cs">
       <DependentUpon>MemberManagementControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\AdminControl\Management\MenuManagementControl.xaml.cs">
+    <Compile Include="Controls\AdminControl\Menu\MenuManagementControl.xaml.cs">
       <DependentUpon>MenuManagementControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\AdminControl\Management\MenuSettingWindow.xaml.cs">
+    <Compile Include="Controls\AdminControl\Menu\MenuSettingWindow.xaml.cs">
       <DependentUpon>MenuSettingWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\AdminControl\StatisticsControl.xaml.cs">
+    <Compile Include="Controls\AdminControl\Statistic\StatisticsControl.xaml.cs">
       <DependentUpon>StatisticsControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\HomeControl\HomeControl.xaml.cs">
@@ -193,6 +194,7 @@
       <DependentUpon>TableControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="Converters\BackgroundColorConverter.cs" />
+    <Compile Include="Converters\IntCalculatingConverter.cs" />
     <Compile Include="Converters\IsSoldOutToFocusableConverter.cs" />
     <Compile Include="Converters\IsSoldOutToOpacitiyConverter.cs" />
     <Compile Include="Converters\IsSoldOutToStringConverter.cs" />
@@ -200,6 +202,7 @@
     <Compile Include="Converters\IsUsedToFocusableConverter.cs" />
     <Compile Include="Converters\MenuCategoryToKoreanConverter.cs" />
     <Compile Include="Converters\TableIdxToNameConverter.cs" />
+    <Compile Include="Interface\IStatistics.cs" />
     <Compile Include="UIStateManager\UIStateManager.cs" />
     <Compile Include="UIStateManager\CustomControlType.cs" />
     <Compile Include="UIStateManager\CustomControlModel.cs" />
@@ -210,23 +213,23 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\AdminControl\ChatControl.xaml">
+    <Page Include="Controls\AdminControl\Chat\ChatControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\AdminControl\Management\MemberManagementControl.xaml">
+    <Page Include="Controls\AdminControl\Member\MemberManagementControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\AdminControl\Management\MenuManagementControl.xaml">
+    <Page Include="Controls\AdminControl\Menu\MenuManagementControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\AdminControl\Management\MenuSettingWindow.xaml">
+    <Page Include="Controls\AdminControl\Menu\MenuSettingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Controls\AdminControl\StatisticsControl.xaml">
+    <Page Include="Controls\AdminControl\Statistic\StatisticsControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

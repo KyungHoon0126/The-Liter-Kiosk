@@ -12,6 +12,7 @@
     
     <UserControl.Resources>
         <converter:TableIdxToNameConverter x:Key="TableIdxToNameConverter"/>
+        <converter:IntCalculatingConverter x:Key="IntCalculatingConverter"/>
 
         <Style x:Key="tbSalesStyle" TargetType="{x:Type TextBlock}">
             <Setter Property="FontSize" Value="20"/>
@@ -80,17 +81,40 @@
                 </lvc:PieChart>
             </Grid>
 
-            <Grid Grid.Row="3" Visibility="Collapsed">
-                <lvc:PieChart Name="pcSalesByMenu" Margin="5"   
-                              Series="{Binding SalesByMenuSeriesCollection}"
-                              Hoverable="True">
-                    
-                    <lvc:PieChart.DataTooltip>
-                        <lvc:DefaultTooltip BulletSize="20" SelectionMode="OnlySender"  />
-                    </lvc:PieChart.DataTooltip>
-                </lvc:PieChart>
-
-                <TextBlock Text="{Binding }"/>
+            <Grid Grid.Row="3">
+                <ListView x:Name="lvSalesStat" Margin="5" 
+                          ItemsSource="{Binding SalesStatItems}"
+                          HorizontalAlignment="Center">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal" Margin="10 5 0 5">
+                                <StackPanel.Resources>
+                                    <Style TargetType="TextBlock">
+                                        <Setter Property="FontSize" Value="14"/>
+                                        <Setter Property="TextAlignment" Value="Center"/>
+                                        <Setter Property="VerticalAlignment" Value="Center"/>
+                                        <Setter Property="FontFamily" Value="AppleSDGothicNeoSB00"/>
+                                    </Style>
+                                </StackPanel.Resources>
+                                <TextBlock Text="{Binding Name}"
+                                           Width="200"
+                                           TextTrimming="CharacterEllipsis"/>
+                                <TextBlock Text="{Binding Rate, StringFormat={}{0}%}" 
+                                           Width="100"/>
+                                <Rectangle Width="{Binding Rate, Converter={StaticResource IntCalculatingConverter}}" 
+                                           RadiusX="4" RadiusY="43"
+                                           Stroke="BlanchedAlmond">
+                                    <Rectangle.Fill>
+                                        <LinearGradientBrush StartPoint="0,0.5" EndPoint="1, 0.5">
+                                            <GradientStop Color="SkyBlue" Offset="0.0"/>
+                                            <GradientStop Color="CornflowerBlue" Offset="1.0"/>
+                                        </LinearGradientBrush>
+                                    </Rectangle.Fill>
+                                </Rectangle>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                </ListView>
             </Grid>
         </Grid>
 

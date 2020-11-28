@@ -88,5 +88,7 @@ namespace TheLiter.Core.Admin.Model
             get => totalPrice;
             set => SetProperty(ref totalPrice, value);
         }
+
+        public int Rate { get; set; }
     }
 }

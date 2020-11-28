@@ -25,7 +25,8 @@ namespace THE_LITER_KIOSK
         public static MemberData memberData = new MemberData();
 
         public static int qrIndex = 0;
-        
+
+        public static SaveFileManager saveFileManager = new SaveFileManager();
 
         public App()
         {
