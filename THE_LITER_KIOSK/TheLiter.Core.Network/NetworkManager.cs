@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using TheLiter.Core.Network;
 using TheLiter.Core.Network.Model;
 
@@ -11,8 +12,8 @@ namespace THE_LITER_KIOSK.Network
 {
     public class NetworkManager
     {
-        //private const string ip = "10.80.162.152";
-        private const string ip = "10.80.163.141";
+        private const string ip = "10.80.162.152";
+        //private const string ip = "10.80.163.141"; // 용빈 Computer
         private const int port = 80;
 
         private static ManualResetEvent connectDone =
@@ -150,9 +151,12 @@ namespace THE_LITER_KIOSK.Network
 
         public void DisconnectSocket()
         {
-            TcpHelper.SocketClient.Shutdown(SocketShutdown.Both);
-            TcpHelper.SocketClient.BeginDisconnect(true, new AsyncCallback(DisconnectCallback), TcpHelper.SocketClient);
-            disconnectDone.WaitOne();
+            if (TcpHelper.SocketClient.Connected)
+            {
+                TcpHelper.SocketClient.Shutdown(SocketShutdown.Both);
+                TcpHelper.SocketClient.BeginDisconnect(true, new AsyncCallback(DisconnectCallback), TcpHelper.SocketClient);
+                disconnectDone.WaitOne();
+            }
         }
 
         private void DisconnectCallback(IAsyncResult ar)
@@ -168,9 +172,6 @@ namespace THE_LITER_KIOSK.Network
             {
                 Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
                 client.Connect(ip, port);
-                
-                Debug.WriteLine(client.Connected);
-                
                 return client.Connected ? true : false;
             }
             catch (Exception e)

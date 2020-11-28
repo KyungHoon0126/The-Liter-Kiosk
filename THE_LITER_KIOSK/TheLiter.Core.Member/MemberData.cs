@@ -1,4 +1,5 @@
-﻿using TheLiter.Core.Member.ViewModel;
+﻿using System.Threading.Tasks;
+using TheLiter.Core.Member.ViewModel;
 
 namespace TheLiter.Core.Member
 {
@@ -9,6 +10,11 @@ namespace TheLiter.Core.Member
         public void Login()
         {
             memberViewModel.OnLogin();
+        }
+
+        public async Task<bool> AutoLogin()
+        {
+            return await memberViewModel.IsValidAutoLogin();
         }
 
         public void GetMemberData()

@@ -36,6 +36,10 @@
                 <TabItem Header="통계 화면">
                     <local:StatisticsControl x:Name="ctrlStatistics"/>
                 </TabItem>
+
+                <TabItem Header="채팅 화면">
+                    <local:ChatControl x:Name="ctrlChat"/>
+                </TabItem>
             </TabControl>
 
             <loadin:LoadingIndicator x:Name="progressRing" SpeedRatio="2"

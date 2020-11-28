@@ -4,6 +4,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Threading;
 using THE_LITER_KIOSK.Network;
 using THE_LITER_KIOSK.UIManager;
@@ -18,7 +19,8 @@ namespace THE_LITER_KIOSK
     public partial class MainWindow : Window
     {
         DispatcherTimer dispatcherTimer;
-        private bool isConnected;
+        private bool isAvailable = false;
+        // private bool isConnected = false;
 
         #region Constructor
         public MainWindow()
@@ -44,6 +46,7 @@ namespace THE_LITER_KIOSK
             App.adminData.adminViewModel.SynchronizationOpertaionTime();
             
             TcpHelper.InitializeClient();
+            OnSocketLogin();
         }
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
@@ -86,7 +89,7 @@ namespace THE_LITER_KIOSK
         {
             if (App.orderData.orderViewModel.IsOrderedMenuItemsValid())
             {
-                MessageBoxResult result = MessageBox.Show("주문을 취소하시겠습니까?", "Order", MessageBoxButton.YesNo);
+                MessageBoxResult result = MessageBox.Show("주문을 취소하시겠습니까?", "주문", MessageBoxButton.YesNo);
                 switch (result)
                 {
                     case MessageBoxResult.Yes:
@@ -106,50 +109,11 @@ namespace THE_LITER_KIOSK
             App.uIStateManager.SwitchCustomControl(CustomControlType.HOME);
         }
 
-        private void Window_KeyDown(object sender, KeyEventArgs e)
-        {
-            if (App.uIStateManager.customCtrlStack.Count > 0 && e.Key == Key.F2 && App.uIStateManager.customCtrlStack.Peek() == CtrlHome)
-            {
-                Task.Run(() => { App.adminData.LoadData(); });
-                App.memberData.GetAllMemberData();
-                App.uIStateManager.SwitchCustomControl(CustomControlType.ADMIN);
-            }
-        }
-
-        private void CtrlLogin_OnLoginResultRecieved(object sender, bool success)
-        {
-            OnSocketLogin();
-
-            if (success)
-            {
-                CtrlLogin.Visibility = Visibility.Collapsed;
-                App.memberData.GetMemberData();
-                
-                if (isConnected)
-                {
-                    MoveOrderToHome();
-                }
-                else
-                {
-                    MessageBoxResult result = MessageBox.Show("서버 연결이 안된채로 수행하시겠습니까?", "Login", MessageBoxButton.YesNo);
-                    switch (result)
-                    {
-                        case MessageBoxResult.Yes:
-                            MoveOrderToHome();
-                            break;
-                        case MessageBoxResult.No:
-                            App.uIStateManager.SwitchCustomControl(CustomControlType.LOGIN);
-                            break;
-                    }
-                }
-            }
-        }
-
         private void OnSocketLogin()
         {
-            isConnected = App.networkManager.CheckServerState();
+            isAvailable = App.networkManager.CheckServerState();
 
-            if (isConnected)
+            if (isAvailable && !TcpHelper.isConnected)
             {
                 new Thread(() =>
                 {
@@ -165,12 +129,57 @@ namespace THE_LITER_KIOSK
                     App.networkManager.ConnectSocket(tcpModel);
                 }).Start();
 
-                tbcurrentAccessTime.Text = "최근 서버 접속 시간 : " + DateTime.Now.ToString("tt H시 mm분 ss초");
+                tbCurrentAccessTime.Text = "최근 서버 접속 시간 : " + DateTime.Now.ToString("tt H시 mm분 ss초");
+                tbCurrentAccessTime.Foreground = Brushes.Green;
+                TcpHelper.isConnected = true;
             }
             else
             {
-                isConnected = false;
+                tbCurrentAccessTime.Text = "서버 연결 실패";
+                tbCurrentAccessTime.Foreground = Brushes.Red;
+                isAvailable = false;
+                TcpHelper.isConnected = false;
                 return;
+            }
+        }
+
+        private void Window_KeyDown(object sender, KeyEventArgs e)
+        {
+            Stack<CustomControlModel> customControls = App.uIStateManager.customCtrlStack;
+            if (customControls.Count > 0 && e.Key == Key.F2 && customControls.Peek() == CtrlHome)
+            {
+                Task.Run(() => { App.adminData.LoadData(); });
+                App.memberData.GetAllMemberData();
+                App.uIStateManager.SwitchCustomControl(CustomControlType.ADMIN);
+            }
+        }
+
+        private void CtrlLogin_OnLoginResultRecieved(object sender, bool success)
+        {
+            if (success)
+            {
+                CtrlLogin.Visibility = Visibility.Collapsed;
+                MessageBox.Show("로그인에 성공하셨습니다.");
+
+                App.memberData.GetMemberData();
+                
+                if (isAvailable)
+                {
+                    MoveOrderToHome();
+                }
+                else
+                {
+                    MessageBoxResult result = MessageBox.Show("서버 연결이 안된채로 수행하시겠습니까?", "로그인", MessageBoxButton.YesNo);
+                    switch (result)
+                    {
+                        case MessageBoxResult.Yes:
+                             MoveOrderToHome();
+                             break;
+                        case MessageBoxResult.No:
+                             App.uIStateManager.SwitchCustomControl(CustomControlType.LOGIN);
+                             break;
+                    }
+                }
             }
         }
 
@@ -184,6 +193,11 @@ namespace THE_LITER_KIOSK
         {
             App.adminData.adminViewModel.SaveProgramTotalUsageTime();
             App.networkManager.DisconnectSocket();
+        }
+
+        private void btnRedirectSocket_Click(object sender, RoutedEventArgs e)
+        {
+            OnSocketLogin();
         }
     }
 }

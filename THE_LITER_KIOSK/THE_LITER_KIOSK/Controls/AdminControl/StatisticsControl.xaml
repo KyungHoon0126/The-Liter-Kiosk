@@ -89,13 +89,16 @@
                         <lvc:DefaultTooltip BulletSize="20" SelectionMode="OnlySender"  />
                     </lvc:PieChart.DataTooltip>
                 </lvc:PieChart>
+
+                <TextBlock Text="{Binding }"/>
             </Grid>
         </Grid>
 
         <Grid Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="1*"/>
-                <RowDefinition Height="9*"/>
+                <RowDefinition Height="8*"/>
+                <RowDefinition Height="1*"/>
             </Grid.RowDefinitions>
 
             <Grid Grid.Row="0">
@@ -248,6 +251,20 @@
                                             Binding="{Binding TotalPrice, StringFormat=\{0:N0\}원}"/>
                     </DataGrid.Columns>
                 </DataGrid>
+            </Grid>
+
+            <Grid Grid.Row="2">
+                <Button x:Name="btnExport"
+                        Command="{Binding ExportCommand}"
+                        Margin="0,0,30,0"
+                        Background="Transparent"
+                        BorderThickness="0.1"
+                        Height="50" Width="150"
+                        Content="내보내기"
+                        HorizontalAlignment="Right"
+                        VerticalAlignment="Center"
+                        Click="btnExport_Click">
+                </Button>
             </Grid>
         </Grid>
     </Grid>

@@ -1,6 +1,8 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using THE_LITER_KIOSK.DataBase.Models;
 using THE_LITER_KIOSK.Network;
@@ -21,53 +23,56 @@ namespace THE_LITER_KIOSK.Controls.PayControl
         public CashCalcControl()
         {
             InitializeComponent();
-            tbCardNumber.Focus(); // TODO : Focus가 안됨.
             Loaded += CashCalcControl_Loaded;
         }
 
         private void CashCalcControl_Loaded(object sender, RoutedEventArgs e)
         {
+            tbCardNumber.Focus();
             this.DataContext = App.orderData.orderViewModel;
         }
 
-        // TODO : BarCode 값이 읽어졌는데, 다시 해보니까 안됨.
-        private void CustomControlModel_KeyDown(object sender, KeyEventArgs e)
+        private void tbCardNumber_KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.Key == Key.Return)
+            if (e.Key == Key.Enter)
             {
                 App.orderData.orderViewModel.BarCode = tbCardNumber.Text;
-            }
 
-            if (App.memberData.memberViewModel.BarCode == App.orderData.orderViewModel.BarCode)
-            {
-                var selectedTable = App.placeData.tableViewModel.SelectedTable;
-                var payTime = DateTime.Now;
-                var memberId = App.memberData.memberViewModel.Id;
-
-                SetPayByCashDelegate setDel = (tableIdx) =>
+                if (App.memberData.memberViewModel.BarCode == App.orderData.orderViewModel.BarCode)
                 {
-                    ClearBarCode();
-                    SaveSalesInformation(payTime, PaymentType.CASH.ToString(), tableIdx, memberId);
-                    App.networkManager.Send(TcpHelper.SocketClient, App.networkManager.SetMsgArgs(App.orderData.orderViewModel.SendPayInfo(memberId)));
-                    App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE);
-                    OnCompletePayByCash?.Invoke();
-                };
+                    var selectedTable = App.placeData.tableViewModel.SelectedTable;
+                    var payTime = DateTime.Now;
+                    var memberId = App.memberData.memberViewModel.Id;
 
-                if (selectedTable != null)
-                {
-                    selectedTable.PayTime = payTime.ToString();
-                    setDel(selectedTable.TableIdx);
+                    SetPayByCashDelegate setDel = (tableIdx) =>
+                    {
+                        ClearBarCode();
+                        SaveSalesInformation(payTime, PaymentType.CASH.ToString(), tableIdx, memberId);
+
+                        if (TcpHelper.isConnected)
+                        {
+                            App.networkManager.Send(TcpHelper.SocketClient, App.networkManager.SetMsgArgs(App.orderData.orderViewModel.SendPayInfo(memberId)));
+                        }
+
+                        App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE);
+                        OnCompletePayByCash?.Invoke();
+                    };
+
+                    if (selectedTable != null)
+                    {
+                        selectedTable.PayTime = payTime.ToString();
+                        setDel(selectedTable.TableIdx);
+                    }
+                    else
+                    {
+                        setDel(null);
+                    }
                 }
                 else
                 {
-                    setDel(null);
+                    MessageBox.Show("결제 정보가 일치하지 않습니다");
+                    ClearBarCode();
                 }
-            }
-            else
-            {
-                MessageBox.Show("결제 정보가 일치하지 않습니다");
-                ClearBarCode();
-                tbCardNumber.Text = string.Empty;
             }
         }
 
@@ -79,6 +84,7 @@ namespace THE_LITER_KIOSK.Controls.PayControl
         private void ClearBarCode()
         {
             App.orderData.orderViewModel.ClearBarCode();
+            tbCardNumber.Text = string.Empty;
         }
 
         #region UserControl Transition

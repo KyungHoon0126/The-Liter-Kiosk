@@ -30,8 +30,7 @@ namespace THE_LITER_KIOSK.Controls
             this.DataContext = App.memberData.memberViewModel;
         }
 
-        // TODO : 자동로그인 할 때, Id, Pw 읽어오고 delegate & event 연결이 안됨.
-        private void CheckAutoLogin()
+        private async void CheckAutoLogin()
         {
             string id = Setting.GetUserId();
             isAutoLogin = Setting.IsAutoLogin;
@@ -44,7 +43,10 @@ namespace THE_LITER_KIOSK.Controls
             if (isAutoLogin)
             {
                 App.memberData.memberViewModel.Pw = pw;
-                App.memberData.Login();
+                if (await App.memberData.AutoLogin())
+                {
+                    LoginResultRecieved?.Invoke(this, true);
+                }
             }
             else if (!string.IsNullOrEmpty(id))
             {

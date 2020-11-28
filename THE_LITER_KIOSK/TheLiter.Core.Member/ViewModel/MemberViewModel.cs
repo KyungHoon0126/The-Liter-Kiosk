@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using TheLiter.Core.DBManager;
 using TheLiter.Core.Member.Model;
@@ -244,13 +245,14 @@ AND
                 SendOnLoginResultRecievedEvent(false);
             }
 
-            if (member == null)
+            if (member != null)
             {
-                SendOnLoginResultRecievedEvent(false);
+                SendOnLoginResultRecievedEvent(true);
+
             }
             else
             {
-                SendOnLoginResultRecievedEvent(true);
+                SendOnLoginResultRecievedEvent(false);
             }
 
             BtnEnabled = true;
@@ -260,6 +262,39 @@ AND
         private bool CanLogin()
         {
             return (Id != null) && (Pw != null);
+        }
+
+        internal async Task<bool> IsValidAutoLogin()
+        {
+            try
+            {
+                var member = new MemberModel();
+
+                using (var db = GetConnection())
+                {
+                    db.Open();
+
+                    var memberModel = new MemberModel();
+
+                    string selectSql = $@"
+SELECT
+    *
+FROM
+    member_tb
+WHERE
+    id = '{Id}'
+AND
+    pw = '{Pw}'
+;";
+                    member = await memberDBManager.GetSingleDataAsync(db, selectSql, "");
+                    return (member.BarCode != null && member.Name != null && member.QrCode != null) ? true : false;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.Write("IS VALID AUTO LOGIN EROR : " + e.Message);
+                return false;
+            }
         }
         #endregion
 

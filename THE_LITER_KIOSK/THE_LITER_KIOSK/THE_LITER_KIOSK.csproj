@@ -75,6 +75,12 @@
     <Reference Include="MaterialDesignThemes.Wpf, Version=3.2.0.1979, Culture=neutral, PublicKeyToken=df2a72020bd7962a, processorArchitecture=MSIL">
       <HintPath>..\packages\MaterialDesignThemes.3.2.0\lib\net45\MaterialDesignThemes.Wpf.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WindowsAPICodePack-Core.1.1.1\lib\Microsoft.WindowsAPICodePack.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.WindowsAPICodePack.Shell, Version=1.1.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\WindowsAPICodePack-Shell.1.1.1\lib\Microsoft.WindowsAPICodePack.Shell.dll</HintPath>
+    </Reference>
     <Reference Include="MySql.Data, Version=8.0.22.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
       <HintPath>..\packages\MySql.Data.8.0.22\lib\net452\MySql.Data.dll</HintPath>
     </Reference>
@@ -141,6 +147,9 @@
     <Compile Include="Controls\AdminControl\AdminControl.xaml.cs">
       <DependentUpon>AdminControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\AdminControl\ChatControl.xaml.cs">
+      <DependentUpon>ChatControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\AdminControl\Management\MemberManagementControl.xaml.cs">
       <DependentUpon>MemberManagementControl.xaml</DependentUpon>
     </Compile>
@@ -198,6 +207,10 @@
       <DependentUpon>SplashScreen.xaml</DependentUpon>
     </Compile>
     <Page Include="Controls\AdminControl\AdminControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\AdminControl\ChatControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -362,6 +375,7 @@
     <Resource Include="Assets\Menus\TheLiterSpecial\AvocadoJuice.jpg" />
     <Resource Include="Assets\Menus\TheLiterSpecial\BlueberryJuice.jpg" />
     <Resource Include="Assets\Menus\TheLiterSpecial\PersimmonJuice.jpg" />
+    <Resource Include="Assets\Redirect.png" />
     <Content Include="Assets\Video\TheLiterVideo.mp4">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

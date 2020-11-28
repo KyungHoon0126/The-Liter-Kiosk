@@ -45,8 +45,11 @@ namespace THE_LITER_KIOSK.Controls.PayControl
                 {
                     ClearQrCode();
                     SaveSalesInformation(payTime, PaymentType.CARD.ToString(), tableIdx, memberId);
-                    
-                    App.networkManager.Send(TcpHelper.SocketClient, App.networkManager.SetMsgArgs(App.orderData.orderViewModel.SendPayInfo(memberId)));
+
+                    if (TcpHelper.isConnected)
+                    {
+                        App.networkManager.Send(TcpHelper.SocketClient, App.networkManager.SetMsgArgs(App.orderData.orderViewModel.SendPayInfo(memberId)));
+                    }
                     
                     App.qrIndex++;
                     App.uIStateManager.SwitchCustomControl(CustomControlType.PAYCOMPLETE);

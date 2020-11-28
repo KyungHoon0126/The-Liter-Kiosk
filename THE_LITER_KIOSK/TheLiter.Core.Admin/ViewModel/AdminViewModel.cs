@@ -1,14 +1,18 @@
 ﻿using LiveCharts;
 using LiveCharts.Defaults;
 using LiveCharts.Wpf;
+using Prism.Commands;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 using TheLiter.Core.Admin.Database;
 using TheLiter.Core.DBManager;
 using TheLiter.Core.Order.Model;
@@ -216,6 +220,10 @@ namespace TheLiter.Core.Admin.ViewModel
         }
         #endregion
 
+        #region Command
+        public ICommand ExportCommand { get; set; }
+        #endregion
+
         #region Init
         private void InitVariables()
         {
@@ -232,6 +240,8 @@ namespace TheLiter.Core.Admin.ViewModel
             TimeZoneItems = new List<TimeSpan>();
 
             Formatter = value => ConvertPriceToString(value);
+
+            ExportCommand = new DelegateCommand<string>(OnExport);
         }
 
         private void LoadCbSalesFilter()
@@ -268,6 +278,64 @@ namespace TheLiter.Core.Admin.ViewModel
             TimeZoneItems.Add(new TimeSpan(21, 00, 00));
             TimeZoneItems.Add(new TimeSpan(22, 00, 00));
             TimeZoneItems.Add(new TimeSpan(23, 00, 00));
+        }
+        #endregion
+
+        #region Command Method
+        private void OnExport(string path)
+        {
+            if (path != null)
+            {
+                string csvFile = "주문 번호, 카테고리, 메뉴, 수량, 결제 시간, 결제 수단, 테이블 번호, 회원 아이디, 할인 금액, 순수 가격 총액" + "\n";
+
+                for (int i = 0; i < SalesItems.Count; i++)
+                {
+                    csvFile += ConvertToSalesToCsv(SalesItems[i]);
+                    csvFile += "\n";
+                }
+
+                if (File.Exists(path))
+                {
+                    try
+                    {
+                        File.Delete(path);
+                    }
+                    catch
+                    {
+                        return;
+                    }
+                }
+
+                FileStream fs = File.Create(path);
+                var str = Encoding.Default.GetBytes(csvFile);
+                fs.Write(str, 0, str.Count());
+                fs.Close();
+            }
+        }
+
+        private string ConvertToSalesToCsv(SalesModel sale)
+        {
+            string retval = "";
+
+            try
+            {
+                retval += sale.ReceiptIdx + ",";
+                retval += sale.Category + ",";
+                retval += sale.Name + ",";
+                retval += sale.Count + ",";
+                retval += sale.PayTime + ",";
+                retval += sale.PayType + ",";
+                retval += sale.TableIdx + ",";
+                retval += sale.MemberId + ",";
+                retval += sale.DiscountTotalPrice + ",";
+                retval += sale.TotalPrice + ",";
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine("CONVERT TO SALES TO CSV ERROR : " + e.Message);
+            }
+
+            return retval;
         }
         #endregion
 

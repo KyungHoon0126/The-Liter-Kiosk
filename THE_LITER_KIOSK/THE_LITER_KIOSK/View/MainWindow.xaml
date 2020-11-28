@@ -41,10 +41,20 @@
                                Source="/Assets/Logo/TheLiterLogo.png"
                                HorizontalAlignment="Left"/>
 
-                        <TextBlock Margin="10" x:Name="tbcurrentAccessTime"
+                        <TextBlock Margin="10" x:Name="tbCurrentAccessTime"
                                    Text="최근 서버 접속 시간 : "
                                    VerticalAlignment="Center"
                                    FontSize="30"/>
+
+                        <Button x:Name="btnRedirectSocket"
+                                Background="Transparent"
+                                BorderBrush="Transparent"
+                                FocusVisualStyle="{x:Null}"
+                                Click="btnRedirectSocket_Click">
+                            <Button.Content>
+                                <Image Source="/Assets/Redirect.png"/>
+                            </Button.Content>
+                        </Button>
                     </StackPanel>
                 </Grid>
 
