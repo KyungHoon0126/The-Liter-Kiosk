@@ -19,8 +19,6 @@ namespace THE_LITER_KIOSK
     public partial class MainWindow : Window
     {
         DispatcherTimer dispatcherTimer;
-        private bool isAvailable = false;
-        // private bool isConnected = false;
 
         #region Constructor
         public MainWindow()
@@ -39,11 +37,12 @@ namespace THE_LITER_KIOSK
             dispatcherTimer.Start();
             #endregion
 
-            LoadData();
+            Task.Run(() => LoadData());
+            
             SetCustomControls();
             SetStartCustomControl();
 
-            App.adminData.adminViewModel.SynchronizationOpertaionTime();
+            App.adminData.adminViewModel.SyncProgramOpertaionTime();
             
             TcpHelper.InitializeClient();
             OnSocketLogin();
@@ -111,9 +110,10 @@ namespace THE_LITER_KIOSK
 
         private void OnSocketLogin()
         {
-            isAvailable = App.networkManager.CheckServerState();
+            // isAvailable = App.networkManager.CheckServerState();
+            Task.Run(() => TcpHelper.isAvailable = App.networkManager.CheckServerState());
 
-            if (isAvailable && !TcpHelper.isConnected)
+            if (TcpHelper.isAvailable && !TcpHelper.isConnected)
             {
                 new Thread(() =>
                 {
@@ -129,17 +129,14 @@ namespace THE_LITER_KIOSK
                     App.networkManager.ConnectSocket(tcpModel);
                 }).Start();
 
-                tbCurrentAccessTime.Text = "최근 서버 접속 시간 : " + DateTime.Now.ToString("tt H시 mm분 ss초");
-                tbCurrentAccessTime.Foreground = Brushes.Green;
-                TcpHelper.isConnected = true;
+                tbCurAccessTime.Text = "최근 서버 접속 시간 : " + DateTime.Now.ToString("tt H시 mm분 ss초");
+                tbCurAccessTime.Foreground = Brushes.Green;
             }
             else
             {
-                tbCurrentAccessTime.Text = "서버 연결 실패";
-                tbCurrentAccessTime.Foreground = Brushes.Red;
-                isAvailable = false;
-                TcpHelper.isConnected = false;
-                return;
+                tbCurAccessTime.Text = "서버 연결 실패";
+                tbCurAccessTime.Foreground = Brushes.Red;
+                TcpHelper.isAvailable = false;
             }
         }
 
@@ -163,13 +160,13 @@ namespace THE_LITER_KIOSK
 
                 App.memberData.GetMemberData();
                 
-                if (isAvailable)
+                if (TcpHelper.isAvailable)
                 {
                     MoveOrderToHome();
                 }
                 else
                 {
-                    MessageBoxResult result = MessageBox.Show("서버 연결이 안된채로 수행하시겠습니까?", "로그인", MessageBoxButton.YesNo);
+                    MessageBoxResult result = MessageBox.Show("서버 연결이 안된채로 수행하시겠습니까?", "서버 연결", MessageBoxButton.YesNo);
                     switch (result)
                     {
                         case MessageBoxResult.Yes:

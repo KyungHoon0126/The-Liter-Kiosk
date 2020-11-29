@@ -37,6 +37,7 @@ namespace THE_LITER_KIOSK.Network
                     {
                         TcpHelper.SocketClient.BeginConnect(ip, port, new AsyncCallback(ConnectCallback), TcpHelper.SocketClient);
                         connectDone.WaitOne(); // 완료되기를 기다림.
+                        TcpHelper.isConnected = true;
 
                         Debug.WriteLine(TcpHelper.SocketClient.Connected);
 
@@ -61,6 +62,7 @@ namespace THE_LITER_KIOSK.Network
             catch (Exception e)
             {
                 Debug.WriteLine("START CLIENT ERROR : " + e.Message);
+                TcpHelper.isConnected = false;
             }
         }
 

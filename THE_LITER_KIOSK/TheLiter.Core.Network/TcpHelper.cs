@@ -6,6 +6,7 @@ namespace THE_LITER_KIOSK.Network
     {
         public static Socket SocketClient { get; set; }
         public static bool isConnected { get; set; }
+        public static bool isAvailable { get; set; }
 
         public static void InitializeClient()
         {

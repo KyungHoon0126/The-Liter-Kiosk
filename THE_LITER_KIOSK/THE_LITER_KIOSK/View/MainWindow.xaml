@@ -41,7 +41,7 @@
                                Source="/Assets/Logo/TheLiterLogo.png"
                                HorizontalAlignment="Left"/>
 
-                        <TextBlock Margin="10" x:Name="tbCurrentAccessTime"
+                        <TextBlock Margin="10" x:Name="tbCurAccessTime"
                                    Text="최근 서버 접속 시간 : "
                                    VerticalAlignment="Center"
                                    FontSize="30"/>

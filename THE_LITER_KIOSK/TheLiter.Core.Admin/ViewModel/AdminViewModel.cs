@@ -668,7 +668,7 @@ namespace TheLiter.Core.Admin.ViewModel
         #endregion
 
         #region DataBase
-        public async void SynchronizationOpertaionTime()
+        public async void SyncProgramOpertaionTime()
         {
             var measureItem = await GetProgramTotalUsageTime();
             if (measureItem.ToString() != "00:00:00")

@@ -40,6 +40,10 @@
                 <TabItem Header="채팅 화면">
                     <local:ChatControl x:Name="ctrlChat"/>
                 </TabItem>
+
+                <TabItem Header="설정 화면">
+                    <local:OptionControl x:Name="ctrlOption"/>
+                </TabItem>
             </TabControl>
 
             <!--<loadin:LoadingIndicator x:Name="progressRing" SpeedRatio="2"

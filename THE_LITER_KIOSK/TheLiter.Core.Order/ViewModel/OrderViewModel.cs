@@ -20,7 +20,7 @@ namespace TheLiter.Core.Order.ViewModel
     {
         private DBManager<THE_LITER_KIOSK.DataBase.Models.SalesModel> salesDBManager = new DBManager<THE_LITER_KIOSK.DataBase.Models.SalesModel>();
         private DBManager<ReceiptModel> receiptDBManager = new DBManager<ReceiptModel>();
-        private DBManager<Model.SalesModel> orderDBManager = new DBManager<Model.SalesModel>();
+        private DBManager<SalesModel> orderDBManager = new DBManager<SalesModel>();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -36,8 +36,8 @@ namespace TheLiter.Core.Order.ViewModel
             }
         }
 
-        private ObservableCollection<Model.SalesModel> _menuItems;
-        public ObservableCollection<Model.SalesModel> MenuItems
+        private ObservableCollection<SalesModel> _menuItems;
+        public ObservableCollection<SalesModel> MenuItems
         {
             get => _menuItems;
             set
@@ -47,8 +47,8 @@ namespace TheLiter.Core.Order.ViewModel
             }
         }
 
-        private ObservableCollection<Model.SalesModel> _orderedMenuItems;
-        public ObservableCollection<Model.SalesModel> OrderedMenuItems
+        private ObservableCollection<SalesModel> _orderedMenuItems;
+        public ObservableCollection<SalesModel> OrderedMenuItems
         {
             get => _orderedMenuItems;
             set 
@@ -920,7 +920,7 @@ namespace TheLiter.Core.Order.ViewModel
             IsEnabledOrderAndClearAllMenuBtn();
         }
 
-        public void RemoveSelectedMenu(Model.SalesModel selectedMenu)
+        public void RemoveSelectedMenu(SalesModel selectedMenu)
         { 
             OrderedMenuItems.Remove(selectedMenu);
             IsEnabledOrderAndClearAllMenuBtn();
@@ -928,7 +928,7 @@ namespace TheLiter.Core.Order.ViewModel
 
         private async void SetMenuDiscountRateAndIsSoldOut()
         {
-            List<Model.SalesModel> items = await GetAllMenuDisCountRateAndIsSoldOut();
+            List<SalesModel> items = await GetAllMenuDisCountRateAndIsSoldOut();
 
             for (int i = 0; i < PagingMenuList.Count; i++)
             {
