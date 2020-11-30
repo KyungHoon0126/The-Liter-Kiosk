@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Net.Sockets;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -48,6 +50,7 @@ namespace THE_LITER_KIOSK
         {
             App.adminData.adminViewModel.IncreaseOperationTime();
             tbClock.Text = DateTimeExtension.ConvertDateTimeToDayOfTheWeek(DateTime.Now);
+            PollingServerConnectionState();
         }
 
         #region Init
@@ -106,9 +109,9 @@ namespace THE_LITER_KIOSK
 
         private void OnSocketLogin()
         {
-            TcpHelper.isAvailable = App.networkManager.CheckServerState();
+            TcpHelper.IsAvailable = App.networkManager.CheckServerState();
 
-            if (TcpHelper.isAvailable && !TcpHelper.SocketClient.Connected)
+            if (TcpHelper.IsAvailable && !TcpHelper.SocketClient.Connected)
             {
                 new Thread(() =>
                 {
@@ -132,7 +135,7 @@ namespace THE_LITER_KIOSK
             {
                 tbCurAccessTime.Text = "서버 연결 실패";
                 tbCurAccessTime.Foreground = Brushes.Red;
-                TcpHelper.isAvailable = false;
+                TcpHelper.IsAvailable = false;
             }
         }
 
@@ -162,7 +165,7 @@ namespace THE_LITER_KIOSK
 
                 App.memberData.GetMemberData();
                 
-                if (TcpHelper.isAvailable)
+                if (TcpHelper.IsAvailable)
                 {
                     MoveOrderToHome();
                 }
@@ -196,7 +199,31 @@ namespace THE_LITER_KIOSK
 
         private void btnRedirectSocket_Click(object sender, RoutedEventArgs e)
         {
-            OnSocketLogin();
+            if (!TcpHelper.SocketClient.Connected)
+            {
+                OnSocketLogin();
+            }
+            else
+            {
+                MessageBox.Show("이미 서버에 연결되어 있습니다.");
+            }
+        }
+
+        private void PollingServerConnectionState()
+        {
+            try
+            {
+                if (TcpHelper.SocketClient.Poll(0, SelectMode.SelectRead))
+                {
+                    App.networkManager.DisconnectSocket();
+                    tbCurAccessTime.Text = "서버와의 연결이 끊어졌습니다.";
+                    tbCurAccessTime.Foreground = Brushes.Red;
+                }
+            }
+            catch (SocketException e)
+            {
+                Debug.WriteLine($"CHECK SERVER CONNECTION STATE ERROR : {e.Message}");
+            }
         }
     }
 }

@@ -4,7 +4,7 @@ namespace TheLiter.Core.Order
 {
     public class OrderData
     {
-        public OrderViewModel orderViewModel = new OrderViewModel();
+        public OrderDBViewModel orderViewModel = new OrderDBViewModel();
 
         public void LoadData()
         {

@@ -18,6 +18,7 @@ using System.Windows;
 using System.Windows.Input;
 using TheLiter.Core.Admin.Database;
 using TheLiter.Core.DBManager;
+using TheLiter.Core.Network;
 using TheLiter.Core.Network.Model;
 using TheLiter.Core.Order.Model;
 using SalesModel = TheLiter.Core.Admin.Model.SalesModel;
@@ -817,6 +818,78 @@ FROM
             {
                 return null;
             }
+        }
+
+        public TcpModel SendTotalSaleMsgToNormal()
+        {
+            #region DB
+            var saleItems = new List<SalesModel>();
+
+            using (var db = GetConnection())
+            {
+                db.Open();
+
+                string selectSql = @"
+SELECT
+    *
+FROM
+    sales_tb
+";
+                saleItems = salesDBManager.GetList(db, selectSql, "");
+            }
+            #endregion
+
+            int totalPrice = 0;
+            saleItems.ForEach(x =>
+            {
+                totalPrice += x.TotalPrice;
+            });
+
+            var tcpModel = new TcpModel();
+            var menuItems = new List<MenuModel>();
+            tcpModel.MessageType = (int)EMessageType.NORMAL_MESSAGE;
+            tcpModel.Id = "";
+            tcpModel.ShopName = "더리터 사이코점";
+            tcpModel.Content = totalPrice.ToString();
+            tcpModel.OrderNumber = "";
+            tcpModel.MenuItems = menuItems;
+            return tcpModel;
+        }
+
+        public string GetTotalSaleMsgArgs()
+        {
+            #region DB
+            var saleItems = new List<SalesModel>();
+
+            using (var db = GetConnection())
+            {
+                db.Open();
+
+                string selectSql = @"
+SELECT
+    *
+FROM
+    sales_tb
+";
+                saleItems = salesDBManager.GetList(db, selectSql, "");
+            }
+            #endregion
+
+            int totalPrice = 0;
+            saleItems.ForEach(x =>
+            {
+                totalPrice += x.TotalPrice;
+            });
+
+            JObject jObject = new JObject();
+            jObject.Add("MSGType", (int)EMessageType.NORMAL_MESSAGE);
+            jObject.Add("Id", "");
+            jObject.Add("Content", totalPrice.ToString());
+            jObject.Add("ShopName", "");
+            jObject.Add("OrderNumber", "");
+            jObject.Add("Menus", "");
+
+            return JsonConvert.SerializeObject(jObject);
         }
 
         private string ConvertPriceToString(double value)

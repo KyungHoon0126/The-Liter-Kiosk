@@ -13,6 +13,11 @@ namespace TheLiter.Core.DBManager
             await SqlMapper.QueryAsync(conn, sql);
         }
 
+        public List<T> GetList(IDbConnection conn, string sql, string search, IDbTransaction tran = null)
+        {
+            return SqlMapper.Query<T>(conn, sql, new { search = search }).ToList();
+        }
+
         public async Task<List<T>> GetListAsync(IDbConnection conn, string sql, string search, IDbTransaction tran = null)
         {
             return (await SqlMapper.QueryAsync<T>(conn, sql, new { search = search })).ToList();

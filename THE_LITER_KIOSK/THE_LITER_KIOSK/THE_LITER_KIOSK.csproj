@@ -146,8 +146,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Common\AutoLoginProxy.cs" />
+    <Compile Include="Converters\IsSoldOutToVisibilityConverter.cs" />
+    <Compile Include="Network\NetworkManager.cs" />
     <Compile Include="Util\DateTimeExtension.cs" />
-    <Compile Include="Util\Notifier.cs" />
     <Compile Include="Util\SaveFileManager.cs" />
     <Compile Include="Common\Setting.cs" />
     <Compile Include="Controls\AdminControl\AdminControl.xaml.cs">

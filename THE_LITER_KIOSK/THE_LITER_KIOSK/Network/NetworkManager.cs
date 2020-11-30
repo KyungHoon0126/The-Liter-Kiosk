@@ -5,15 +5,17 @@ using System.Diagnostics;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using THE_LITER_KIOSK.Util;
+using TheLiter.Core.DBManager;
 using TheLiter.Core.Network;
 using TheLiter.Core.Network.Model;
 
 namespace THE_LITER_KIOSK.Network
 {
-    public class NetworkManager
+    public class NetworkManager : MySqlDBConnectionManager
     {
-        private const string ip = "10.80.162.152";
-        // private const string ip = "10.80.163.141"; // 용빈 Computer
+        // private const string ip = "10.80.162.152";
+        private const string ip = "10.80.163.141"; // 용빈 Computer
         private const int port = 80;
 
         private static ManualResetEvent connectDone =
@@ -24,14 +26,14 @@ namespace THE_LITER_KIOSK.Network
             new ManualResetEvent(false);
         private static ManualResetEvent disconnectDone =
             new ManualResetEvent(false);
-            
+
         private static string response = string.Empty;
 
-        public void ConnectSocket(TcpModel tcpModel)    
+        public void ConnectSocket(TcpModel tcpModel)
         {
-            try 
+            try
             {
-                if(tcpModel != null)
+                if (tcpModel != null)
                 {
                     TcpHelper.SocketClient.BeginConnect(ip, port, new AsyncCallback(ConnectCallback), TcpHelper.SocketClient);
                     connectDone.WaitOne(0, true); // 완료되기를 기다림.    
@@ -55,14 +57,14 @@ namespace THE_LITER_KIOSK.Network
             {
                 Socket client = (Socket)ar.AsyncState;
                 client.EndConnect(ar);
-                
+
                 Debug.WriteLine("Socket connected to {0}", client.RemoteEndPoint.ToString());
-                
+
                 connectDone.Set();
             }
             catch (Exception e)
             {
-                Debug.WriteLine("CONNECT CALL BACK ERROR : " +  e.Message);
+                Debug.WriteLine("CONNECT CALL BACK ERROR : " + e.Message);
             }
         }
 
@@ -72,8 +74,7 @@ namespace THE_LITER_KIOSK.Network
             {
                 StateObjectModel state = new StateObjectModel();
                 state.workSocket = client;
-                // client.BeginReceive(state.buffer, 0, StateObjectModel.BufferSize, 0, new AsyncCallback(ReceiveCallback), state);
-                var result = client.BeginReceive(state.buffer, 0, StateObjectModel.BufferSize, 0, new AsyncCallback(ReceiveCallback), state);
+                client.BeginReceive(state.buffer, 0, StateObjectModel.BufferSize, 0, new AsyncCallback(ReceiveCallback), state);
             }
             catch (Exception e)
             {
@@ -92,27 +93,31 @@ namespace THE_LITER_KIOSK.Network
 
                 if (bytesRead > 0)
                 {
-                    var data = state.sb.Append(Encoding.UTF8.GetString(state.buffer, 0, bytesRead));
+                    var receiveMsg = Encoding.UTF8.GetString(state.buffer, 0, bytesRead);
+                    Debug.WriteLine($"SEVER MESSAGE : {receiveMsg}");
+
                     client.BeginReceive(state.buffer, 0, StateObjectModel.BufferSize, 0, new AsyncCallback(ReceiveCallback), state);
                     receiveDone.Set();
 
-                    // TODO : 서버에서 총매출이 담긴 메시지가 오면 총 매출을 보낼 것.
-                    if (data.Equals("총 매출") || data.Equals("총매출"))
+                    Notifier notifier = new Notifier();
+                    notifier.ShowNotifyMessage("공지사항", $"SERVER : {receiveMsg}");
+
+                    if (receiveMsg.Equals("총 매출액") || receiveMsg.Equals("총매출액"))
                     {
-                        TcpModel tcpPacket = new TcpModel();
+                        App.networkManager.Send(TcpHelper.SocketClient, App.networkManager.SetOrderMsgArgs(App.adminData.adminViewModel.SendTotalSaleMsgToNormal())); // => 메시지 잘만 전송됨.
+                        App.networkManager.Send(TcpHelper.SocketClient, App.networkManager.SetOrderMsgArgs(App.orderData.orderViewModel.SendOrderInfoToNormal("2106"))); 
+                        // App.networkManager.Send(TcpHelper.SocketClient, App.adminData.adminViewModel.GetTotalSaleMsgArgs()); // 여기는 메시지가 안보내짐. 이유를 모르겠음.
                     }
                 }
-                else if (state.sb != null)
-                {
-                    if (state.sb.Length > 1)
-                    {
-                        response = state.sb.ToString();
-                        Debug.WriteLine(response);
-                        
-                        // 공지사항 메시지 띄우기
-                    }
-                    receiveDone.Set();
-                }
+                //else if (state.sb != null)
+                //{
+                //    if (state.sb.Length > 1)
+                //    {
+                //        response = state.sb.ToString();
+                //        Debug.WriteLine(response);
+                //    }
+                //    receiveDone.Set();
+                //}
             }
             catch (Exception e)
             {
@@ -125,16 +130,16 @@ namespace THE_LITER_KIOSK.Network
             byte[] byteData = Encoding.UTF8.GetBytes(data);
             client.BeginSend(byteData, 0, byteData.Length, 0, new AsyncCallback(SendCallback), client);
         }
-        
+
         private void SendCallback(IAsyncResult ar)
         {
             try
             {
                 Socket client = (Socket)ar.AsyncState;
                 int bytesSent = client.EndSend(ar);
-                
+
                 Debug.WriteLine("Sent{0} bytes to server.", bytesSent);
-                
+
                 sendDone.Set();
             }
             catch (Exception e)
@@ -165,9 +170,6 @@ namespace THE_LITER_KIOSK.Network
             try
             {
                 Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                //client.Connect(ip, port);
-                //return client.Connected ? true : false;
-
                 var result = client.BeginConnect(ip, port, null, null);
                 bool isConnected = result.AsyncWaitHandle.WaitOne(1000, true);
                 return isConnected;

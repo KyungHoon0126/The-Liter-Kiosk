@@ -12,15 +12,16 @@ using TheLiter.Core.DBManager;
 using TheLiter.Core.Network;
 using TheLiter.Core.Network.Model;
 using TheLiter.Core.Order.DataBase.Model;
+using TheLiter.Core.Order.Interface;
 using TheLiter.Core.Order.Model;
 
 namespace TheLiter.Core.Order.ViewModel
 {
-    public class OrderViewModel : MySqlDBConnectionManager, INotifyPropertyChanged
+    public class OrderDBViewModel : MySqlDBConnectionManager, INotifyPropertyChanged, IDataSave
     {
         private DBManager<THE_LITER_KIOSK.DataBase.Models.SalesModel> salesDBManager = new DBManager<THE_LITER_KIOSK.DataBase.Models.SalesModel>();
         private DBManager<ReceiptModel> receiptDBManager = new DBManager<ReceiptModel>();
-        private DBManager<SalesModel> orderDBManager = new DBManager<SalesModel>();
+        private DBManager<Model.SalesModel> orderDBManager = new DBManager<Model.SalesModel>();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -36,8 +37,8 @@ namespace TheLiter.Core.Order.ViewModel
             }
         }
 
-        private ObservableCollection<SalesModel> _menuItems;
-        public ObservableCollection<SalesModel> MenuItems
+        private ObservableCollection<Model.SalesModel> _menuItems;
+        public ObservableCollection<Model.SalesModel> MenuItems
         {
             get => _menuItems;
             set
@@ -47,8 +48,8 @@ namespace TheLiter.Core.Order.ViewModel
             }
         }
 
-        private ObservableCollection<SalesModel> _orderedMenuItems;
-        public ObservableCollection<SalesModel> OrderedMenuItems
+        private ObservableCollection<Model.SalesModel> _orderedMenuItems;
+        public ObservableCollection<Model.SalesModel> OrderedMenuItems
         {
             get => _orderedMenuItems;
             set 
@@ -257,7 +258,7 @@ namespace TheLiter.Core.Order.ViewModel
         #endregion
 
         #region Constructor
-        public OrderViewModel()
+        public OrderDBViewModel()
         {
             InitVariables();
             InitCommands();
@@ -838,9 +839,9 @@ namespace TheLiter.Core.Order.ViewModel
             return (CurrentPageIdx * itemPerPage) - itemPerPage;
         }
 
-        private ObservableCollection<SalesModel> ExtractMenuItems(int itemPerPage)
+        private ObservableCollection<Model.SalesModel> ExtractMenuItems(int itemPerPage)
         {
-            return new ObservableCollection<SalesModel>(CurrentMenuList.GetRange(GetCurrentMenusCnt(), itemPerPage).ToList());
+            return new ObservableCollection<Model.SalesModel>(CurrentMenuList.GetRange(GetCurrentMenusCnt(), itemPerPage).ToList());
         }
 
         private void IncreasePageIdx()
@@ -870,17 +871,17 @@ namespace TheLiter.Core.Order.ViewModel
             return (OrderedMenuItems != null && OrderedMenuItems.Count > 0) ? true : false;
         }
 
-        public bool IsQuantityValid(SalesModel selectedMenu)
+        public bool IsQuantityValid(Model.SalesModel selectedMenu)
         {
             return (selectedMenu.Count == 1) ? true : false;
         }
 
-        public void AddOrderedMenuItems(SalesModel selectedMenu)
+        public void AddOrderedMenuItems(Model.SalesModel selectedMenu)
         {
             OrderedMenuItems.Add(selectedMenu);
         }
 
-        public void IncreaseMenuCount(SalesModel selectedMenu)
+        public void IncreaseMenuCount(Model.SalesModel selectedMenu)
         {
             int discountAmount = ((selectedMenu.Price * selectedMenu.DiscountRate) / 100);
             int discountPrice = selectedMenu.Price - discountAmount; 
@@ -892,7 +893,7 @@ namespace TheLiter.Core.Order.ViewModel
             OrderTotalPrice += selectedMenu.Price; 
         }
 
-        public void DecreaseMenuCount(SalesModel selectedMenu)
+        public void DecreaseMenuCount(Model.SalesModel selectedMenu)
         {
             int discountPrice = selectedMenu.Price - ((selectedMenu.Price * selectedMenu.DiscountRate) / 100); 
             selectedMenu.Count--;
@@ -902,7 +903,7 @@ namespace TheLiter.Core.Order.ViewModel
             OrderTotalPrice -= selectedMenu.Price; 
         }
 
-        public void ClearSelectedMenuItems(SalesModel selectedMenu)
+        public void ClearSelectedMenuItems(Model.SalesModel selectedMenu)
         {
             var temp = selectedMenu.Count;
             var removeTarget = OrderedMenuItems.Where(x => x.Name == selectedMenu.Name).FirstOrDefault();
@@ -916,7 +917,7 @@ namespace TheLiter.Core.Order.ViewModel
             IsEnabledOrderAndClearAllMenuBtn();
         }
 
-        public void RemoveSelectedMenu(SalesModel selectedMenu)
+        public void RemoveSelectedMenu(Model.SalesModel selectedMenu)
         { 
             OrderedMenuItems.Remove(selectedMenu);
             IsEnabledOrderAndClearAllMenuBtn();
@@ -924,7 +925,7 @@ namespace TheLiter.Core.Order.ViewModel
 
         private async void SetMenuDiscountRateAndIsSoldOut()
         {
-            List<SalesModel> items = await GetAllMenuDisCountRateAndIsSoldOut();
+            List<Model.SalesModel> items = await GetAllMenuDisCountRateAndIsSoldOut();
 
             for (int i = 0; i < PagingMenuList.Count; i++)
             {
@@ -969,7 +970,7 @@ namespace TheLiter.Core.Order.ViewModel
             return tcpModel;
         }
 
-        public MessageModel SendOrderInfoToGroup(string id, ObservableCollection<SalesModel> OrderedMenuItems)
+        public MessageModel SendOrderInfoToGroup(string id, ObservableCollection<Model.SalesModel> OrderedMenuItems)
         {
             var messageModel = new MessageModel();
             var menuItems = new List<MenuModel>();
@@ -997,7 +998,7 @@ namespace TheLiter.Core.Order.ViewModel
         }
 
         #region DataBase
-        private async void GetReceiptIdx()
+        public async void GetReceiptIdx()
         {
             try
             {
@@ -1024,7 +1025,7 @@ ORDER BY
             }
         }
 
-        private async void SaveReceiptIdx()
+        public async void SaveReceiptIdx()
         {
             try
             {
@@ -1124,7 +1125,7 @@ VALUES(
             }
         }
 
-        private async Task<List<SalesModel>> GetAllMenuDisCountRateAndIsSoldOut()
+        public async Task<List<Model.SalesModel>> GetAllMenuDisCountRateAndIsSoldOut()
         {
             try
             {

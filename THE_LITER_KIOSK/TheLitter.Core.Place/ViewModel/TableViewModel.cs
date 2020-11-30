@@ -12,7 +12,7 @@ namespace TheLitter.Core.Place.ViewModel
 {
     public class TableViewModel: BindableBase
     {
-        OrderViewModel orderViewModel = new OrderViewModel();
+        OrderDBViewModel orderViewModel = new OrderDBViewModel();
 
         #region Properties
         private bool _isActive;

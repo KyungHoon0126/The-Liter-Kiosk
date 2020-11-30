@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using THE_LITER_KIOSK.Network;
@@ -37,17 +38,27 @@ namespace THE_LITER_KIOSK.Controls.AdminControl
 
         private void SendMsg()
         {
-            if (tbTransMsg.Text != null && TcpHelper.SocketClient.Connected)
+            if (tbTransMsg.Text.Trim().Length > 0 && tbTransMsg.Text != "" && tbTransMsg.Text != null && TcpHelper.SocketClient.Connected)
             {
-                spUserChat.Children.Add(new TextBlock() 
+                App.networkManager.Send(TcpHelper.SocketClient, App.adminData.adminViewModel.GetMsgArgs());
+
+                spUserChat.Children.Add(new TextBlock()
                 {
                     Margin = new Thickness(5),
-                    Text = App.memberData.memberViewModel.Id + " : " + tbTransMsg.Text, 
+                    Text =  $"SEND : {tbTransMsg.Text}", 
                     FontSize = 30, 
+                    TextWrapping = TextWrapping.Wrap
                 });
-
-                App.networkManager.Send(TcpHelper.SocketClient, App.adminData.adminViewModel.GetMsgArgs());
+                
                 tbTransMsg.Text = string.Empty;
+
+                spServerChat.Children.Add(new TextBlock()
+                {
+                    Margin = new Thickness(5),
+                    FontSize = 30,
+                    Text = $"RECEIVE : {TcpHelper.ReceiveMessage}",
+                    TextWrapping = TextWrapping.Wrap
+                });
             }
         }
     }

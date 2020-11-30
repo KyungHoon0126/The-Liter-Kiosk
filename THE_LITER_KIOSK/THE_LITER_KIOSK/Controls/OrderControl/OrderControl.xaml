@@ -13,6 +13,7 @@
         <converter:IsSoldOutToStringConverter x:Key="IsSoldOutToStringConverter"/>
         <converter:IsSoldOutToFocusableConverter x:Key="IsSoldOutToFocusableConverter"/>
         <converter:IsSoldOutToOpacityConverter x:Key="IsSoldOutToOpacityConverter"/>
+        <converter:IsSoldOutToVisibilityConverter x:Key="IsSoldOutToVisibilityConverter"/>
     </UserControl.Resources>
     
     <Grid Background="White">
@@ -110,20 +111,27 @@
                     
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <StackPanel>
-                                <StackPanel.Resources>
-                                    <Style TargetType="TextBlock">
-                                        <Setter Property="HorizontalAlignment" Value="Center"/>
-                                        <Setter Property="FontSize" Value="20"/>
-                                    </Style>
-                                </StackPanel.Resources>
-                                <Image Source="{Binding ImageUrl}"/>
-                                <TextBlock Text="{Binding Name}" 
-                                           FontWeight="SemiBold"/>
-                                <TextBlock Text="{Binding Price, StringFormat={}{0}원}"/>
-                                <TextBlock Text="{Binding DiscountRate, StringFormat={}할인율 : {0}%}"/>
-                                <TextBlock Text="{Binding IsSoldOut, StringFormat={}품절 : {0}, Converter={StaticResource IsSoldOutToStringConverter}}"/>
-                            </StackPanel>
+                            <Grid>
+                                <StackPanel>
+                                    <StackPanel.Resources>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="HorizontalAlignment" Value="Center"/>
+                                            <Setter Property="FontSize" Value="20"/>
+                                        </Style>
+                                    </StackPanel.Resources>
+                                    <Image Source="{Binding ImageUrl}"/>
+                                    <TextBlock Text="{Binding Name}" 
+                                               FontWeight="SemiBold"/>
+                                    <TextBlock Text="{Binding Price, StringFormat={}{0}원}"/>
+                                    <TextBlock Text="{Binding DiscountRate, StringFormat={}할인율 : {0}%}"/>
+                                    <TextBlock Text="{Binding IsSoldOut, StringFormat={}품절 : {0}, Converter={StaticResource IsSoldOutToStringConverter}}"/>
+                                </StackPanel>
+
+                                <TextBlock Text="품절" Margin="0,0,0,80"
+                                           FontSize="80" Foreground="Red"
+                                           HorizontalAlignment="Center" VerticalAlignment="Center"
+                                           Visibility="{Binding IsSoldOut, Converter={StaticResource IsSoldOutToVisibilityConverter}}"/>
+                            </Grid>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
