@@ -120,6 +120,7 @@
                                   Content="자동로그인"
                                   HorizontalAlignment="Right"
                                   Checked="CbAutologin_Checked"
+                                  IsChecked="{Binding IsAutoLogin}"
                                   Style="{StaticResource MaterialDesignAccentCheckBox}" 
                                   Grid.Column="1"/>
                     </Grid>

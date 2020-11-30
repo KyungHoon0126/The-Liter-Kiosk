@@ -280,9 +280,10 @@ FROM
     member_tb
 WHERE
     id = '{Id}'
-AND
-    pw = '{Pw}'
 ;";
+
+// AND
+//  pw = '{Pw}'
                     member = await memberDBManager.GetSingleDataAsync(db, selectSql, "");
                     return (member.BarCode != null && member.Name != null && member.QrCode != null) ? true : false;
                 }

@@ -23,7 +23,11 @@ namespace THE_LITER_KIOSK.Controls.HomeControl
 
         private void btnAdmin_Click(object sender, RoutedEventArgs e)
         {
-            Task.Run(() => { App.adminData.LoadData(); });
+            Parallel.Invoke(() =>
+            {
+                App.adminData.SetStatisticData();
+                App.adminData.LoadChartData();
+            });
             App.memberData.GetAllMemberData();
             App.uIStateManager.SwitchCustomControl(CustomControlType.ADMIN);
         }

@@ -1,6 +1,4 @@
-﻿using Microsoft.WindowsAPICodePack.Dialogs;
-using System.Diagnostics;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 
 namespace THE_LITER_KIOSK.Controls.AdminControl

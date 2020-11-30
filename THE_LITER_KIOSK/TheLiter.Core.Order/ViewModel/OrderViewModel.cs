@@ -802,7 +802,7 @@ namespace TheLiter.Core.Order.ViewModel
 
         public void IsEnabledOrderAndClearAllMenuBtn()
         {
-            if (IsOrderedMenuItemsValid())
+            if (IsValidOrderedMenuItems())
             {
                 OrderBtnIsEnabled = true;
                 ClearAllMenuItemBtnIsEnabled = true;
@@ -835,12 +835,12 @@ namespace TheLiter.Core.Order.ViewModel
 
         private int GetCurrentMenusCnt()
         {
-            return CurrentPageIdx * itemPerPage - itemPerPage;
+            return (CurrentPageIdx * itemPerPage) - itemPerPage;
         }
 
-        private ObservableCollection<Model.SalesModel> ExtractMenuItems(int itemPerPage)
+        private ObservableCollection<SalesModel> ExtractMenuItems(int itemPerPage)
         {
-            return new ObservableCollection<Model.SalesModel>(CurrentMenuList.GetRange(GetCurrentMenusCnt(), itemPerPage).ToList());
+            return new ObservableCollection<SalesModel>(CurrentMenuList.GetRange(GetCurrentMenusCnt(), itemPerPage).ToList());
         }
 
         private void IncreasePageIdx()
@@ -865,48 +865,44 @@ namespace TheLiter.Core.Order.ViewModel
             DiscountTotalPrice = 0;
         }
 
-        public bool IsOrderedMenuItemsValid()
+        internal bool IsValidOrderedMenuItems()
         {
             return (OrderedMenuItems != null && OrderedMenuItems.Count > 0) ? true : false;
         }
 
-        public bool IsQuantityValid(Model.SalesModel selectedMenu)
+        public bool IsQuantityValid(SalesModel selectedMenu)
         {
             return (selectedMenu.Count == 1) ? true : false;
         }
 
-        public void AddOrderedMenuItems(Model.SalesModel selectedMenu)
+        public void AddOrderedMenuItems(SalesModel selectedMenu)
         {
             OrderedMenuItems.Add(selectedMenu);
         }
 
-        public void IncreaseMenuCount(Model.SalesModel selectedMenu)
+        public void IncreaseMenuCount(SalesModel selectedMenu)
         {
             int discountAmount = ((selectedMenu.Price * selectedMenu.DiscountRate) / 100);
-            int discountPrice = selectedMenu.Price - discountAmount; // 기존 가격 - 할인금액, 사용자에게 보여지는 가격, 할인율이 있다면 할인율이 적용된 가격
-            
+            int discountPrice = selectedMenu.Price - discountAmount; 
             selectedMenu.Count++;
             selectedMenu.DiscountPrice += discountPrice;  
             DiscountTotalPrice += discountPrice; 
-
-            selectedMenu.DiscountAmount = discountAmount; // 할인 금액
-            selectedMenu.TotalPrice += selectedMenu.Price; // 할인 X, 메뉴 총 금액
-            OrderTotalPrice += selectedMenu.Price; // 할인 X, 주문 전체 금액
+            selectedMenu.DiscountAmount = discountAmount; 
+            selectedMenu.TotalPrice += selectedMenu.Price;
+            OrderTotalPrice += selectedMenu.Price; 
         }
 
-        public void DecreaseMenuCount(Model.SalesModel selectedMenu)
+        public void DecreaseMenuCount(SalesModel selectedMenu)
         {
-            int discountPrice = selectedMenu.Price - ((selectedMenu.Price * selectedMenu.DiscountRate) / 100); // 기존 가격 - 할인금액, 사용자에게 보여지는 가격, 할인율이 있다면 할인율이 적용된 가격
-
+            int discountPrice = selectedMenu.Price - ((selectedMenu.Price * selectedMenu.DiscountRate) / 100); 
             selectedMenu.Count--;
             selectedMenu.DiscountPrice -= discountPrice; 
             DiscountTotalPrice -= discountPrice; 
-
-            selectedMenu.TotalPrice -= selectedMenu.Price; // 할인 X, 메뉴 총 금액
-            OrderTotalPrice -= selectedMenu.Price; // 할인 X, 주문 전체 금액
+            selectedMenu.TotalPrice -= selectedMenu.Price; 
+            OrderTotalPrice -= selectedMenu.Price; 
         }
 
-        public void ClearSelectedMenuItems(Model.SalesModel selectedMenu)
+        public void ClearSelectedMenuItems(SalesModel selectedMenu)
         {
             var temp = selectedMenu.Count;
             var removeTarget = OrderedMenuItems.Where(x => x.Name == selectedMenu.Name).FirstOrDefault();
@@ -954,7 +950,10 @@ namespace TheLiter.Core.Order.ViewModel
             tcpModel.Id = id;
             tcpModel.ShopName = "더리터 사이코점";
             tcpModel.Content = "";
-            tcpModel.OrderNumber = ConvertReceiptIdx(ReceiptIdx % 100);
+
+            Debug.WriteLine(ReceiptIdx % 100);
+            tcpModel.OrderNumber = string.Format("{0:D3}", (ReceiptIdx % 100));
+            Debug.WriteLine(tcpModel.OrderNumber);
 
             for (int i = 0; i < orderedMenuItems.Count; i++)
             {
@@ -970,24 +969,6 @@ namespace TheLiter.Core.Order.ViewModel
             return tcpModel;
         }
 
-        private string ConvertReceiptIdx(int receiptIdx)
-        {
-            var ReceiptIdx = receiptIdx.ToString();
-
-            if (ReceiptIdx.Length <= 1)
-            {
-                return "0" + ReceiptIdx;
-            }
-            else if (ReceiptIdx.Length <= 2)
-            {
-                return "00" + ReceiptIdx;
-            }
-            else
-            {
-                return ReceiptIdx;
-            }
-        }
-
         public MessageModel SendOrderInfoToGroup(string id, ObservableCollection<SalesModel> OrderedMenuItems)
         {
             var messageModel = new MessageModel();
@@ -998,7 +979,7 @@ namespace TheLiter.Core.Order.ViewModel
             messageModel.Id = id;
             messageModel.ShopName = "더리터 사이코점";
             messageModel.Content = "";
-            messageModel.OrderNumber = (ReceiptIdx % 100).ToString();
+            messageModel.OrderNumber = string.Format("{0:D3}", ReceiptIdx % 100);
             messageModel.Group = true;
 
             for (int i = 0; i < orderedMenuItems.Count; i++)
@@ -1072,7 +1053,7 @@ VALUES(
 
         public async void SaveSalesInformation(DateTime payTime, string payType, int? tableIdx, string memberId)
         {
-            if (IsOrderedMenuItemsValid())
+            if (IsValidOrderedMenuItems())
             {
                 try
                 {
@@ -1143,7 +1124,7 @@ VALUES(
             }
         }
 
-        private async Task<List<Model.SalesModel>> GetAllMenuDisCountRateAndIsSoldOut()
+        private async Task<List<SalesModel>> GetAllMenuDisCountRateAndIsSoldOut()
         {
             try
             {

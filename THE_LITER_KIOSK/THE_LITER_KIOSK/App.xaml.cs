@@ -2,6 +2,7 @@
 using THE_LITER_KIOSK.Common;
 using THE_LITER_KIOSK.Network;
 using THE_LITER_KIOSK.UIManager;
+using THE_LITER_KIOSK.Util;
 using TheLiter.Core.Admin;
 using TheLiter.Core.Member;
 using TheLiter.Core.Order;
@@ -27,6 +28,10 @@ namespace THE_LITER_KIOSK
         public static int qrIndex = 0;
 
         public static SaveFileManager saveFileManager = new SaveFileManager();
+
+        public static AutoLoginProxy autoLoginProxy = new AutoLoginProxy();
+
+        public static Notifier notifier = new Notifier(); 
 
         public App()
         {

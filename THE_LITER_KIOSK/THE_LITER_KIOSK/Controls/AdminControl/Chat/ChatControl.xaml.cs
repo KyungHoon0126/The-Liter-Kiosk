@@ -37,7 +37,7 @@ namespace THE_LITER_KIOSK.Controls.AdminControl
 
         private void SendMsg()
         {
-            if (tbTransMsg.Text != null)
+            if (tbTransMsg.Text != null && TcpHelper.SocketClient.Connected)
             {
                 spUserChat.Children.Add(new TextBlock() 
                 {
@@ -45,6 +45,7 @@ namespace THE_LITER_KIOSK.Controls.AdminControl
                     Text = App.memberData.memberViewModel.Id + " : " + tbTransMsg.Text, 
                     FontSize = 30, 
                 });
+
                 App.networkManager.Send(TcpHelper.SocketClient, App.adminData.adminViewModel.GetMsgArgs());
                 tbTransMsg.Text = string.Empty;
             }

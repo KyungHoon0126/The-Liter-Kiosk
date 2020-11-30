@@ -8,6 +8,7 @@ using System.Windows.Media;
 using System.Windows.Threading;
 using THE_LITER_KIOSK.Network;
 using THE_LITER_KIOSK.UIManager;
+using THE_LITER_KIOSK.Util;
 using TheLiter.Core.Network;
 using TheLiter.Core.Network.Model;
 
@@ -36,22 +37,17 @@ namespace THE_LITER_KIOSK
             dispatcherTimer.Tick += DispatcherTimer_Tick;
             dispatcherTimer.Start();
             #endregion
-
             Task.Run(() => LoadData());
-            
             SetCustomControls();
             SetStartCustomControl();
-
             App.adminData.adminViewModel.SyncProgramOpertaionTime();
-            
             TcpHelper.InitializeClient();
-            OnSocketLogin();
         }
 
         private void DispatcherTimer_Tick(object sender, EventArgs e)
         {
             App.adminData.adminViewModel.IncreaseOperationTime();
-            tbClock.Text = DateTime.Now.ToString("tt H시 mm분 ss초 dddd");
+            tbClock.Text = DateTimeExtension.ConvertDateTimeToDayOfTheWeek(DateTime.Now);
         }
 
         #region Init
@@ -59,7 +55,7 @@ namespace THE_LITER_KIOSK
         {
             App.orderData.LoadData();
             App.placeData.LoadTableData();
-            App.adminData.adminViewModel.GetAllSalesInformation();
+            App.adminData.LoadSalesData();
             App.orderData.SetPagingMenuItems();
         }
 
@@ -86,9 +82,9 @@ namespace THE_LITER_KIOSK
 
         private void btnHome_Click(object sender, RoutedEventArgs e)
         {
-            if (App.orderData.orderViewModel.IsOrderedMenuItemsValid())
+            if (App.orderData.IsValidOrderedMenuItems())
             {
-                MessageBoxResult result = MessageBox.Show("주문을 취소하시겠습니까?", "주문", MessageBoxButton.YesNo);
+                MessageBoxResult result = MessageBox.Show("주문을 취소하시겠습니까?", "주문 화면", MessageBoxButton.YesNo);
                 switch (result)
                 {
                     case MessageBoxResult.Yes:
@@ -110,26 +106,26 @@ namespace THE_LITER_KIOSK
 
         private void OnSocketLogin()
         {
-            // isAvailable = App.networkManager.CheckServerState();
-            Task.Run(() => TcpHelper.isAvailable = App.networkManager.CheckServerState());
+            TcpHelper.isAvailable = App.networkManager.CheckServerState();
 
-            if (TcpHelper.isAvailable && !TcpHelper.isConnected)
+            if (TcpHelper.isAvailable && !TcpHelper.SocketClient.Connected)
             {
                 new Thread(() =>
                 {
-                    TcpModel tcpModel = new TcpModel();
+                    #region SET LOGIN PACKET
+                    TcpModel tcpPacket = new TcpModel();
                     List<MenuModel> menuItems = new List<MenuModel>();
-                    tcpModel.MessageType = (int)EMessageType.LOGIN;
-                    tcpModel.Id = App.memberData.memberViewModel.Id;
-                    tcpModel.ShopName = "";
-                    tcpModel.Content = "";
-                    tcpModel.OrderNumber = "";
-                    tcpModel.MenuItems = menuItems;
-
-                    App.networkManager.ConnectSocket(tcpModel);
+                    tcpPacket.MessageType = (int)EMessageType.LOGIN;
+                    tcpPacket.Id = App.memberData.memberViewModel.Id;
+                    tcpPacket.ShopName = "";
+                    tcpPacket.Content = "";
+                    tcpPacket.OrderNumber = "";
+                    tcpPacket.MenuItems = menuItems;
+                    #endregion
+                    App.networkManager.ConnectSocket(tcpPacket);
                 }).Start();
 
-                tbCurAccessTime.Text = "최근 서버 접속 시간 : " + DateTime.Now.ToString("tt H시 mm분 ss초");
+                tbCurAccessTime.Text = $"최근 서버 접속 시간 : {DateTimeExtension.ConvertDateTime(DateTime.Now)}";
                 tbCurAccessTime.Foreground = Brushes.Green;
             }
             else
@@ -143,16 +139,22 @@ namespace THE_LITER_KIOSK
         private void Window_KeyDown(object sender, KeyEventArgs e)
         {
             Stack<CustomControlModel> customControls = App.uIStateManager.customCtrlStack;
-            if (customControls.Count > 0 && e.Key == Key.F2 && customControls.Peek() == CtrlHome)
+            if (e.Key == Key.F2 && customControls.Count > 0 && customControls.Peek() == CtrlHome)
             {
-                Task.Run(() => { App.adminData.LoadData(); });
-                App.memberData.GetAllMemberData();
+                Parallel.Invoke(() =>
+                {
+                    App.adminData.SetStatisticData();
+                    App.adminData.LoadChartData();
+                    App.memberData.GetAllMemberData();
+                });
                 App.uIStateManager.SwitchCustomControl(CustomControlType.ADMIN);
             }
         }
 
         private void CtrlLogin_OnLoginResultRecieved(object sender, bool success)
         {
+            OnSocketLogin();
+
             if (success)
             {
                 CtrlLogin.Visibility = Visibility.Collapsed;
@@ -166,7 +168,7 @@ namespace THE_LITER_KIOSK
                 }
                 else
                 {
-                    MessageBoxResult result = MessageBox.Show("서버 연결이 안된채로 수행하시겠습니까?", "서버 연결", MessageBoxButton.YesNo);
+                    MessageBoxResult result = MessageBox.Show("서버 연결이 안된채로 계속 하시겠습니까?", "서버 연결", MessageBoxButton.YesNo);
                     switch (result)
                     {
                         case MessageBoxResult.Yes:

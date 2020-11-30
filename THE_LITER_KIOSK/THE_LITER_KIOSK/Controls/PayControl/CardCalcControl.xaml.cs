@@ -41,12 +41,14 @@ namespace THE_LITER_KIOSK.Controls.PayControl
                 var payTime = DateTime.Now;
                 var memberId = App.memberData.memberViewModel.Id;
 
-                SetPayByCardDelegate setDel = (tableIdx) =>
+                SetPayByCardDelegate setMethod = (tableIdx) =>
                 {
                     ClearQrCode();
                     SaveSalesInformation(payTime, PaymentType.CARD.ToString(), tableIdx, memberId);
 
-                    if (TcpHelper.isConnected)
+                    var item = App.orderData.orderViewModel.ReceiptIdx;
+
+                    if (TcpHelper.SocketClient.Connected)
                     {
                         App.networkManager.Send(TcpHelper.SocketClient, App.networkManager.SetOrderMsgArgs(App.orderData.orderViewModel.SendOrderInfoToNormal(memberId)));
                         App.networkManager.Send(TcpHelper.SocketClient, App.networkManager.SetGroupMsgArgs(App.orderData.orderViewModel.SendOrderInfoToGroup(memberId, App.orderData.orderViewModel.OrderedMenuItems)));
@@ -60,11 +62,11 @@ namespace THE_LITER_KIOSK.Controls.PayControl
                 if (selectedTable != null)
                 {
                     selectedTable.PayTime = payTime.ToString();
-                    setDel(selectedTable.TableIdx);
+                    setMethod(selectedTable.TableIdx);
                 }
                 else
                 {
-                    setDel(null);
+                    setMethod(null);
                 }
             }
             else
@@ -78,7 +80,7 @@ namespace THE_LITER_KIOSK.Controls.PayControl
 
         private void SaveSalesInformation(DateTime payTime, string paymentType, int? tableIdx, string memberId)
         {
-            Task.Run(() => { App.orderData.orderViewModel.SaveSalesInformation(payTime, paymentType, tableIdx, memberId); });
+            Task.Run(() => App.orderData.orderViewModel.SaveSalesInformation(payTime, paymentType, tableIdx, memberId));
         }
 
         private void ClearQrCode()

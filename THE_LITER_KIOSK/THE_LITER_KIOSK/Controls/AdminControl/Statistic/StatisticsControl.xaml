@@ -1,12 +1,10 @@
 ﻿<UserControl x:Class="THE_LITER_KIOSK.Controls.AdminControl.StatisticsControl"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
-             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-             xmlns:local="clr-namespace:THE_LITER_KIOSK.Controls.AdminControl"
              xmlns:converter="clr-namespace:THE_LITER_KIOSK.Converters"
-             xmlns:model="clr-namespace:TheLiter.Core.Admin.Model;assembly=TheLiter.Core.Admin"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     
@@ -19,14 +17,6 @@
             <Setter Property="FontFamily" Value="AppleSDGothicNeoSB00"/>
             <Setter Property="Margin" Value="5"/>
         </Style>
-
-        <!--<DataTemplate x:Key="lvSalesbyCategoryDataTemplate" DataType="{x:Type model:SalesModel}">
-            <Grid>
-                <TextBlock Text="{Binding Category}"/>
-                <TextBlock Text="{Binding Count}"/>
-                <TextBlock Text="{Binding TotalPrice}"/>
-            </Grid>
-        </DataTemplate>-->
     </UserControl.Resources>
     
     <Grid Background="White">

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
 using THE_LITER_KIOSK.Common;
 using THE_LITER_KIOSK.Network;
@@ -10,47 +9,28 @@ namespace THE_LITER_KIOSK.Controls.AdminControl
     /// <summary>
     /// Interaction logic for OptionControl.xaml
     /// </summary>
-    public partial class OptionControl : UserControl, INotifyPropertyChanged
+    public partial class OptionControl : UserControl
     {
-        public event PropertyChangedEventHandler PropertyChanged;
-        public void NotifyPropertyChanged(string propertyName)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
-
-        private bool _autoLogin = Setting.IsAutoLogin;
-        public bool AutoLogin
-        {
-            get => _autoLogin;
-            set
-            {
-                _autoLogin = value;
-                NotifyPropertyChanged(nameof(AutoLogin));
-                Setting.IsAutoLogin = _autoLogin;
-                Setting.Save();
-            }
-        }
-
         public OptionControl()
         {
             InitializeComponent();
             Loaded += OptionControl_Loaded;
-        }
+        } 
 
         private void OptionControl_Loaded(object sender, RoutedEventArgs e)
         {
-            this.DataContext = this;
+            this.DataContext = App.autoLoginProxy;
         }
 
         private void cbAutoLogin_Checked(object sender, RoutedEventArgs e)
         {
             if ((sender as CheckBox).IsChecked ?? false)
             {
-                Setting.IsAutoLogin = true;
+                App.autoLoginProxy.IsAutoLogin = true;
             }
             else
             {
-                Setting.IsAutoLogin = false;
+                App.autoLoginProxy.IsAutoLogin = false;
             }
 
             Setting.Save();
@@ -58,13 +38,12 @@ namespace THE_LITER_KIOSK.Controls.AdminControl
 
         private void btnLogOut_Click(object sender, RoutedEventArgs e)
         {
-            if (TcpHelper.isConnected)
+            if (TcpHelper.SocketClient.Connected)
             {
                 App.networkManager.DisconnectSocket();
             }
 
-            Setting.IsAutoLogin = false;
-            Setting.Save();
+            App.autoLoginProxy.IsAutoLogin = false;
             App.uIStateManager.SwitchCustomControl(CustomControlType.LOGIN);
         }
     }

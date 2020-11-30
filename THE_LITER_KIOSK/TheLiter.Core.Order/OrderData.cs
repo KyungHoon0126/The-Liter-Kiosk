@@ -17,6 +17,11 @@ namespace TheLiter.Core.Order
             orderViewModel.IsEnabledOrderAndClearAllMenuBtn();
         }
 
+        public bool IsValidOrderedMenuItems()
+        {
+            return orderViewModel.IsValidOrderedMenuItems();
+        }
+
         public void SetPagingMenuItems()
         {
             orderViewModel.SetPagingMenuItems();

@@ -28,7 +28,8 @@ namespace THE_LITER_KIOSK.Controls.AdminControl
             var ctrlStack = App.uIStateManager.customCtrlStack;
             if (ctrlStack.Count > 0 && ctrlStack.Peek().userCtrlType == CustomControlType.ADMIN)
             {
-                App.orderData.orderViewModel.OrderedMenuItems.Clear();
+                // App.orderData.orderViewModel.OrderedMenuItems.Clear();
+                App.orderData.InitData();
                 LoadMenuSettingWindow?.Invoke(this, e);
             }
         }

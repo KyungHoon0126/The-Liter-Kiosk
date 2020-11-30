@@ -34,7 +34,8 @@ namespace THE_LITER_KIOSK.Controls
         {
             string id = Setting.GetUserId();
             isAutoLogin = Setting.IsAutoLogin;
-            cbAutoLogin.IsChecked = isAutoLogin;
+            // cbAutoLogin.IsChecked = isAutoLogin;
+            cbAutoLogin.DataContext = App.autoLoginProxy;
             App.memberData.memberViewModel.Id = id;
 
             string pw = Setting.GetUserPw();

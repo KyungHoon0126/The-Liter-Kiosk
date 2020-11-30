@@ -10,7 +10,7 @@
             <CheckBox x:Name="cbAutoLogin"
                       Margin="10"
                       Content="자동 로그인"
-                      IsChecked="{Binding AutoLogin}"
+                      IsChecked="{Binding IsAutoLogin}"
                       FontSize="30"
                       FocusVisualStyle="{x:Null}"
                       Checked="cbAutoLogin_Checked"

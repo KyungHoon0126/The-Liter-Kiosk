@@ -22,7 +22,12 @@ namespace THE_LITER_KIOSK.Controls.AdminControl
         {
             ctrlMenuManagement.LoadMenuSettingWindow += CtrlMenuManagement_LoadMenuSettingWindow;
             
-            Task.Run(() => { App.adminData.LoadData(); });
+            Parallel.Invoke(() =>
+            {
+                App.adminData.SetStatisticData();
+                App.adminData.LoadChartData();
+            });
+
             this.DataContext = App.adminData.adminViewModel;
 
             DispatcherTimer programOperationTimer = new DispatcherTimer();

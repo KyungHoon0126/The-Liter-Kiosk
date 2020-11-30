@@ -138,7 +138,7 @@ namespace THE_LITER_KIOSK.Controls.OrderControl
 
         private bool IsOrderedMenuListValid()
         {
-            return App.orderData.orderViewModel.IsOrderedMenuItemsValid();
+            return App.orderData.IsValidOrderedMenuItems();
         }
     }
 }

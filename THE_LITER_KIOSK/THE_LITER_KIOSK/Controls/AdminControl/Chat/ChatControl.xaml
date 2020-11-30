@@ -47,7 +47,7 @@
 
             <Grid Grid.Column="0">
                 <StackPanel x:Name="spUserChat">
-
+                    
                 </StackPanel>
             </Grid>
 
@@ -57,13 +57,13 @@
 
             <Grid Grid.Column="2">
                 <StackPanel x:Name="spServerChat">
-
+                    
                 </StackPanel>
             </Grid>
         </Grid>
 
         <Grid Grid.Row="1">
-            <CheckBox Content="그룹메세지로 전송"
+            <CheckBox Content="그룹메세지"
                       IsChecked="{Binding IsGroupMsg}"
                       FocusVisualStyle="{x:Null}"
                       Style="{StaticResource MaterialDesignAccentCheckBox}"/>

@@ -6,9 +6,18 @@ namespace TheLiter.Core.Admin
     {
         public AdminViewModel adminViewModel = new AdminViewModel();
 
-        public void LoadData()
+        public void LoadSalesData()
+        {
+            adminViewModel.GetAllSalesInformation();
+        }
+
+        public void LoadChartData()
         {
             adminViewModel.LoadSalesByCategoryChartData();
+        }
+
+        public void SetStatisticData()
+        {
             adminViewModel.SetSalesStatItems();
             adminViewModel.SetTotalAndNetSales("CARD");
             adminViewModel.SetSaleItems();

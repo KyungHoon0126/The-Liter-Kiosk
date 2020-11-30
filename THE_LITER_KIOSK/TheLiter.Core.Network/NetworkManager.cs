@@ -13,7 +13,7 @@ namespace THE_LITER_KIOSK.Network
     public class NetworkManager
     {
         private const string ip = "10.80.162.152";
-        //private const string ip = "10.80.163.141"; // 용빈 Computer
+        // private const string ip = "10.80.163.141"; // 용빈 Computer
         private const int port = 80;
 
         private static ManualResetEvent connectDone =
@@ -27,42 +27,25 @@ namespace THE_LITER_KIOSK.Network
             
         private static string response = string.Empty;
 
-        public void ConnectSocket(TcpModel tcpModel)
+        public void ConnectSocket(TcpModel tcpModel)    
         {
             try 
             {
-                //while (true)
-                //{
-                    if(tcpModel != null)
-                    {
-                        TcpHelper.SocketClient.BeginConnect(ip, port, new AsyncCallback(ConnectCallback), TcpHelper.SocketClient);
-                        connectDone.WaitOne(); // 완료되기를 기다림.
-                        TcpHelper.isConnected = true;
+                if(tcpModel != null)
+                {
+                    TcpHelper.SocketClient.BeginConnect(ip, port, new AsyncCallback(ConnectCallback), TcpHelper.SocketClient);
+                    connectDone.WaitOne(0, true); // 완료되기를 기다림.    
 
-                        Debug.WriteLine(TcpHelper.SocketClient.Connected);
+                    Send(TcpHelper.SocketClient, SetOrderMsgArgs(tcpModel));
+                    sendDone.WaitOne();
 
-                        Send(TcpHelper.SocketClient, SetOrderMsgArgs(tcpModel));
-                        sendDone.WaitOne();
-
-                        Receive(TcpHelper.SocketClient);
-                        receiveDone.WaitOne();
-
-                        if (TcpHelper.SocketClient.Connected)
-                        {
-                            Debug.WriteLine("We're still connected");
-                        }
-                        else
-                        {
-                            Debug.WriteLine("We're disconnected");
-                        }
-                    }
-                    tcpModel = null;
-                //}
+                    Receive(TcpHelper.SocketClient);
+                    receiveDone.WaitOne();
+                }
             }
             catch (Exception e)
             {
-                Debug.WriteLine("START CLIENT ERROR : " + e.Message);
-                TcpHelper.isConnected = false;
+                Debug.WriteLine("CONNECT SOCKET ERROR : " + e.Message);
             }
         }
 
@@ -76,7 +59,6 @@ namespace THE_LITER_KIOSK.Network
                 Debug.WriteLine("Socket connected to {0}", client.RemoteEndPoint.ToString());
                 
                 connectDone.Set();
-
             }
             catch (Exception e)
             {
@@ -90,7 +72,8 @@ namespace THE_LITER_KIOSK.Network
             {
                 StateObjectModel state = new StateObjectModel();
                 state.workSocket = client;
-                client.BeginReceive(state.buffer, 0, StateObjectModel.BufferSize, 0, new AsyncCallback(ReceiveCallback), state);
+                // client.BeginReceive(state.buffer, 0, StateObjectModel.BufferSize, 0, new AsyncCallback(ReceiveCallback), state);
+                var result = client.BeginReceive(state.buffer, 0, StateObjectModel.BufferSize, 0, new AsyncCallback(ReceiveCallback), state);
             }
             catch (Exception e)
             {
@@ -109,22 +92,31 @@ namespace THE_LITER_KIOSK.Network
 
                 if (bytesRead > 0)
                 {
-                    state.sb.Append(Encoding.ASCII.GetString(state.buffer, 0, bytesRead));
+                    var data = state.sb.Append(Encoding.UTF8.GetString(state.buffer, 0, bytesRead));
                     client.BeginReceive(state.buffer, 0, StateObjectModel.BufferSize, 0, new AsyncCallback(ReceiveCallback), state);
+                    receiveDone.Set();
+
+                    // TODO : 서버에서 총매출이 담긴 메시지가 오면 총 매출을 보낼 것.
+                    if (data.Equals("총 매출") || data.Equals("총매출"))
+                    {
+                        TcpModel tcpPacket = new TcpModel();
+                    }
                 }
-                else
+                else if (state.sb != null)
                 {
                     if (state.sb.Length > 1)
                     {
                         response = state.sb.ToString();
                         Debug.WriteLine(response);
+                        
+                        // 공지사항 메시지 띄우기
                     }
                     receiveDone.Set();
                 }
             }
             catch (Exception e)
             {
-                Debug.WriteLine("RECEIVE CALL BACK ERROR : " + e.Message);
+                Debug.WriteLine("RECEIVE CALL BACK ERROR: " + e.Message);
             }
         }
 
@@ -173,8 +165,12 @@ namespace THE_LITER_KIOSK.Network
             try
             {
                 Socket client = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-                client.Connect(ip, port);
-                return client.Connected ? true : false;
+                //client.Connect(ip, port);
+                //return client.Connected ? true : false;
+
+                var result = client.BeginConnect(ip, port, null, null);
+                bool isConnected = result.AsyncWaitHandle.WaitOne(1000, true);
+                return isConnected;
             }
             catch (Exception e)
             {

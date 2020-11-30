@@ -400,7 +400,9 @@ namespace TheLiter.Core.Admin.ViewModel
                 });
             }
         }
+        #endregion
 
+        #region SET STATISTICS DATA
         public void SetSalesStatItems()
         {
             Application.Current.Dispatcher.Invoke(() =>
@@ -424,9 +426,7 @@ namespace TheLiter.Core.Admin.ViewModel
                 }
             });
         }
-        #endregion
 
-        #region SET STATISTICS DATA
         private void SyncGetAllSalesInformation()
         {
             if (SalesItems.Count > 0)
@@ -468,12 +468,15 @@ namespace TheLiter.Core.Admin.ViewModel
 
         public void SetSaleItems()
         {
-            SetSalesByMenuItems();
-            SetSalesByCategoryItems();
-            SetSalesByTableMenuAndCategoryItems();
-            SetSalesByDailyItems();
-            SetSalesByMemberItems();
-            SetSalesByTimeItems();
+            Parallel.Invoke(() =>
+            {
+                SetSalesByMenuItems();
+                SetSalesByCategoryItems();
+                SetSalesByTableMenuAndCategoryItems();
+                SetSalesByDailyItems();
+                SetSalesByMemberItems();
+                SetSalesByTimeItems();
+            });
         }
 
         private void SetSalesByMenuItems()
@@ -771,7 +774,7 @@ VALUES(
             }
         }
 
-        public async void GetAllSalesInformation()
+        internal async void GetAllSalesInformation()
         {
             try
             {
