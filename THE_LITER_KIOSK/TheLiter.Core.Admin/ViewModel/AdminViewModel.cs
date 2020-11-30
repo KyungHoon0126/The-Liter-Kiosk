@@ -848,15 +848,15 @@ FROM
             var tcpModel = new TcpModel();
             var menuItems = new List<MenuModel>();
             tcpModel.MessageType = (int)EMessageType.NORMAL_MESSAGE;
-            tcpModel.Id = "";
+            tcpModel.Id = "2106";
             tcpModel.ShopName = "더리터 사이코점";
-            tcpModel.Content = totalPrice.ToString();
+            tcpModel.Content = $"총 매출액 : {string.Format("{0:#,0}", totalPrice.ToString())}원";
             tcpModel.OrderNumber = "";
             tcpModel.MenuItems = menuItems;
             return tcpModel;
         }
 
-        public string GetTotalSaleMsgArgs()
+        public string SetTotalSaleMsgArgs(TcpModel tcpModel)
         {
             #region DB
             var saleItems = new List<SalesModel>();
@@ -882,12 +882,13 @@ FROM
             });
 
             JObject jObject = new JObject();
-            jObject.Add("MSGType", (int)EMessageType.NORMAL_MESSAGE);
-            jObject.Add("Id", "");
-            jObject.Add("Content", totalPrice.ToString());
-            jObject.Add("ShopName", "");
-            jObject.Add("OrderNumber", "");
+            jObject.Add("MSGType", tcpModel.MessageType);
+            jObject.Add("Id", tcpModel.Id);
+            jObject.Add("Content", tcpModel.Content);
+            jObject.Add("ShopName", tcpModel.ShopName);
+            jObject.Add("OrderNumber", tcpModel.OrderNumber);
             jObject.Add("Menus", "");
+            jObject.Add("Group", true);
 
             return JsonConvert.SerializeObject(jObject);
         }

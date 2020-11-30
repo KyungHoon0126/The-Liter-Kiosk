@@ -109,9 +109,15 @@ namespace THE_LITER_KIOSK.Controls
         private void CbAutologin_Checked(object sender, EventArgs e)
         {
             if ((sender as CheckBox).IsChecked ?? false)
+            {
                 isAutoLogin = true;
+                App.autoLoginProxy.IsAutoLogin = true;
+            }
             else
+            {
                 isAutoLogin = false;
+                App.autoLoginProxy.IsAutoLogin = false;
+            }
         }
 
         #region UserControl Transition

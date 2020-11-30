@@ -14,8 +14,7 @@ namespace THE_LITER_KIOSK.Network
 {
     public class NetworkManager : MySqlDBConnectionManager
     {
-        // private const string ip = "10.80.162.152";
-        private const string ip = "10.80.163.141"; // 용빈 Computer
+        private const string ip = "10.80.162.152";
         private const int port = 80;
 
         private static ManualResetEvent connectDone =
@@ -94,6 +93,7 @@ namespace THE_LITER_KIOSK.Network
                 if (bytesRead > 0)
                 {
                     var receiveMsg = Encoding.UTF8.GetString(state.buffer, 0, bytesRead);
+                    TcpHelper.ReceiveMessage = receiveMsg;
                     Debug.WriteLine($"SEVER MESSAGE : {receiveMsg}");
 
                     client.BeginReceive(state.buffer, 0, StateObjectModel.BufferSize, 0, new AsyncCallback(ReceiveCallback), state);
@@ -104,9 +104,7 @@ namespace THE_LITER_KIOSK.Network
 
                     if (receiveMsg.Equals("총 매출액") || receiveMsg.Equals("총매출액"))
                     {
-                        App.networkManager.Send(TcpHelper.SocketClient, App.networkManager.SetOrderMsgArgs(App.adminData.adminViewModel.SendTotalSaleMsgToNormal())); // => 메시지 잘만 전송됨.
-                        App.networkManager.Send(TcpHelper.SocketClient, App.networkManager.SetOrderMsgArgs(App.orderData.orderViewModel.SendOrderInfoToNormal("2106"))); 
-                        // App.networkManager.Send(TcpHelper.SocketClient, App.adminData.adminViewModel.GetTotalSaleMsgArgs()); // 여기는 메시지가 안보내짐. 이유를 모르겠음.
+                        App.networkManager.Send(TcpHelper.SocketClient, App.adminData.adminViewModel.SetTotalSaleMsgArgs(App.adminData.adminViewModel.SendTotalSaleMsgToNormal())); 
                     }
                 }
                 //else if (state.sb != null)
