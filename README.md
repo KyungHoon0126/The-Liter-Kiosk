@@ -1,5 +1,8 @@
 # THE-LITER-KIOSK, 더 리터 키오스크
 
+## Term
+- 2020.09.19 ~ 2020.11.30
+
 ## Stack
 
 |                      | Window     |
